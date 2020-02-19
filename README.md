@@ -4,7 +4,10 @@
 
 ## Why another CSS-in-JS solution?
 
-### 1. Component-centric semantics for styles
+<details>
+  <summary>Why another CSS-in-JS solution (long)?</summary>
+  
+  ### 1. Component-centric semantics for styles
 
 If you've ever used material-ui or JSS, then you're familiar with this concept. In material-ui, you define styles using with `withStyles` or `makeStyles`. You pass into those function an object with style classes and it returns something that lets you inject styles into a component.
 
@@ -243,6 +246,7 @@ If you're not familiar, linaria is a zero runtime CSS-in-JS solution that solved
 > Note: by ability tho ship static CSS, I mean that there is little to no javascript code related to styling left in the final bundle. This is different than SSR support.
 >
 > For example, Material UI/JSS supports server-side rendered CSS but the resulting JavaScript still includes the code to create the styles. Because the JS still includes the styling code, it will slow down [TTI](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive).
+</details>
 
 ## Feature comparison
 
