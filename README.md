@@ -4,10 +4,12 @@
 
 # ⚠️ this is all a work-in-progress, check back soon!
 
+<details>
+  <summary>
+
 ## Why another CSS-in-JS solution?
 
-<details>
-  <summary>Why another CSS-in-JS solution (long)?</summary>
+  </summary>
   
   ### 1. Component-centric semantics for styles
 
