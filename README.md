@@ -255,8 +255,8 @@ If you're not familiar, linaria is a zero runtime CSS-in-JS solution that solved
 |                              | Material UI/JSS | styled-components | emotion | linaria | react-style-system |
 |------------------------------|-----------------|-------------------|---------|---------|--------------------|
 | Component-centric semantics  |  ✅              | 🔴                 | 🔴       | 🔴       | ✅                   |
-| Embraces HTML                |  ✅              | 🔴                 | ✅       | 🔴       | ✅                   |
-| Actual CSS                   |  🔴              | ✅                 | 🔴       | 🔴       | ✅                   |
+| Embraces HTML                |  ✅              | 🔴                 | ✅       | ✅       | ✅                   |
+| Actual CSS                   |  🔴              | ✅                 | ✅       | ✅       | ✅                   |
 | Dynamic component coloring   |  🔴              | 🔴                 | 🔴       | 🔴       | ✅                   |
 | Ship (near) zero-runtime CSS |  🔴              | 🔴                 | 🔴       | ✅       | ✅                   |
 
