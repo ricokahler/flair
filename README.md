@@ -6,6 +6,7 @@
 
 <details>
   <summary>
+click to exapnd
 
 ## Why another CSS-in-JS solution?
 
