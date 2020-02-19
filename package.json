@@ -15,5 +15,21 @@
   "bugs": {
     "url": "https://github.com/ricokahler/react-style-system/issues"
   },
-  "homepage": "https://github.com/ricokahler/react-style-system#readme"
+  "homepage": "https://github.com/ricokahler/react-style-system#readme",
+  "devDependencies": {
+    "@types/react": "^16.9.20",
+    "react": "^16.12.0",
+    "typescript": "^3.7.5"
+  },
+  "peerDependencies": {
+    "@types/react": "^16.9.20",
+    "react": "^16.12.0",
+  },
+  "dependencies": {
+    "@types/classnames": "^2.2.9",
+    "@types/nanoid": "^2.1.0",
+    "classnames": "^2.2.6",
+    "nanoid": "^2.1.11",
+    "stylis": "^3.5.4"
+  }
 }
