@@ -2,6 +2,8 @@
 
 > a carefully thought-out system system for React components
 
+# ⚠️ this is all a work-in-progress, check back soon!
+
 ## Why another CSS-in-JS solution?
 
 <details>
