@@ -1,0 +1,19 @@
+{
+  "name": "react-style-system",
+  "version": "0.0.0-first",
+  "description": "a carefully thought-out system system for React components",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ricokahler/react-style-system.git"
+  },
+  "author": "Rico Kahler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ricokahler/react-style-system/issues"
+  },
+  "homepage": "https://github.com/ricokahler/react-style-system#readme"
+}
