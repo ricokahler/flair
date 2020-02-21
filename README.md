@@ -1,4 +1,4 @@
-# React Style System
+# React style system
 
 > a carefully thought-out system system for React components
 
