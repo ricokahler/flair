@@ -8,7 +8,9 @@
   <summary>
 click to exapnd
 
-## Why another CSS-in-JS lib (click)?
+## Why another CSS-in-JS lib?
+
+Click here to read more.
 
   </summary>
 
