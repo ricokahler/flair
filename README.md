@@ -8,13 +8,15 @@
   <summary>
 click to exapnd
 
-## Why another CSS-in-JS solution?
+## Why another CSS-in-JS lib (click)?
 
   </summary>
-  
-  ### 1. Component-centric semantics for styles
 
-If you've ever used material-ui or JSS, then you're familiar with this concept. In material-ui, you define styles using with `withStyles` or `makeStyles`. You pass into those function an object with style classes and it returns something that lets you inject styles into a component.
+Because there's no one lib that checks all the boxes. See below for an explanation.
+
+### 1. Component-centric semantics for styles
+
+If you've ever used Material UI or JSS, then you're familiar with this concept. In Material UI, you define styles using with `withStyles` or `makeStyles`. You pass into those function an object with style classes and it returns something that lets you inject styles into a component.
 
 e.g.
 
@@ -43,7 +45,7 @@ export default Component;
 
 What I like about this pattern is that it's clear that the styles you're writing are for a component and you can even have the integrate some styling APIs right into the component's API (i.e. its props).
 
-For example, in material-ui, a parent component can override `title` styles like so:
+For example, in Material UI, a parent component can override `title` styles like so:
 
 ```js
 // Parent.js
@@ -92,7 +94,7 @@ function Component() {
 
 ### 2. Embrace HTML semantics via `className`s
 
-Another issue I have with styled-components like syntax (e.g. `styled.div`) is that it abstracts away HTML semantics and makes it uncomfortable to use class names. Going back to material-ui again, since their styling solution embraces class names and HTML semantics, it's easy to use tools like [`classnames`](https://github.com/JedWatson/classnames) to conditionally apply CSS classnames.
+Another issue I have with styled-components like syntax (e.g. `styled.div`) is that it abstracts away HTML semantics and makes it uncomfortable to use class names. Going back to Material UI again, since their styling solution embraces class names and HTML semantics, it's easy to use tools like [`classnames`](https://github.com/JedWatson/classnames) to conditionally apply CSS classnames.
 
 ```js
 import React from 'react';
@@ -167,7 +169,7 @@ Anyway, embracing HTML makes it easier to embrace HTML semantic elements which i
 
 ### 3. Write actual CSS
 
-This is where material-ui's styling solution falls short. I think it's better to write actual CSS (vs the JS object styling syntax) because:
+This is where Material UI's styling solution falls short. I think it's better to write actual CSS (vs the JS object styling syntax) because:
 
 1. It allows for better DX by being able to copy and paste CSS examples directly into code.
 2. It allows for editors to "switch modes". Specifically, another language service could be booted up inside of `css` tags allowing for autocomplete without using the TypeScript language service. There are many plugins/extensions for many different editors that do this.
@@ -251,17 +253,15 @@ If you're not familiar, linaria is a zero runtime CSS-in-JS solution that solved
 > Note: by ability tho ship static CSS, I mean that there is little to no javascript code related to styling left in the final bundle. This is different than SSR support.
 >
 > For example, Material UI/JSS supports server-side rendered CSS but the resulting JavaScript still includes the code to create the styles. Because the JS still includes the styling code, it will slow down [TTI](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive).
+
 </details>
 
-## Feature comparison
+### Feature comparison
 
 |                              | Material UI/JSS | styled-components | emotion | linaria | react-style-system |
-|------------------------------|-----------------|-------------------|---------|---------|--------------------|
-| Component-centric semantics  |  ✅              | 🔴                 | 🔴       | 🔴       | ✅                   |
-| Embraces HTML                |  ✅              | 🔴                 | ✅       | ✅       | ✅                   |
-| Actual CSS                   |  🔴              | ✅                 | ✅       | ✅       | ✅                   |
-| Dynamic component coloring   |  🔴              | 🔴                 | 🔴       | 🔴       | ✅                   |
-| Ship (near) zero-runtime CSS |  🔴              | 🔴                 | 🔴       | ✅       | ✅                   |
-
-## Usage
-
+| ---------------------------- | --------------- | ----------------- | ------- | ------- | ------------------ |
+| Component-centric semantics  | ✅              | 🔴                | 🔴      | 🔴      | ✅                 |
+| Embraces HTML                | ✅              | 🔴                | ✅      | ✅      | ✅                 |
+| Actual CSS                   | 🔴              | ✅                | ✅      | ✅      | ✅                 |
+| Dynamic component coloring   | 🔴              | 🔴                | 🔴      | 🔴      | ✅                 |
+| Ship (near) zero-runtime CSS | 🔴              | 🔴                | 🔴      | ✅      | ✅                 |
