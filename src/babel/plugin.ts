@@ -1,12 +1,6 @@
 import { Visitor } from '@babel/traverse';
-import { ObjectExpression, TemplateLiteral } from '@babel/types';
-
-const createStyles = 'createStyles';
-const packageName = 'react-style-system';
-
-interface Params {
-  types: typeof import('@babel/types');
-}
+import * as t from '@babel/types';
+import createFileNameHash from './createFileNameHash';
 
 interface Result {
   visitor: Visitor;
@@ -16,10 +10,12 @@ function range(n: number) {
   return Array.from(Array(n)).map((_, i) => i);
 }
 
-function plugin({ types }: Params): Result {
+function plugin(): Result {
   let foundCreateStyles = false;
 
-  function createArrayPropertyValueFromTemplateLiteral(quasi: TemplateLiteral) {
+  function createArrayPropertyValueFromTemplateLiteral(
+    quasi: t.TemplateLiteral,
+  ) {
     const { expressions, quasis } = quasi;
 
     const cssPropertyExpressions = range(expressions.length)
@@ -29,69 +25,77 @@ function plugin({ types }: Params): Result {
       }))
       .filter(({ templateElement }) => {
         // must end with a `:` to signify that the expression is a CSS property
-        return templateElement.value.cooked.trim().endsWith(':');
+        return templateElement.value.raw.trim().endsWith(':');
       })
       .map(({ expression }) => expression);
 
-    return types.arrayExpression(cssPropertyExpressions);
+    return t.arrayExpression(cssPropertyExpressions);
   }
 
   return {
     visitor: {
-      ImportDeclaration(path) {
+      ImportDeclaration(path, state: any) {
+        const {
+          importSourceValue = 'react-style-system',
+          importedName = 'createStyles',
+        } = state.opts;
+
         const { specifiers, source } = path.node;
         const hasCreateStyles = specifiers.some(node => {
-          if (!types.isImportSpecifier(node)) return false;
-          return node.imported.name === createStyles;
+          if (!t.isImportSpecifier(node)) return false;
+          return node.imported.name === importedName;
         });
         if (!hasCreateStyles) return;
 
-        const hasPackageName = source.value === packageName;
+        const hasPackageName = source.value === importSourceValue;
         if (!hasPackageName) return;
 
         foundCreateStyles = true;
       },
 
-      CallExpression(path) {
+      CallExpression(path, state: any) {
+        const { opts, filename } = state;
+        const { importedName = 'createStyles' } = opts;
+
         if (!foundCreateStyles) return;
 
         const { callee, arguments: expressionArguments } = path.node;
-        if (!types.isIdentifier(callee)) return;
-        if (callee.name !== createStyles) return;
+        if (!t.isIdentifier(callee)) return;
+        if (callee.name !== importedName) return;
 
         const [firstArgument] = expressionArguments;
 
         if (
-          !types.isFunctionExpression(firstArgument) &&
-          !types.isArrowFunctionExpression(firstArgument)
+          !t.isFunctionExpression(firstArgument) &&
+          !t.isArrowFunctionExpression(firstArgument)
         ) {
           return;
         }
 
         const { body } = firstArgument;
 
-        let stylesObjectExpression: ObjectExpression;
-        if (types.isObjectExpression(body)) {
+        let stylesObjectExpression!: t.ObjectExpression;
+        if (t.isObjectExpression(body)) {
           stylesObjectExpression = body;
         } else {
           path.traverse({
             ReturnStatement(path) {
               const { argument } = path.node;
 
-              if (!types.isObjectExpression(argument)) return;
+              if (!t.isObjectExpression(argument)) return;
               stylesObjectExpression = argument;
             },
           });
         }
 
         for (const property of stylesObjectExpression.properties) {
-          if (!types.isObjectProperty(property)) return;
+          if (!t.isObjectProperty(property)) return;
           const { value } = property;
 
-          if (!types.isTaggedTemplateExpression(value)) return;
+          if (!t.isTaggedTemplateExpression(value)) return;
           const { tag, quasi } = value;
 
-          if (!types.isIdentifier(tag)) return;
+          if (!t.isIdentifier(tag)) return;
           if (tag.name !== 'css') return;
 
           const arrayExpression = createArrayPropertyValueFromTemplateLiteral(
@@ -100,6 +104,13 @@ function plugin({ types }: Params): Result {
 
           property.value = arrayExpression;
         }
+
+        stylesObjectExpression.properties.push(
+          t.objectProperty(
+            t.identifier('classNamePrefix'),
+            t.stringLiteral(createFileNameHash(filename)),
+          ),
+        );
       },
     },
   };
