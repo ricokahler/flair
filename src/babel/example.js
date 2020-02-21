@@ -16,3 +16,15 @@ const useStyles = createStyles(({ css, theme }) => ({
     }
   `,
 }));
+
+function MyComponent(props) {
+  const { Root, styles, title } = useStyles(props);
+
+  return (
+    <Root>
+      <h1 className={styles.title}>{title}</h1>
+    </Root>
+  );
+}
+
+export default MyComponent;

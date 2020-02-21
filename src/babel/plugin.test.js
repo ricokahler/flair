@@ -9,12 +9,20 @@ it('removes the tagged template literals and replaces it with array expressions'
 
   const result = transform(code, {
     filename,
-    presets: [],
+    presets: [
+      ['@babel/preset-env', { targets: { node: true } }],
+      ['@babel/preset-react'],
+    ],
     plugins: [plugin],
   });
 
   expect(result.code).toMatchInlineSnapshot(`
     "\\"use strict\\";
+
+    Object.defineProperty(exports, \\"__esModule\\", {
+      value: true
+    });
+    exports.default = void 0;
 
     var _reactStyleSystem = require(\\"react-style-system\\");
 
@@ -27,6 +35,20 @@ it('removes the tagged template literals and replaces it with array expressions'
       root: [(0, _polished.readableColor)(theme.colors.brand), theme.colors.brand],
       title: [(0, _polished.darken)(0.1, theme.colors.brand)],
       classNamePrefix: \\"example--32e5a416\\"
-    }));"
+    }));
+
+    function MyComponent(props) {
+      const {
+        Root,
+        styles,
+        title
+      } = useStyles(props);
+      return React.createElement(Root, null, React.createElement(\\"h1\\", {
+        className: styles.title
+      }, title));
+    }
+
+    var _default = MyComponent;
+    exports.default = _default;"
   `);
 });
