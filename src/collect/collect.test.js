@@ -1,9 +1,9 @@
 import collect from './collect';
 
 it('collects the static css from a file', () => {
-  const exampleFilename = require.resolve('src/examples/Example');
+  const exampleFilename = require.resolve('../examples/Example');
   const exampleStaticThemeFilename = require.resolve(
-    'src/examples/exampleStaticTheme',
+    '../examples/exampleStaticTheme',
   );
 
   const css = collect(exampleFilename, {
@@ -17,9 +17,9 @@ it('collects the static css from a file', () => {
 });
 
 it('works with other import names', () => {
-  const buttonFilename = require.resolve('src/examples/Button');
+  const buttonFilename = require.resolve('../examples/Button');
   const staticThemeFilename = require.resolve(
-    'src/examples/exampleStaticTheme',
+    '../examples/exampleStaticTheme',
   );
 
   const css = collect(buttonFilename, {

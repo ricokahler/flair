@@ -2,12 +2,12 @@ import React, { forwardRef, useMemo, useLayoutEffect } from 'react';
 import classNames from 'classnames';
 import nanoId from 'nanoid';
 import stylis from 'stylis';
-import { ReadableColorPalette, ReactComponent, StyleProps } from 'src/types';
-import useTheme from 'src/common/useTheme';
-import createReadablePalette from 'src/common/createReadablePalette';
-import useColorContext from 'src/common/useColorContext';
+import { ReadableColorPalette, ReactComponent, StyleProps } from '../types';
+import useTheme from '../common/useTheme';
+import createReadablePalette from '../common/createReadablePalette';
+import useColorContext from '../common/useColorContext';
+import css from '../common/css';
 import tryGetCurrentFilename from './tryGetCurrentFilename';
-import css from './css';
 
 type GetComponentProps<
   ComponentType extends ReactComponent

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { act, create } from 'react-test-renderer';
 import delay from 'delay';
-import DeferredPromise from 'src/common/DeferredPromise';
-import ThemeProvider from 'src/common/ThemeProvider';
-import ColorContextProvider from 'src/common/ColorContextProvider';
+import DeferredPromise from '../common/DeferredPromise';
+import ThemeProvider from '../common/ThemeProvider';
+import ColorContextProvider from '../common/ColorContextProvider';
 import createStyles from './createStyles';
 
 const theme = { colors: { brand: '#00f' } };

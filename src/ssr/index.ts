@@ -1,3 +1,3 @@
-export * from 'src/common';
-export * from 'src/types';
+export * from '../common';
+export * from '../types';
 export { default as createStyles } from './createStyles';

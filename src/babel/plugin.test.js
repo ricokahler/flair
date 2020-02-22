@@ -4,7 +4,7 @@ import { transform } from '@babel/core';
 import plugin from './plugin';
 
 it('removes the tagged template literals and replaces it with array expressions', async () => {
-  const filename = require.resolve('src/examples/Example');
+  const filename = require.resolve('../examples/Example');
   const code = (await fs.promises.readFile(filename)).toString();
 
   const result = transform(code, {
@@ -17,7 +17,7 @@ it('removes the tagged template literals and replaces it with array expressions'
       [
         plugin,
         {
-          themePath: require.resolve('src/examples/exampleStaticTheme'),
+          themePath: require.resolve('../examples/exampleStaticTheme'),
           cacheDir: path.resolve(__dirname, '../examples'),
         },
       ],
@@ -80,7 +80,7 @@ it('removes the tagged template literals and replaces it with array expressions'
 });
 
 it('works with other import names', async () => {
-  const filename = require.resolve('src/examples/Button');
+  const filename = require.resolve('../examples/Button');
   const code = (await fs.promises.readFile(filename)).toString();
 
   const result = transform(code, {
@@ -93,7 +93,7 @@ it('works with other import names', async () => {
       [
         plugin,
         {
-          themePath: require.resolve('src/examples/exampleStaticTheme'),
+          themePath: require.resolve('../examples/exampleStaticTheme'),
           cacheDir: path.resolve(__dirname, '../examples'),
           importSourceValue: 'hacker-ui',
         },

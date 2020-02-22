@@ -4,8 +4,8 @@ import { stripIndent } from 'common-tags';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
 import stylis from 'stylis';
-import createFileNameHash from 'src/common/createFileNameHash';
 import requireFromString from 'require-from-string';
+import createFileNameHash from '../common/createFileNameHash';
 
 function range(n: number) {
   return Array.from(Array(n)).map((_, i) => i);

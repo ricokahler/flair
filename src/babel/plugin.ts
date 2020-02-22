@@ -2,8 +2,8 @@ import fs from 'fs';
 import _path from 'path';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
-import createFileNameHash from 'src/common/createFileNameHash';
-import collect from 'src/collect';
+import createFileNameHash from '../common/createFileNameHash';
+import collect from '../collect';
 
 interface Result {
   visitor: Visitor;

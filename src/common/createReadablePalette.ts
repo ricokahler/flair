@@ -1,5 +1,5 @@
 import { getContrast, readableColor } from 'polished';
-import { ReadableColorPalette } from 'src/types';
+import { ReadableColorPalette } from '../types';
 
 const hasBadDecorativeContrast = (a: string, b: string) =>
   getContrast(a, b) < 1.5;

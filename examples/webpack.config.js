@@ -1,6 +1,6 @@
 require('ts-node').register('../tsconfig');
 const path = require('path');
-const reactStylesSystemPlugin = require('src/babel').default;
+const reactStylesSystemPlugin = require('../src/babel').default;
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',

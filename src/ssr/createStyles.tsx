@@ -1,11 +1,10 @@
 import React, { forwardRef, useMemo } from 'react';
 import classNames from 'classnames';
-import { ReadableColorPalette, ReactComponent, StyleProps } from 'src/types';
-import useTheme from 'src/common/useTheme';
-import createReadablePalette from 'src/common/createReadablePalette';
-import useColorContext from 'src/common/useColorContext';
-// TODO: move to common
-import css from 'src/standalone/css';
+import { ReadableColorPalette, ReactComponent, StyleProps } from '../types';
+import useTheme from '../common/useTheme';
+import createReadablePalette from '../common/createReadablePalette';
+import useColorContext from '../common/useColorContext';
+import css from '../common/css';
 
 type GetComponentProps<
   ComponentType extends ReactComponent

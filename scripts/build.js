@@ -29,17 +29,6 @@ async function main() {
   console.log('generating types…');
   const tsResult = await execute('npx tsc');
   tsResult && console.log(tsResult);
-  await fs.promises.writeFile(
-    path.join(__dirname, '../build/types/tsconfig.json'),
-    JSON.stringify({
-      compilerOptions: {
-        baseUrl: '.',
-        paths: {
-          'src/*': ['src/*'],
-        },
-      },
-    }),
-  );
 
   console.log('rolling…');
   const rollupResult = await execute('npx rollup -c');
@@ -79,7 +68,7 @@ async function main() {
     version: `0.0.0-${buildHash}`,
     module: './bundle.esm.js',
     main: './bundle.umd.js',
-    types: './types',
+    types: './types/src',
   };
 
   await fs.promises.writeFile(

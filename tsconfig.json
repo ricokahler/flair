@@ -11,11 +11,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "emitDeclarationOnly": true,
-    "baseUrl": "./",
-    "paths": {
-      "src/*": ["src/*"]
-    }
+    "emitDeclarationOnly": true
   },
   "include": ["./src"],
   "exclude": [
