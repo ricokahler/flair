@@ -26,15 +26,15 @@ function hashStyleObj(styleObj: { [key: string]: string | undefined }) {
 // preserve the object reference
 const empty = {};
 
-type StyleFnArgs = {
+type StyleFnArgs<Theme = any> = {
   css: typeof css;
   color: ReadableColorPalette;
-  theme: any;
+  theme: Theme;
   surface: string;
 };
 
-function createStyles<Styles extends { [key: string]: string }>(
-  stylesFn: (args: StyleFnArgs) => Styles,
+function createStyles<Styles extends { [key: string]: string }, Theme = any>(
+  stylesFn: (args: StyleFnArgs<Theme>) => Styles,
 ) {
   const sheetId = nanoId();
   const fileName = tryGetCurrentFilename();
@@ -56,7 +56,7 @@ function createStyles<Styles extends { [key: string]: string }>(
     Root: React.ComponentType<GetComponentProps<ComponentType>>;
     styles: Styles;
   } {
-    const theme = useTheme();
+    const theme = useTheme<Theme>();
     const colorContext = useColorContext();
     const defaultColor = colorContext.color;
     const defaultSurfaceColor = colorContext.surface;
