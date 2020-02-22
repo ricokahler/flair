@@ -1,6 +1,6 @@
 import collect from './collect';
 
-it('works', async () => {
+it('collects the static css from a file', () => {
   const exampleFilename = require.resolve('src/examples/Example');
   const exampleStaticThemeFilename = require.resolve(
     'src/examples/exampleStaticTheme',
@@ -13,5 +13,22 @@ it('works', async () => {
   expect(css).toMatchInlineSnapshot(`
     ".Example--d89a965-root{color:var(--Example--d89a965-root-0);background-color:var(--Example--d89a965-root-1);}
     .Example--d89a965-title{width:50%;color:var(--Example--d89a965-title-0);}@media (max-width:374px){.Example--d89a965-title{width:100%;}}"
+  `);
+});
+
+it('works with other import names', () => {
+  const buttonFilename = require.resolve('src/examples/Button');
+  const staticThemeFilename = require.resolve(
+    'src/examples/exampleStaticTheme',
+  );
+
+  const css = collect(buttonFilename, {
+    themePath: staticThemeFilename,
+    importSourceValue: 'hacker-ui',
+  });
+
+  expect(css).toMatchInlineSnapshot(`
+    ".Button-c5bcd77-root{background-color:var(--Button-c5bcd77-root-0);color:var(--Button-c5bcd77-root-1);}
+    .Button-c5bcd77-thing{color:var(--Button-c5bcd77-thing-0);font-weight:bold;}"
   `);
 });
