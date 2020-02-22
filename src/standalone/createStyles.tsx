@@ -1,18 +1,13 @@
-import React, { forwardRef, useMemo, useLayoutEffect, useContext } from 'react';
+import React, { forwardRef, useMemo, useLayoutEffect } from 'react';
 import classNames from 'classnames';
 import nanoId from 'nanoid';
 import stylis from 'stylis';
+import { ReadableColorPalette, ReactComponent, StyleProps } from 'src/types';
+import useTheme from 'src/common/useTheme';
+import createReadablePalette from 'src/common/createReadablePalette';
+import useColorContext from 'src/common/useColorContext';
+import tryGetCurrentFilename from './tryGetCurrentFilename';
 import css from './css';
-import {
-  DynamicColorPalette,
-  Theme,
-  ReactComponent,
-  StyleProps,
-} from './types';
-import useTheme from './useTheme';
-import createDynamicColorPalette from './createDynamicColorPalette';
-import tryGetCurrentFileName from './tryGetCurrentFileName';
-import ColorContext from './ColorContext';
 
 type GetComponentProps<
   ComponentType extends ReactComponent
@@ -31,20 +26,25 @@ function hashStyleObj(styleObj: { [key: string]: string | undefined }) {
 // preserve the object reference
 const empty = {};
 
-// for some reason, typescript doesn't let these be inline
 type StyleFnArgs = {
   css: typeof css;
-  color: DynamicColorPalette;
-  theme: Theme;
-  givenColor: string;
-  givenSurface: string;
+  color: ReadableColorPalette;
+  theme: any;
+  surface: string;
 };
 
 function createStyles<Styles extends { [key: string]: string }>(
   stylesFn: (args: StyleFnArgs) => Styles,
 ) {
   const sheetId = nanoId();
-  const fileName = tryGetCurrentFileName();
+  const fileName = tryGetCurrentFilename();
+
+  // NOTE: this is, in-fact, a side effect
+  // TODO: add docs here
+  const sheetEl = document.createElement('style');
+  sheetEl.dataset.reactStyleSystem = 'true';
+  sheetEl.id = sheetId;
+  document.head.appendChild(sheetEl);
 
   function useStyles<
     Props extends StyleProps<Styles>,
@@ -52,17 +52,17 @@ function createStyles<Styles extends { [key: string]: string }>(
   >(
     props: Props = {} as any,
     component?: ComponentType,
-  ): Omit<Props, 'on' | 'color' | 'style' | 'styles' | 'className'> & {
+  ): Omit<Props, 'surface' | 'color' | 'style' | 'styles' | 'className'> & {
     Root: React.ComponentType<GetComponentProps<ComponentType>>;
     styles: Styles;
   } {
     const theme = useTheme();
-    const colorContext = useContext(ColorContext);
-    const defaultColor = colorContext?.color ?? theme.colors.accent;
-    const defaultOnColor = colorContext?.on ?? theme.colors.surface;
+    const colorContext = useColorContext();
+    const defaultColor = colorContext.color;
+    const defaultSurfaceColor = colorContext.surface;
     const {
       color = defaultColor,
-      on = defaultOnColor,
+      surface = defaultSurfaceColor,
       style: incomingStyle,
       className: incomingClassName,
       styles: incomingStyles = empty as Styles,
@@ -73,15 +73,13 @@ function createStyles<Styles extends { [key: string]: string }>(
 
     // create a map of unprocessed styles
     const unprocessedStyles = useMemo(() => {
-      const dynamicColors = createDynamicColorPalette(color, on);
       return stylesFn({
         css,
-        color: dynamicColors,
+        color: createReadablePalette(color, surface),
         theme,
-        givenColor: color,
-        givenSurface: on,
+        surface,
       });
-    }, [color, on, theme]);
+    }, [color, surface, theme]);
 
     const styleId = useMemo(nanoId, [unprocessedStyles]);
 
@@ -91,7 +89,7 @@ function createStyles<Styles extends { [key: string]: string }>(
         .map(key => [
           key,
           // the replace is ensure the class name only uses css safe characters
-          `${fileName || 'hui'}_${key}_${sheetId}_${styleId}`.replace(
+          `${fileName || 'rss'}_${key}_${sheetId}_${styleId}`.replace(
             /[^a-z0-9-_]/gi,
             '',
           ),
@@ -101,15 +99,6 @@ function createStyles<Styles extends { [key: string]: string }>(
           return acc;
         }, {} as Styles);
     }, [styleId, unprocessedStyles]);
-
-    const sheetEl = useMemo(() => {
-      const sheetEl = document.createElement('style');
-      sheetEl.dataset.hackerUi = 'true';
-      sheetEl.id = sheetId;
-      document.head.prepend(sheetEl);
-
-      return sheetEl;
-    }, []);
 
     // mount the styles to the dom
     useLayoutEffect(() => {
@@ -130,7 +119,7 @@ function createStyles<Styles extends { [key: string]: string }>(
         .join('\n\n');
 
       sheetEl.innerHTML += processedSheet;
-    }, [sheetEl.innerHTML, thisStyles, unprocessedStyles]);
+    }, [thisStyles, unprocessedStyles]);
 
     const mergedStyles = useMemo(() => {
       const thisStyleKeys = Object.keys(thisStyles) as Array<keyof Styles>;

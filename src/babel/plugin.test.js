@@ -18,6 +18,8 @@ it('removes the tagged template literals and replaces it with array expressions'
   expect(result.code).toMatchInlineSnapshot(`
     "\\"use strict\\";
 
+    var _interopRequireDefault = require(\\"/Users/ricokahler/workspace/react-style-system/node_modules/@babel/runtime/helpers/interopRequireDefault\\");
+
     Object.defineProperty(exports, \\"__esModule\\", {
       value: true
     });
@@ -29,8 +31,7 @@ it('removes the tagged template literals and replaces it with array expressions'
 
     var _polished = require(\\"polished\\");
 
-    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+    var _jsxFileName = \\"/Users/ricokahler/workspace/react-style-system/src/common/Example.js\\";
     const useStyles = (0, _reactStyleSystem.createStyles)(({
       css,
       theme
@@ -46,8 +47,19 @@ it('removes the tagged template literals and replaces it with array expressions'
         styles,
         title
       } = useStyles(props);
-      return _react.default.createElement(Root, null, _react.default.createElement(\\"h1\\", {
-        className: styles.title
+      return _react.default.createElement(Root, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 25
+        },
+        __self: this
+      }, _react.default.createElement(\\"h1\\", {
+        className: styles.title,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 26
+        },
+        __self: this
       }, title));
     }
 
