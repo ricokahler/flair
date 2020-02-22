@@ -29,6 +29,17 @@ async function main() {
   console.log('generating types…');
   const tsResult = await execute('npx tsc');
   tsResult && console.log(tsResult);
+  await fs.promises.writeFile(
+    path.join(__dirname, '../build/types/tsconfig.json'),
+    JSON.stringify({
+      compilerOptions: {
+        baseUrl: '.',
+        paths: {
+          'src/*': ['src/*'],
+        },
+      },
+    }),
+  );
 
   console.log('rolling…');
   const rollupResult = await execute('npx rollup -c');
