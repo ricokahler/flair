@@ -23,7 +23,7 @@ module.exports = {
                 themePath: path.resolve(__dirname, './src/exampleTheme.js'),
                 cacheDir: path.resolve(
                   __dirname,
-                  './.react-styles-system-cache',
+                  './.react-style-system-cache',
                 ),
               },
             ],
