@@ -1,11 +1,11 @@
 import fs from 'fs';
-import path from 'path';
 import { transform } from '@babel/core';
 import { stripIndent } from 'common-tags';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
 import stylis from 'stylis';
 import createFileNameHash from 'src/common/createFileNameHash';
+import requireFromString from 'require-from-string';
 
 function range(n: number) {
   return Array.from(Array(n)).map((_, i) => i);
@@ -20,8 +20,10 @@ function collectionPlugin(): { visitor: Visitor } {
         const {
           importSourceValue = 'react-style-system',
           importedName = 'createStyles',
-          mockSourceValue,
+          themePath,
         } = state.opts;
+
+        if (!themePath) throw new Error('themePath required');
 
         const { specifiers, source } = path.node;
         const hasCreateStyles = specifiers.some(node => {
@@ -33,17 +35,33 @@ function collectionPlugin(): { visitor: Visitor } {
         const hasPackageName = source.value === importSourceValue;
         if (!hasPackageName) return;
 
-        source.value = mockSourceValue;
-
         foundCreateStyles = true;
+
+        path.replaceWithSourceString(stripIndent`
+          createStyles = styleFn => {
+            function css(strings, ...values) {
+              let combined = '';
+              for (let i = 0; i < strings.length; i += 1) {
+                const currentString = strings[i];
+                const currentValue = values[i] || '';
+                combined += currentString + currentValue;
+              }
+              return combined;
+            }
+
+            const theme = require(${JSON.stringify(themePath)});
+            
+            return styleFn({ css, theme });
+          }
+        `);
       },
 
       Program(path, state: any) {
         const { importedName = 'createStyles' } = state.opts;
 
         const index = path.node.body.findIndex(statement => {
-          if (!t.isVariableDeclaration(statement)) return;
-          if (!statement.declarations.length) return;
+          if (!t.isVariableDeclaration(statement)) return false;
+          if (!statement.declarations.length) return false;
 
           const isCreateStylesDeclaration = statement.declarations.some(
             declaration => {
@@ -66,6 +84,12 @@ function collectionPlugin(): { visitor: Visitor } {
         ] as t.VariableDeclaration;
 
         path.node.body[index] = t.exportNamedDeclaration(useStylesDeclaration);
+
+        path.node.body.unshift(
+          t.variableDeclaration('let', [
+            t.variableDeclarator(t.identifier('createStyles'), null),
+          ]),
+        );
       },
 
       CallExpression(path, state: any) {
@@ -126,10 +150,7 @@ function collectionPlugin(): { visitor: Visitor } {
             );
 
           for (let i = 0; i < templateExpressionPairs.length; i += 1) {
-            const {
-              index,
-              quasi,
-            } = templateExpressionPairs[i];
+            const { index, quasi } = templateExpressionPairs[i];
 
             quasi.expressions[index] = t.stringLiteral(
               `xX__${key.name}__${i}__Xx`,
@@ -141,64 +162,41 @@ function collectionPlugin(): { visitor: Visitor } {
   };
 }
 
-async function collect(filename: string, opts?: any) {
-  const code = (await fs.promises.readFile(filename)).toString();
+function collect(filename: string, opts?: any) {
   const { themePath } = opts;
 
-  const tempMockSourceFileName = `${filename}.mockSource.js`;
+  if (!themePath) {
+    throw new Error('theme path is required');
+  }
+
+  const code = fs.readFileSync(filename).toString();
 
   const result = transform(code, {
     filename: filename,
-    presets: [['babel-preset-react-app', { typescript: true, flow: true }]],
-    plugins: [
-      [collectionPlugin, { ...opts, mockSourceValue: tempMockSourceFileName }],
+    presets: [
+      ['@babel/preset-env', { targets: { node: true } }],
+      ['@babel/preset-typescript'],
+      ['@babel/preset-react'],
     ],
+    plugins: [[collectionPlugin, { ...opts }]],
   });
 
   if (!result?.code) {
     throw new Error('could not transform');
   }
 
-  const extension = path.extname(filename);
-  const tempFileName = `${filename}.styles${extension}`;
-  try {
-    await fs.promises.writeFile(tempFileName, result.code);
-    await fs.promises.writeFile(
-      tempMockSourceFileName,
-      stripIndent`
-        function css(strings, ...values) {
-          let combined = '';
-          for (let i = 0; i < strings.length; i += 1) {
-            const currentString = strings[i];
-            const currentValue = values[i] || '';
-            combined += currentString + currentValue;
-          }
-          return combined;
-        }
+  const filenameHash = createFileNameHash(filename);
+  const { useStyles } = requireFromString(result.code);
 
-        const theme = require(${JSON.stringify(themePath)});
-        
-        module.exports.createStyles = styleFn => styleFn({ css, theme });
-      `,
-    );
-    const filenameHash = createFileNameHash(filename);
-    const { useStyles } = require(tempFileName);
+  const finalCss = Object.entries(useStyles)
+    .map(([key, value]) => {
+      const className = `.${filenameHash}-${key}`;
+      return stylis(className, value as string);
+    })
+    .join('\n')
+    .replace(/xX__(\w+)__(\d+)__Xx/g, `var(--${filenameHash}-$1-$2)`);
 
-    const finalCss = Object.entries(useStyles)
-      .map(([key, value]) => {
-        const className = `.${filenameHash}-${key}`;
-        return stylis(className, value as string);
-      })
-      .join('\n')
-      .replace(/xX__(\w+)__(\d+)__Xx/g, `var(--${filenameHash}-$1-$2)`);
-
-    return finalCss;
-  } catch (e) {
-    throw e;
-  } finally {
-    await fs.promises.unlink(tempFileName);
-    await fs.promises.unlink(tempMockSourceFileName);
-  }
+  return finalCss;
 }
 
 export default collect;

@@ -1,10 +1,12 @@
 import fs from 'fs';
+import path from 'path';
 import { transform } from '@babel/core';
 import plugin from './plugin';
 
 it('removes the tagged template literals and replaces it with array expressions', async () => {
-  const filename = require.resolve('src/common/Example');
+  const filename = require.resolve('src/examples/Example');
   const code = (await fs.promises.readFile(filename)).toString();
+  
 
   const result = transform(code, {
     filename,
@@ -12,7 +14,15 @@ it('removes the tagged template literals and replaces it with array expressions'
       ['@babel/preset-env', { targets: { node: true } }],
       ['@babel/preset-react'],
     ],
-    plugins: [plugin],
+    plugins: [
+      [
+        plugin,
+        {
+          themePath: require.resolve('src/examples/exampleStaticTheme'),
+          cacheDir: path.resolve(__dirname, '../examples'),
+        },
+      ],
+    ],
   });
 
   expect(result.code).toMatchInlineSnapshot(`
@@ -25,20 +35,22 @@ it('removes the tagged template literals and replaces it with array expressions'
     });
     exports.default = void 0;
 
+    require(\\"/Users/ricokahler/workspace/react-style-system/src/examples/Example--d89a965.css\\");
+
     var _react = _interopRequireDefault(require(\\"react\\"));
 
-    var _reactStyleSystem = require(\\"react-style-system\\");
+    var _ssr = require(\\"react-style-system/ssr\\");
 
     var _polished = require(\\"polished\\");
 
-    var _jsxFileName = \\"/Users/ricokahler/workspace/react-style-system/src/common/Example.js\\";
-    const useStyles = (0, _reactStyleSystem.createStyles)(({
+    var _jsxFileName = \\"/Users/ricokahler/workspace/react-style-system/src/examples/Example.js\\";
+    const useStyles = (0, _ssr.createStyles)(({
       css,
       theme
     }) => ({
       root: [(0, _polished.readableColor)(theme.colors.brand), theme.colors.brand],
       title: [(0, _polished.darken)(0.1, theme.colors.brand)],
-      classNamePrefix: \\"Example--1e3a2647\\"
+      classNamePrefix: \\"Example--d89a965\\"
     }));
 
     function MyComponent(props) {

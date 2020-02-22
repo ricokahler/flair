@@ -1,4 +1,4 @@
-import { math } from 'polished';
+const { math } = require('polished');
 
 module.exports = {
   colors: {
