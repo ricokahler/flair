@@ -1,10 +1,9 @@
-import { transform } from '@babel/core';
 import fs from 'fs';
-import path from 'path';
+import { transform } from '@babel/core';
 import plugin from './plugin';
 
 it('removes the tagged template literals and replaces it with array expressions', async () => {
-  const filename = path.resolve(__dirname, './example.js');
+  const filename = require.resolve('src/common/Example');
   const code = (await fs.promises.readFile(filename)).toString();
 
   const result = transform(code, {
@@ -24,9 +23,13 @@ it('removes the tagged template literals and replaces it with array expressions'
     });
     exports.default = void 0;
 
+    var _react = _interopRequireDefault(require(\\"react\\"));
+
     var _reactStyleSystem = require(\\"react-style-system\\");
 
     var _polished = require(\\"polished\\");
+
+    function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
     const useStyles = (0, _reactStyleSystem.createStyles)(({
       css,
@@ -34,7 +37,7 @@ it('removes the tagged template literals and replaces it with array expressions'
     }) => ({
       root: [(0, _polished.readableColor)(theme.colors.brand), theme.colors.brand],
       title: [(0, _polished.darken)(0.1, theme.colors.brand)],
-      classNamePrefix: \\"example--32e5a416\\"
+      classNamePrefix: \\"Example--1e3a2647\\"
     }));
 
     function MyComponent(props) {
@@ -43,7 +46,7 @@ it('removes the tagged template literals and replaces it with array expressions'
         styles,
         title
       } = useStyles(props);
-      return React.createElement(Root, null, React.createElement(\\"h1\\", {
+      return _react.default.createElement(Root, null, _react.default.createElement(\\"h1\\", {
         className: styles.title
       }, title));
     }

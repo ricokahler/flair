@@ -1,6 +1,6 @@
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
-import createFileNameHash from './createFileNameHash';
+import createFileNameHash from 'src/common/createFileNameHash';
 
 interface Result {
   visitor: Visitor;

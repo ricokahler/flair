@@ -1,3 +1,4 @@
+import React from 'react';
 import { createStyles } from 'react-style-system';
 import { darken, readableColor } from 'polished';
 

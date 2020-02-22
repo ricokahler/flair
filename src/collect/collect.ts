@@ -1,12 +1,11 @@
+import fs from 'fs';
+import path from 'path';
 import { transform } from '@babel/core';
 import { stripIndent } from 'common-tags';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
-import nanoId from 'nanoid';
-import fs from 'fs';
-import path from 'path';
 import stylis from 'stylis';
-import createFileNameHash from './createFileNameHash';
+import createFileNameHash from 'src/common/createFileNameHash';
 
 function range(n: number) {
   return Array.from(Array(n)).map((_, i) => i);
@@ -128,8 +127,6 @@ function collectionPlugin(): { visitor: Visitor } {
 
           for (let i = 0; i < templateExpressionPairs.length; i += 1) {
             const {
-              // templateElement,
-              // expression,
               index,
               quasi,
             } = templateExpressionPairs[i];
@@ -152,17 +149,7 @@ async function collect(filename: string, opts?: any) {
 
   const result = transform(code, {
     filename: filename,
-    presets: [
-      [
-        '@babel/preset-env',
-        {
-          targets: {
-            node: true,
-          },
-        },
-      ],
-      '@babel/preset-react',
-    ],
+    presets: [['babel-preset-react-app', { typescript: true, flow: true }]],
     plugins: [
       [collectionPlugin, { ...opts, mockSourceValue: tempMockSourceFileName }],
     ],
