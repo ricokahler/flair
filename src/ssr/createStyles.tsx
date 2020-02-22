@@ -1,6 +1,5 @@
 import React, { forwardRef, useMemo } from 'react';
 import classNames from 'classnames';
-import nanoId from 'nanoid';
 import { ReadableColorPalette, ReactComponent, StyleProps } from 'src/types';
 import useTheme from 'src/common/useTheme';
 import createReadablePalette from 'src/common/createReadablePalette';
@@ -38,9 +37,6 @@ type StyleFnArgs = {
 function createStyles<Styles extends { [key: string]: string }>(
   stylesFn: (args: StyleFnArgs) => Styles,
 ) {
-  const sheetId = nanoId();
-  // const fileName = tryGetCurrentFilename();
-
   function useStyles<
     Props extends StyleProps<Styles>,
     ComponentType extends ReactComponent = 'div'
@@ -147,6 +143,7 @@ function createStyles<Styles extends { [key: string]: string }>(
           />
         );
       }) as React.ComponentType<GetComponentProps<ComponentType>>;
+      // TODO: audit this 👇
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [incomingClassName, incomingStyleHash, mergedStyles.root, Component]);
 

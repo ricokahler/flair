@@ -1,2 +1,4 @@
 node_modules
 examples/.react-style-system-cache
+coverage
+.DS_Store
