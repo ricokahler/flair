@@ -34,6 +34,25 @@ module.exports = [
   {
     input: 'src/index.ts',
     output: {
+      file: './build/ssr.js',
+      format: 'umd',
+      name: 'ReactStyleSystem',
+      sourcemap: true,
+      globals: {
+        react: 'React',
+        polished: 'polished',
+        invariant: 'invariant',
+        classnames: 'classNames',
+        nanoid: 'nanoId',
+        stylis: 'stylis',
+      },
+    },
+    plugins: [typescript(standaloneConfig)],
+    external: standaloneExternals,
+  },
+  {
+    input: 'src/index.ts',
+    output: {
       file: './build/bundle.umd.js',
       format: 'umd',
       name: 'ReactStyleSystem',
