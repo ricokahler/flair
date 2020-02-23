@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStyles } from 'react-style-system';
 import { darken, readableColor } from 'polished';
+import red from './submodule';
 
 const useStyles = createStyles(({ css, theme }) => ({
   root: css`
@@ -10,7 +11,7 @@ const useStyles = createStyles(({ css, theme }) => ({
   title: css`
     width: 50%;
 
-    color: ${darken(0.1, theme.colors.brand)};
+    color: ${darken(0.1, red)};
 
     ${theme.breakpoints.down(theme.breakpoints.mobile)} {
       width: 100%;

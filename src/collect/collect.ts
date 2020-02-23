@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _path from 'path';
 import { transform } from '@babel/core';
 import { stripIndent } from 'common-tags';
 import { Visitor } from '@babel/traverse';
@@ -57,6 +58,7 @@ function collectionPlugin(): { visitor: Visitor } {
       },
 
       Program(path, state: any) {
+        const { filename } = state.file.opts;
         const { importedName = 'createStyles' } = state.opts;
 
         const index = path.node.body.findIndex(statement => {
@@ -90,6 +92,20 @@ function collectionPlugin(): { visitor: Visitor } {
             t.variableDeclarator(t.identifier('createStyles'), null),
           ]),
         );
+
+        const relativeImportStatements = path.node.body
+          .map((statement, index) => ({ statement, index }))
+          .filter(({ statement }) => {
+            if (!t.isImportDeclaration(statement)) return false;
+            return statement.source.value.startsWith('.');
+          });
+
+        for (const { statement } of relativeImportStatements) {
+          if (!t.isImportDeclaration(statement)) continue;
+          const dirname = _path.dirname(filename);
+          const resolved = _path.resolve(dirname, statement.source.value);
+          statement.source.value = resolved;
+        }
       },
 
       CallExpression(path, state: any) {
@@ -179,6 +195,7 @@ function collect(filename: string, opts?: any) {
       ['@babel/preset-react'],
     ],
     plugins: [[collectionPlugin, { ...opts }]],
+    babelrc: false,
   });
 
   if (!result?.code) {
@@ -186,17 +203,21 @@ function collect(filename: string, opts?: any) {
   }
 
   const filenameHash = createFileNameHash(filename);
-  const { useStyles } = requireFromString(result.code);
+  try {
+    const { useStyles } = requireFromString(result.code);
 
-  const finalCss = Object.entries(useStyles)
-    .map(([key, value]) => {
-      const className = `.${filenameHash}-${key}`;
-      return stylis(className, value as string);
-    })
-    .join('\n')
-    .replace(/xX__(\w+)__(\d+)__Xx/g, `var(--${filenameHash}-$1-$2)`);
+    const finalCss = Object.entries(useStyles)
+      .map(([key, value]) => {
+        const className = `.${filenameHash}-${key}`;
+        return stylis(className, value as string);
+      })
+      .join('\n')
+      .replace(/xX__(\w+)__(\d+)__Xx/g, `var(--${filenameHash}-$1-$2)`);
 
-  return finalCss;
+    return finalCss;
+  } catch (e) {
+    throw e;
+  }
 }
 
 export default collect;

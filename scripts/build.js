@@ -43,10 +43,14 @@ async function main() {
   const collectContent = await fs.promises.readFile(
     path.join(__dirname, '../build/collect.js'),
   );
+  const ssrContent = await fs.promises.readFile(
+    path.join(__dirname, '../build/ssr.js'),
+  );
   const buildHash = md5(
     bundleContent.toString() +
       pluginContent.toString() +
-      collectContent.toString(),
+      collectContent.toString() +
+      ssrContent.toString(),
   ).substring(0, 9);
 
   console.log('writing build package.json…');
