@@ -24,7 +24,7 @@ module.exports = [
   {
     input: 'src/index.ts',
     output: {
-      file: './build/bundle.esm.js',
+      file: './dist/bundle.esm.js',
       format: 'esm',
       sourcemap: true,
     },
@@ -34,7 +34,7 @@ module.exports = [
   {
     input: 'src/index.ts',
     output: {
-      file: './build/ssr.js',
+      file: './dist/ssr.js',
       format: 'umd',
       name: 'ReactStyleSystem',
       sourcemap: true,
@@ -53,7 +53,7 @@ module.exports = [
   {
     input: 'src/index.ts',
     output: {
-      file: './build/bundle.umd.js',
+      file: './dist/bundle.umd.js',
       format: 'umd',
       name: 'ReactStyleSystem',
       sourcemap: true,
@@ -72,7 +72,7 @@ module.exports = [
   {
     input: 'src/babel/index.ts',
     output: {
-      file: './build/babel.js',
+      file: './dist/babel.js',
       format: 'cjs',
       sourcemap: true,
     },
@@ -82,7 +82,7 @@ module.exports = [
   {
     input: 'src/collect/index.ts',
     output: {
-      file: './build/collect.js',
+      file: './dist/collect.js',
       format: 'cjs',
       sourcemap: true,
     },

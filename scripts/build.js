@@ -19,7 +19,7 @@ function execute(command) {
 
 async function main() {
   console.log('cleaning…');
-  const rmRfResult = await execute('rm -rf build');
+  const rmRfResult = await execute('rm -rf dist');
   rmRfResult && console.log(rmRfResult);
 
   console.log('linting…');
@@ -35,16 +35,16 @@ async function main() {
   rollupResult && console.log(rollupResult);
 
   const bundleContent = await fs.promises.readFile(
-    path.join(__dirname, '../build/bundle.esm.js'),
+    path.join(__dirname, '../dist/bundle.esm.js'),
   );
   const pluginContent = await fs.promises.readFile(
-    path.join(__dirname, '../build/babel.js'),
+    path.join(__dirname, '../dist/babel.js'),
   );
   const collectContent = await fs.promises.readFile(
-    path.join(__dirname, '../build/collect.js'),
+    path.join(__dirname, '../dist/collect.js'),
   );
   const ssrContent = await fs.promises.readFile(
-    path.join(__dirname, '../build/ssr.js'),
+    path.join(__dirname, '../dist/ssr.js'),
   );
   const buildHash = md5(
     bundleContent.toString() +
@@ -76,7 +76,7 @@ async function main() {
   };
 
   await fs.promises.writeFile(
-    path.join(__dirname, '../build/package.json'),
+    path.join(__dirname, '../dist/package.json'),
     JSON.stringify(updatedPackageJson, null, 2),
   );
 

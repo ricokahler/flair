@@ -6,7 +6,7 @@
     "allowJs": true,
     "jsx": "react",
     "declaration": true,
-    "outDir": "./build/types/src",
+    "outDir": "./dist/types/src",
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
