@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo, useLayoutEffect } from 'react';
 import classNames from 'classnames';
 import nanoId from 'nanoid';
 import stylis from 'stylis';
-import { ReadableColorPalette, ReactComponent, StyleProps } from '../types';
+import { ReactComponent, StyleProps, StyleFnArgs } from '../types';
 import css from '../common/css';
 import useTheme from '../common/useTheme';
 import useColorContext from '../common/useColorContext';
@@ -25,13 +25,6 @@ function hashStyleObj(styleObj: { [key: string]: string | undefined }) {
 
 // preserve the object reference
 const empty = {};
-
-type StyleFnArgs<Theme = any> = {
-  css: typeof css;
-  color: ReadableColorPalette;
-  theme: Theme;
-  surface: string;
-};
 
 function createStyles<Styles extends { [key: string]: string }, Theme = any>(
   stylesFn: (args: StyleFnArgs<Theme>) => Styles,

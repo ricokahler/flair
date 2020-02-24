@@ -44,3 +44,17 @@ export interface ColorContextValue {
   color: string;
   surface: string;
 }
+
+export type StyleFnArgs<Theme = any> = {
+  css: (
+    strings: TemplateStringsArray,
+    ...values: (string | number)[]
+  ) => string;
+  color: ReadableColorPalette;
+  theme: Theme;
+  surface: string;
+};
+
+export type CreateStyles<Theme> = (
+  styleFn: (args: StyleFnArgs<Theme>) => any,
+) => ReturnType<typeof import('./standalone/createStyles').default>;
