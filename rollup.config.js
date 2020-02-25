@@ -1,93 +1,161 @@
-const typescript = require('@rollup/plugin-typescript');
+const babel = require('rollup-plugin-babel');
+const resolve = require('@rollup/plugin-node-resolve');
 
-const standaloneConfig = { target: 'es2015', module: 'esnext', jsx: 'react' };
-const standaloneExternals = [
-  'react',
-  'classnames',
-  'nanoid',
-  'stylis',
-  'invariant',
-  'polished',
+const extensions = ['.js', '.ts', '.tsx'];
+
+const nodePlugins = [
+  resolve({ extensions, preferBuiltins: true }),
+  babel({
+    babelrc: false,
+    presets: [
+      ['@babel/preset-env', { targets: { node: true } }],
+      '@babel/preset-typescript',
+    ],
+    extensions,
+    include: ['packages/**/*'],
+  }),
 ];
-const nodeConfig = { target: 'es2015', module: 'esnext', jsx: 'react' };
-const nodeExternals = [
-  'fs',
-  'path',
-  '@babel/types',
-  '@babel/core',
-  'common-tags',
-  'stylis',
-  'require-from-string',
-  'pirates',
+
+const umdPlugins = [
+  resolve({
+    extensions,
+  }),
+  babel({
+    babelrc: false,
+    presets: [
+      '@babel/preset-env',
+      '@babel/preset-react',
+      '@babel/preset-typescript',
+    ],
+    runtimeHelpers: true,
+    extensions,
+  }),
+];
+
+const esmPlugins = [
+  resolve({
+    extensions,
+  }),
+  babel({
+    babelrc: false,
+    presets: ['@babel/preset-react', '@babel/preset-typescript'],
+    runtimeHelpers: true,
+    extensions,
+  }),
+];
+
+const getExternal = name => [
+  ...Object.keys(require(`./packages/${name}/package.json`).dependencies || []),
+  ...Object.keys(
+    require(`./packages/${name}/package.json`).peerDependencies || [],
+  ),
 ];
 
 module.exports = [
+  // BABEL
   {
-    input: 'src/index.ts',
+    input: './packages/babel/src/index.ts',
     output: {
-      file: './dist/bundle.esm.js',
+      file: './dist/babel/index.js',
+      format: 'cjs',
+      sourcemap: true,
+    },
+    plugins: nodePlugins,
+    external: ['fs', 'path', ...getExternal('babel')],
+  },
+  // COLLECT
+  {
+    input: './packages/collect/src/index.ts',
+    output: {
+      file: './dist/collect/index.js',
+      format: 'cjs',
+      sourcemap: true,
+    },
+    plugins: nodePlugins,
+    external: ['fs', 'path', ...getExternal('collect')],
+  },
+  // CORE
+  {
+    input: './packages/core/src/index.ts',
+    output: {
+      file: './dist/core/index.js',
+      format: 'umd',
+      sourcemap: true,
+      name: 'ReactStyleSystem',
+      globals: {
+        react: 'React',
+        polished: 'polished',
+        invariant: 'invariant',
+      },
+    },
+    plugins: umdPlugins,
+    external: getExternal('core'),
+  },
+  {
+    input: './packages/core/src/index.ts',
+    output: {
+      file: './dist/core/index.esm.js',
       format: 'esm',
       sourcemap: true,
     },
-    plugins: [typescript(standaloneConfig)],
-    external: standaloneExternals,
+    plugins: esmPlugins,
+    external: getExternal('core'),
   },
+
+  // SSR
   {
-    input: 'src/index.ts',
+    input: './packages/ssr/src/index.ts',
     output: {
-      file: './dist/ssr.js',
+      file: './dist/ssr/index.js',
       format: 'umd',
-      name: 'ReactStyleSystem',
       sourcemap: true,
+      name: 'ReactStyleSystem',
       globals: {
         react: 'React',
-        polished: 'polished',
-        invariant: 'invariant',
+        '@react-style-system/core': 'ReactStylesSystem',
+        classnames: 'classNames',
+      },
+    },
+    plugins: umdPlugins,
+    external: getExternal('ssr'),
+  },
+  {
+    input: './packages/ssr/src/index.ts',
+    output: {
+      file: './dist/ssr/index.esm.js',
+      format: 'esm',
+      sourcemap: true,
+    },
+    plugins: esmPlugins,
+    external: getExternal('ssr'),
+  },
+  // STANDALONE
+  {
+    input: './packages/standalone/src/index.ts',
+    output: {
+      file: './dist/standalone/index.js',
+      format: 'umd',
+      sourcemap: true,
+      name: 'ReactStyleSystem',
+      globals: {
+        react: 'React',
+        '@react-style-system/core': 'ReactStylesSystem',
         classnames: 'classNames',
         nanoid: 'nanoId',
         stylis: 'stylis',
       },
     },
-    plugins: [typescript(standaloneConfig)],
-    external: standaloneExternals,
+    plugins: umdPlugins,
+    external: getExternal('standalone'),
   },
   {
-    input: 'src/index.ts',
+    input: './packages/standalone/src/index.ts',
     output: {
-      file: './dist/bundle.umd.js',
-      format: 'umd',
-      name: 'ReactStyleSystem',
-      sourcemap: true,
-      globals: {
-        react: 'React',
-        polished: 'polished',
-        invariant: 'invariant',
-        classnames: 'classNames',
-        nanoid: 'nanoId',
-        stylis: 'stylis',
-      },
-    },
-    plugins: [typescript(standaloneConfig)],
-    external: standaloneExternals,
-  },
-  {
-    input: 'src/babel/index.ts',
-    output: {
-      file: './dist/babel.js',
-      format: 'cjs',
+      file: './dist/standalone/index.esm.js',
+      format: 'esm',
       sourcemap: true,
     },
-    plugins: [typescript(nodeConfig)],
-    external: nodeExternals,
-  },
-  {
-    input: 'src/collect/index.ts',
-    output: {
-      file: './dist/collect.js',
-      format: 'cjs',
-      sourcemap: true,
-    },
-    plugins: [typescript(nodeConfig)],
-    external: nodeExternals,
+    plugins: esmPlugins,
+    external: getExternal('standalone'),
   },
 ];

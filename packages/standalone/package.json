@@ -1,0 +1,27 @@
+{
+  "name": "@react-style-system/standalone",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rico Kahler",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^16.9.22",
+    "react": "^16.12.0"
+  },
+  "dependencies": {
+    "@react-style-system/core": "file:../core",
+    "@types/classnames": "^2.2.9",
+    "@types/nanoid": "^2.1.0",
+    "classnames": "^2.2.6",
+    "nanoid": "^2.1.11",
+    "stylis": "^3.5.4"
+  },
+  "peerDependencies": {
+    "@types/react": "^16.9.22",
+    "react": "^16.12.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@react-style-system/collect",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rico Kahler",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/traverse": "^7.8.4",
+    "@babel/types": "^7.8.3",
+    "@types/common-tags": "^1.8.0",
+    "@types/node": "^13.7.4",
+    "@types/require-from-string": "^1.2.0",
+    "common-tags": "^1.8.0",
+    "pirates": "^4.0.1",
+    "require-from-string": "^2.0.2",
+    "stylis": "^3.5.4"
+  }
+}
