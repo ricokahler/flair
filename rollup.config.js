@@ -18,6 +18,7 @@ const nodeExternals = [
   'common-tags',
   'stylis',
   'require-from-string',
+  'pirates',
 ];
 
 module.exports = [

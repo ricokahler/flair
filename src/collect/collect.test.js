@@ -1,5 +1,4 @@
 import collect from './collect';
-require("@babel/register");
 
 it('collects the static css from a file', () => {
   const exampleFilename = require.resolve('../examples/Example');

@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { transform } from '@babel/core';
 import plugin from './plugin';
-require("@babel/register");
 
 it('removes the tagged template literals and replaces it with array expressions', async () => {
   const filename = require.resolve('../examples/Example');
