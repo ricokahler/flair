@@ -18,7 +18,7 @@ function hashString(str: string) {
   return hash;
 }
 
-function createFileNameHash(filename: string) {
+function createFilenameHash(filename: string) {
   const basename = path.basename(filename);
   const extension = path.extname(filename);
 
@@ -27,4 +27,4 @@ function createFileNameHash(filename: string) {
   return `${name}-${hashString(filename).toString(16)}`;
 }
 
-export default createFileNameHash;
+export default createFilenameHash;
