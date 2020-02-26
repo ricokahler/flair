@@ -1,32 +1,16 @@
 import collect from './collect';
 
 it('collects the static css from a file', () => {
-  const exampleFilename = require.resolve('../examples/Example');
-  const exampleStaticThemeFilename = require.resolve(
-    '../examples/exampleStaticTheme',
-  );
+  const exampleFilename = require.resolve('./Example');
+  const exampleStaticThemeFilename = require.resolve('./exampleTheme.ts');
 
   const css = collect(exampleFilename, {
     themePath: exampleStaticThemeFilename,
   });
 
   expect(css).toMatchInlineSnapshot(`
-    ".Example--d89a965-root{color:var(--Example--d89a965-root-0);background-color:var(--Example--d89a965-root-1);}
-    .Example--d89a965-title{width:50%;color:var(--Example--d89a965-title-0);}@media (max-width:374px){.Example--d89a965-title{width:100%;}}"
-  `);
-});
-
-it('works with other import names', () => {
-  const buttonFilename = require.resolve('../examples/Button');
-  const staticThemeFilename = require.resolve('../examples/exampleStaticTheme');
-
-  const css = collect(buttonFilename, {
-    themePath: staticThemeFilename,
-    importSourceValue: 'hacker-ui',
-  });
-
-  expect(css).toMatchInlineSnapshot(`
-    ".Button-c5bcd77-root{background-color:var(--Button-c5bcd77-root-0);color:var(--Button-c5bcd77-root-1);}
-    .Button-c5bcd77-thing{color:var(--Button-c5bcd77-thing-0);font-weight:bold;}"
+    ".Example-541d60eb-root{height:var(--Example-541d60eb-root-0);display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;overflow:hidden;color:var(--Example-541d60eb-root-1);}
+    .Example-541d60eb-title{font-size:32px;font-weight:bold;margin:0;-webkit-flex:0 0 auto;-ms-flex:0 0 auto;flex:0 0 auto;margin-bottom:var(--Example-541d60eb-title-0);color:var(--Example-541d60eb-title-1);}@media (max-width:768px){.Example-541d60eb-title{font-size:24px;font-weight:bold;margin:0;}}
+    .Example-541d60eb-body{font-size:16px;margin:0;line-height:1.5;-webkit-flex:1 1 auto;-ms-flex:1 1 auto;flex:1 1 auto;}"
   `);
 });

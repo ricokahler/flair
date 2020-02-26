@@ -2,9 +2,9 @@ import _path from 'path';
 import template from '@babel/template';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
-import createFilenameHash from './createFileNameHash';
+import createFilenameHash from './createFilenameHash';
 
-interface Options {
+export interface Options {
   importSourceValue?: string;
   importedName?: string;
   themePath: string;
@@ -80,6 +80,10 @@ function collectionPlugin(): {
 
               return true;
             });
+
+            if (path.node.specifiers.length <= 0) {
+              path.remove();
+            }
           },
         });
 
@@ -100,7 +104,8 @@ function collectionPlugin(): {
               return combined;
             }
 
-            const theme = require(${JSON.stringify(themePath)});
+            const themePath = ${JSON.stringify(themePath)};
+            const theme = require(themePath).default || require(themePath);
 
             // TODO: warn against executing these variables.
             // There should never really need to be a reason to execute these

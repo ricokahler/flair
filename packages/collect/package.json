@@ -20,5 +20,8 @@
     "pirates": "^4.0.1",
     "require-from-string": "^2.0.2",
     "stylis": "^3.5.4"
+  },
+  "devDependencies": {
+    "react-style-system": "file:../react-style-system"
   }
 }
