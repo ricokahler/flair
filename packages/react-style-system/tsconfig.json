@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../",
+    "paths": {
+      "@react-style-system/standalone": ["standalone/src/index.ts"]
+    }
+  }
+}

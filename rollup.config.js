@@ -158,4 +158,33 @@ module.exports = [
     plugins: esmPlugins,
     external: getExternal('standalone'),
   },
+  // ROOT
+  {
+    input: './packages/react-style-system/src/index.ts',
+    output: {
+      file: './dist/react-style-system/index.js',
+      format: 'umd',
+      sourcemap: true,
+      name: 'ReactStyleSystem',
+      globals: {
+        react: 'React',
+        '@react-style-system/standalone': 'ReactStylesSystem',
+        classnames: 'classNames',
+        nanoid: 'nanoId',
+        stylis: 'stylis',
+      },
+    },
+    plugins: umdPlugins,
+    external: ['@react-style-system/standalone'],
+  },
+  {
+    input: './packages/react-style-system/src/index.ts',
+    output: {
+      file: './dist/react-style-system/index.esm.js',
+      format: 'esm',
+      sourcemap: true,
+    },
+    plugins: esmPlugins,
+    external: ['@react-style-system/standalone'],
+  },
 ];
