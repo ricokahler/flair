@@ -44,7 +44,7 @@ function collectionPlugin(): {
         if (!themePath) throw new Error('themePath required');
 
         // Check if this file should be transformed
-        const foundCreateStyles = seek<boolean>(report =>
+        const foundCreateStyles = seek<boolean>(report => {
           path.traverse({
             ImportDeclaration(path) {
               const { specifiers, source } = path.node;
@@ -60,8 +60,10 @@ function collectionPlugin(): {
 
               report(true);
             },
-          }),
-        );
+          });
+
+          report(false);
+        });
         if (!foundCreateStyles) return;
 
         // Remove the `createStyles` import
