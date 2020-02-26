@@ -1,18 +1,40 @@
 import _path from 'path';
-import { stripIndent } from 'common-tags';
+import template from '@babel/template';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
+import createFilenameHash from './createFileNameHash';
+
+interface Options {
+  importSourceValue?: string;
+  importedName?: string;
+  themePath: string;
+}
 
 function range(n: number) {
   return Array.from(Array(n)).map((_, i) => i);
 }
 
-function collectionPlugin(): { visitor: Visitor } {
-  let foundCreateStyles = false;
+function seek<T>(traverse: (report: (t: T) => void) => void): T {
+  const notFound = Symbol();
+  let result: T | typeof notFound = notFound;
+  traverse(t => {
+    result = t;
+  });
+  if (result === notFound) throw new Error('nothing found');
+  return result;
+}
 
+function collectionPlugin(): {
+  visitor: Visitor<{
+    opts: Options;
+    file: { opts: { filename: string } };
+  }>;
+} {
   return {
     visitor: {
-      ImportDeclaration(path, state: any) {
+      Program(path, state) {
+        const { filename } = state.file.opts;
+        const filenameHash = createFilenameHash(filename);
         const {
           importSourceValue = 'react-style-system',
           importedName = 'createStyles',
@@ -21,20 +43,53 @@ function collectionPlugin(): { visitor: Visitor } {
 
         if (!themePath) throw new Error('themePath required');
 
-        const { specifiers, source } = path.node;
-        const hasCreateStyles = specifiers.some(node => {
-          if (!t.isImportSpecifier(node)) return false;
-          return node.imported.name === importedName;
+        // Check if this file should be transformed
+        const foundCreateStyles = seek<boolean>(report =>
+          path.traverse({
+            ImportDeclaration(path) {
+              const { specifiers, source } = path.node;
+
+              const hasPackageName = source.value === importSourceValue;
+              if (!hasPackageName) return;
+
+              const hasCreateStyles = specifiers.some(node => {
+                if (!t.isImportSpecifier(node)) return;
+                return node.imported.name === importedName;
+              });
+              if (!hasCreateStyles) return;
+
+              report(true);
+            },
+          }),
+        );
+        if (!foundCreateStyles) return;
+
+        // Remove the `createStyles` import
+        path.traverse({
+          ImportDeclaration(path) {
+            const { specifiers, source } = path.node;
+
+            const hasPackageName = source.value === importSourceValue;
+            if (!hasPackageName) return;
+
+            path.node.specifiers = specifiers.filter(node => {
+              if (!t.isImportSpecifier(node)) return true;
+
+              // return false in this case bc we're removing it
+              if (node.imported.name === importedName) return false;
+
+              return true;
+            });
+          },
         });
-        if (!hasCreateStyles) return;
 
-        const hasPackageName = source.value === importSourceValue;
-        if (!hasPackageName) return;
-
-        foundCreateStyles = true;
-
-        path.replaceWithSourceString(stripIndent`
-          createStyles = styleFn => {
+        // Add a `createStyles` statement to the top of the body
+        path.node.body.unshift(template.statement.ast`
+          /**
+           * This is a mocked version of \`createStyles\` made to extract the
+           * CSS written in it.
+           */
+          const createStyles = styleFn => {
             function css(strings, ...values) {
               let combined = '';
               for (let i = 0; i < strings.length; i += 1) {
@@ -46,19 +101,27 @@ function collectionPlugin(): { visitor: Visitor } {
             }
 
             const theme = require(${JSON.stringify(themePath)});
-            
-            return styleFn({ css, theme });
+
+            // TODO: warn against executing these variables.
+            // There should never really need to be a reason to execute these
+            // and have their static versions show up in the static CSS
+            const color = {
+              original: '#000',
+              decorative: '#000',
+              readable: '#000',
+              aa: '#000',
+              aaa: '#000',
+            };
+            const surface = '#fff';
+
+            return () => styleFn({ css, theme, color, surface });
           }
         `);
-      },
 
-      Program(path, state: any) {
-        const { filename } = state.file.opts;
-        const { importedName = 'createStyles' } = state.opts;
-
-        const index = path.node.body.findIndex(statement => {
-          if (!t.isVariableDeclaration(statement)) return false;
-          if (!statement.declarations.length) return false;
+        // Find the `useStyles` declaration and export it
+        path.node.body = path.node.body.map(statement => {
+          if (!t.isVariableDeclaration(statement)) return statement;
+          if (!statement.declarations.length) return statement;
 
           const isCreateStylesDeclaration = statement.declarations.some(
             declaration => {
@@ -70,104 +133,105 @@ function collectionPlugin(): { visitor: Visitor } {
               return true;
             },
           );
+          if (!isCreateStylesDeclaration) return statement;
 
-          return isCreateStylesDeclaration;
+          // if we get this far, then this is the createStyles declaration
+          // and we'll export it
+          return t.exportNamedDeclaration(statement);
         });
 
-        if (index === -1) return;
+        // Take all the relative file imports and make them absolute using the
+        // filename path
+        path.node.body = path.node.body.map(statement => {
+          if (!t.isImportDeclaration(statement)) return statement;
+          if (!statement.source.value.startsWith('.')) return statement;
 
-        const useStylesDeclaration = path.node.body[
-          index
-        ] as t.VariableDeclaration;
-
-        path.node.body[index] = t.exportNamedDeclaration(useStylesDeclaration);
-
-        path.node.body.unshift(
-          t.variableDeclaration('let', [
-            t.variableDeclarator(t.identifier('createStyles'), null),
-          ]),
-        );
-
-        const relativeImportStatements = path.node.body
-          .map((statement, index) => ({ statement, index }))
-          .filter(({ statement }) => {
-            if (!t.isImportDeclaration(statement)) return false;
-            return statement.source.value.startsWith('.');
-          });
-
-        for (const { statement } of relativeImportStatements) {
-          if (!t.isImportDeclaration(statement)) continue;
+          const { source, specifiers } = statement;
           const dirname = _path.dirname(filename);
-          const resolved = _path.resolve(dirname, statement.source.value);
-          statement.source.value = resolved;
-        }
-      },
+          const resolved = _path.resolve(dirname, source.value);
+          return t.importDeclaration(specifiers, t.stringLiteral(resolved));
+        });
 
-      CallExpression(path, state: any) {
-        const { importedName = 'createStyles' } = state.opts;
+        // Transform the body of the createStyles function
+        path.traverse({
+          CallExpression(path) {
+            const { callee, arguments: expressionArguments } = path.node;
 
-        if (!foundCreateStyles) return;
+            // Find the createStyles invocation
+            if (!t.isIdentifier(callee)) return;
+            if (callee.name !== importedName) return;
 
-        const { callee, arguments: expressionArguments } = path.node;
-        if (!t.isIdentifier(callee)) return;
-        if (callee.name !== importedName) return;
+            // ensure that the argument is a function
+            const [firstArgument] = expressionArguments;
+            if (
+              !t.isFunctionExpression(firstArgument) &&
+              !t.isArrowFunctionExpression(firstArgument)
+            ) {
+              return;
+            }
 
-        const [firstArgument] = expressionArguments;
+            const stylesObjectExpression = seek<t.ObjectExpression>(report => {
+              const { body } = firstArgument;
 
-        if (
-          !t.isFunctionExpression(firstArgument) &&
-          !t.isArrowFunctionExpression(firstArgument)
-        ) {
-          return;
-        }
+              if (t.isObjectExpression(body)) {
+                report(body);
+                return;
+              }
 
-        const { body } = firstArgument;
+              path.traverse({
+                ReturnStatement(path) {
+                  const { argument } = path.node;
 
-        let stylesObjectExpression!: t.ObjectExpression;
-        if (t.isObjectExpression(body)) {
-          stylesObjectExpression = body;
-        } else {
-          path.traverse({
-            ReturnStatement(path) {
-              const { argument } = path.node;
+                  if (!t.isObjectExpression(argument)) return;
+                  report(argument);
+                },
+              });
+            });
 
-              if (!t.isObjectExpression(argument)) return;
-              stylesObjectExpression = argument;
-            },
-          });
-        }
+            // Go through each property and replace it with strings that can be
+            // replaced with CSS variables
+            stylesObjectExpression.properties = stylesObjectExpression.properties.map(
+              property => {
+                if (!t.isObjectProperty(property)) return property;
 
-        for (const property of stylesObjectExpression.properties) {
-          if (!t.isObjectProperty(property)) return;
-          const { value, key } = property;
+                const { value, key } = property;
+                if (!t.isTaggedTemplateExpression(value)) return property;
 
-          if (!t.isTaggedTemplateExpression(value)) return;
-          const { tag, quasi } = value;
+                const { tag, quasi } = value;
+                if (!t.isIdentifier(tag)) return property;
+                if (tag.name !== 'css') return property;
 
-          if (!t.isIdentifier(tag)) return;
-          if (tag.name !== 'css') return;
+                const { quasis, expressions } = quasi;
 
-          const { quasis, expressions } = quasi;
+                let index = 0;
+                const replacedExpressions = range(expressions.length)
+                  .map(i => ({
+                    templateElement: quasis[i],
+                    expression: expressions[i],
+                  }))
+                  .map(({ templateElement, expression }, i) => {
+                    if (!templateElement.value.raw.trim().endsWith(':')) {
+                      return expression;
+                    }
 
-          const templateExpressionPairs = range(quasis.length)
-            .map(i => ({
-              quasi,
-              index: i,
-              templateElement: quasis[i],
-              expression: expressions[i] as t.Expression | undefined,
-            }))
-            .filter(({ templateElement }) =>
-              templateElement.value.raw.trim().endsWith(':'),
+                    const literal = t.stringLiteral(
+                      `var(--${filenameHash}-${key.name}-${index})`,
+                    );
+                    index += 1;
+                    return literal;
+                  });
+
+                return t.objectProperty(
+                  key,
+                  t.taggedTemplateExpression(
+                    tag,
+                    t.templateLiteral(quasis, replacedExpressions),
+                  ),
+                );
+              },
             );
-
-          for (let i = 0; i < templateExpressionPairs.length; i += 1) {
-            const { index, quasi } = templateExpressionPairs[i];
-
-            quasi.expressions[index] = t.stringLiteral(
-              `xX__${key.name}__${i}__Xx`,
-            );
-          }
-        }
+          },
+        });
       },
     },
   };
