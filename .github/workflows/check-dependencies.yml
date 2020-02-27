@@ -3,7 +3,7 @@ on:
   - pull_request
 
 jobs:
-  test:
+  check-dependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
