@@ -24,5 +24,5 @@ it('removes the tagged template literals and replaces it with array expressions'
     ],
   });
 
-  expect(result.code).toMatchSnapshot();
+  expect(result.code).toMatchInlineSnapshot();
 });

@@ -3,7 +3,7 @@ import * as babel from '@babel/core';
 import stylis from 'stylis';
 import requireFromString from 'require-from-string';
 import { addHook } from 'pirates';
-import createFilenameHash from './createFilenameHash';
+import { createFilenameHash } from '@react-style-system/common';
 import collectionPlugin, { Options } from './collectionPlugin';
 
 function collect(filename: string, opts: Options) {

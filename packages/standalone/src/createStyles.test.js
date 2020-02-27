@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { act, create } from 'react-test-renderer';
-import delay from 'delay';
-import DeferredPromise from '../common/DeferredPromise';
-import ThemeProvider from '../common/ThemeProvider';
-import ColorContextProvider from '../common/ColorContextProvider';
+import { ThemeProvider, ColorContextProvider } from '@react-style-system/core';
+import { DeferredPromise } from '@react-style-system/common';
 import createStyles from './createStyles';
 
 const theme = { colors: { brand: '#00f' } };
@@ -15,6 +13,8 @@ jest.mock('nanoid', () => () => {
   mockIndex += 1;
   return mockId;
 });
+
+const delay = () => new Promise(resolve => setTimeout(resolve, 0));
 
 it('returns colors, styles, and the root component', async () => {
   const stylesHandler = jest.fn();
@@ -169,7 +169,7 @@ test("the root node doesn't remount when classnames changes", async () => {
     useEffect(() => {
       (async () => {
         for (let i = 0; i < 3; i += 1) {
-          await delay(0);
+          await delay();
           setCount(count => count + 1);
         }
         done.resolve();
@@ -239,7 +239,7 @@ it('memoizes the Root component reference and the styles reference', async () =>
     useEffect(() => {
       (async () => {
         for (let i = 0; i < 3; i += 1) {
-          await delay(0);
+          await delay();
           setCount(count => count + 1);
         }
         done.resolve();
