@@ -44,7 +44,7 @@ it('removes the tagged template literals and replaces it with array expressions'
       root: [theme.block(5), (0, _submodule.default)()],
       title: [theme.space(1), theme.colors.brand],
       body: [],
-      classNamePrefix: \\"Example--496a32ce\\"
+      classNamePrefix: \\"ExampleFile--00000\\"
     }));"
   `);
 });

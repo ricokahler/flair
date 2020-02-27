@@ -96,8 +96,8 @@ it('transforms the given code so that useStyles is exported', () => {
       const danger = (0, _reactStyleSystem.createReadablePalette)(theme.colors.danger);
       return {
         root: css\`
-          color: \${\\"var(--Example--3d512064-root-0)\\"};
-          background-color: \${\\"var(--Example--3d512064-root-1)\\"};
+          color: \${\\"var(--ExampleFile--00000-root-0)\\"};
+          background-color: \${\\"var(--ExampleFile--00000-root-1)\\"};
           width: 50%;
 
           \${(0, _localModule.doThing)(theme.colors.brand)};
@@ -106,7 +106,7 @@ it('transforms the given code so that useStyles is exported', () => {
             width: 100%;
           }
 
-          margin: \${\\"var(--Example--3d512064-root-2)\\"};
+          margin: \${\\"var(--ExampleFile--00000-root-2)\\"};
         \`
       };
     });

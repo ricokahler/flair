@@ -170,7 +170,7 @@ function plugin(
         // this means we don't need any bundler integration for this thing to
         // work but it's kind of weird to see this kind of side-effect inside of
         // a babel plugin
-        if (!fs.existsSync(cssFilename)) {
+        if (!fs.existsSync(cacheDir)) {
           fs.mkdirSync(cacheDir);
         }
         fs.writeFileSync(cssFilename, css);
