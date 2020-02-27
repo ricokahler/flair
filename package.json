@@ -28,6 +28,7 @@
     "classnames": "^2.2.6",
     "common-tags": "^1.8.0",
     "invariant": "^2.2.4",
+    "jest": "^25.1.0",
     "nanoid": "^2.1.11",
     "pirates": "^4.0.1",
     "polished": "^3.4.4",
