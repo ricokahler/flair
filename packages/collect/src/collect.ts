@@ -33,6 +33,7 @@ function collect(filename: string, opts: Options) {
           ['@babel/preset-typescript'],
           ['@babel/preset-react'],
         ],
+        plugins: ['@babel/plugin-proposal-class-properties'],
         babelrc: false,
       });
 

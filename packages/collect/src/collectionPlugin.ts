@@ -2,6 +2,7 @@ import _path from 'path';
 import template from '@babel/template';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
+import seek from './seek';
 import createFilenameHash from './createFilenameHash';
 
 export interface Options {
@@ -12,16 +13,6 @@ export interface Options {
 
 function range(n: number) {
   return Array.from(Array(n)).map((_, i) => i);
-}
-
-function seek<T>(traverse: (report: (t: T) => void) => void): T {
-  const notFound = Symbol();
-  let result: T | typeof notFound = notFound;
-  traverse(t => {
-    result = t;
-  });
-  if (result === notFound) throw new Error('nothing found');
-  return result;
 }
 
 function collectionPlugin(): {
@@ -53,7 +44,7 @@ function collectionPlugin(): {
               if (!hasPackageName) return;
 
               const hasCreateStyles = specifiers.some(node => {
-                if (!t.isImportSpecifier(node)) return;
+                if (!t.isImportSpecifier(node)) return false;
                 return node.imported.name === importedName;
               });
               if (!hasCreateStyles) return;
@@ -182,7 +173,6 @@ function collectionPlugin(): {
 
               if (t.isObjectExpression(body)) {
                 report(body);
-                return;
               }
 
               path.traverse({

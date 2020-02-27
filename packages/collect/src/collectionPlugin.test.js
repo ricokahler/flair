@@ -69,7 +69,9 @@ it('transforms the given code so that useStyles is exported', () => {
         return combined;
       }
 
-      const theme = require(\\"/usr/theme/exampleTheme.js\\");
+      const themePath = \\"/usr/theme/exampleTheme.js\\";
+
+      const theme = require(themePath).default || require(themePath);
 
       const color = {
         original: '#000',
