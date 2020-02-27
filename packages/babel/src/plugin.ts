@@ -10,6 +10,7 @@ interface Options {
   importedName?: string;
   replacementImportSourceValue?: string;
   themePath: string;
+  cacheDir: string;
 }
 
 function range(n: number) {
@@ -34,8 +35,8 @@ function createArrayPropertyValueFromTemplateLiteral(quasi: t.TemplateLiteral) {
 }
 
 function plugin(
-  state: any,
-  opts: any,
+  _: any,
+  opts: Options,
 ): {
   visitor: Visitor<{ opts: Options; file: { opts: { filename: string } } }>;
 } {
@@ -169,6 +170,9 @@ function plugin(
         // this means we don't need any bundler integration for this thing to
         // work but it's kind of weird to see this kind of side-effect inside of
         // a babel plugin
+        if (!fs.existsSync(cssFilename)) {
+          fs.mkdirSync(cacheDir);
+        }
         fs.writeFileSync(cssFilename, css);
       },
     },
