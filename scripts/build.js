@@ -78,16 +78,16 @@ async function main() {
     const buildFiles = await fs.promises.readdir(
       path.resolve(__dirname, `../dist/${folder}`),
     );
-    const containsEsmBuild = buildFiles.includes('index.esm.js');
+    const containsEsmBuild = buildFiles.some(file => file.endsWith('.esm.js'));
 
     const packageJson = {
       name,
       version,
-      main: './index.js',
+      main: `./${folder}.js`,
       types: './src',
       ...(containsEsmBuild
         ? {
-            module: './index.esm.js',
+            module: `./${folder}.esm.js`,
           }
         : null),
       ...restOfTopLevelPackageJson,
