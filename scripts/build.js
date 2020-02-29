@@ -48,6 +48,7 @@ async function main() {
     scripts: _scripts,
     devDependencies: _devDependencies,
     peerDependencies: _peerDependencies,
+    name: _name,
     version: packageVersion,
     ...restOfTopLevelPackageJson
   } = topLevelPackageJson;
@@ -83,6 +84,7 @@ async function main() {
     const packageJson = {
       name,
       version,
+      ...restOfTopLevelPackageJson,
       main: './index.js',
       types: './src',
       ...(containsEsmBuild
@@ -90,7 +92,6 @@ async function main() {
             module: './index.esm.js',
           }
         : null),
-      ...restOfTopLevelPackageJson,
       dependencies: {
         ...siblingDependencies,
         ...dependencies,
