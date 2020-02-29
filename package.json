@@ -20,9 +20,10 @@
   "private": true,
   "scripts": {
     "test": "jest",
+    "lint": "eslint packages --ext .ts,.tsx,.js,.jsx",
     "check-dependencies": "node ./scripts/check-dependencies.js",
     "resolve-dependencies": "node ./scripts/resolve-dependencies.js",
-    "lint": "eslint packages --ext .ts,.tsx,.js,.jsx",
+    "publish": "node ./scripts/publish.js",
     "build": "node ./scripts/build.js"
   },
   "devDependencies": {
