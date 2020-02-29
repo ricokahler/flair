@@ -47,3 +47,23 @@ it('removes the tagged template literals and replaces it with array expressions'
     }));"
   `);
 });
+
+it('works the a different importSourceValue', async () => {
+  const filename = require.resolve('./Example2.js');
+  const code = (await fs.promises.readFile(filename)).toString();
+
+  transform(code, {
+    babelrc: false,
+    filename,
+    plugins: [
+      [
+        plugin,
+        {
+          themePath: require.resolve('./exampleTheme'),
+          cacheDir: path.resolve(__dirname, './__cacheDir__'),
+          importSourceValue: 'hacker-ui',
+        },
+      ],
+    ],
+  });
+});
