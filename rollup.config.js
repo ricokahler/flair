@@ -62,14 +62,14 @@ const getExternal = name => [
 module.exports = [
   // BABEL
   {
-    input: './packages/babel/src/index.ts',
+    input: './packages/babel-plugin-plugin/src/index.ts',
     output: {
-      file: './dist/babel/index.js',
+      file: './dist/babel-plugin-plugin/index.js',
       format: 'cjs',
       sourcemap: true,
     },
     plugins: nodePlugins,
-    external: ['fs', 'path', ...getExternal('babel')],
+    external: ['fs', 'path', ...getExternal('babel-plugin-plugin')],
   },
   // COLLECT
   {

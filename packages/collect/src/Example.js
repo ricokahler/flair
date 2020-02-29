@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStyles } from 'react-style-system';
 import getRed from './submodule';
+import Example2 from './Example2';
 
 const useStyles = createStyles(({ css, theme }) => ({
   root: css`
@@ -33,6 +34,7 @@ function Card(props) {
     <Root>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.body}>{description}</p>
+      <Example2 />
     </Root>
   );
 }
