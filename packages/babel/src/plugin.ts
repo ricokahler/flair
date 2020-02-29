@@ -18,6 +18,7 @@ function range(n: number) {
 }
 
 function createArrayPropertyValueFromTemplateLiteral(quasi: t.TemplateLiteral) {
+  console.log('touch');
   const { expressions, quasis } = quasi;
 
   const cssPropertyExpressions = range(expressions.length)
