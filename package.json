@@ -1,11 +1,30 @@
 {
   "name": "react-style-system",
+  "version": "0.0.0",
+  "author": {
+    "email": "ricokahler@me.com",
+    "name": "Rico Kahler",
+    "url": "https://github.com/ricokahler"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ricokahler/react-style-system.git"
+  },
+  "description": "a carefully thought-out system system for React components",
+  "keywords": [
+    "css",
+    "css-in-js",
+    "jss",
+    "linaria"
+  ],
+  "license": "MIT",
   "private": true,
   "scripts": {
     "test": "jest",
     "check-dependencies": "node ./scripts/check-dependencies.js",
     "resolve-dependencies": "node ./scripts/resolve-dependencies.js",
-    "lint": "eslint packages --ext .ts,.tsx,.js,.jsx"
+    "lint": "eslint packages --ext .ts,.tsx,.js,.jsx",
+    "build": "node ./scripts/build.js"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -38,6 +57,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "folder-hash": "^3.3.0",
     "invariant": "^2.2.4",
     "jest": "^25.1.0",
     "nanoid": "^2.1.11",
@@ -47,6 +67,7 @@
     "react": "^16.13.0",
     "react-test-renderer": "^16.13.0",
     "require-from-string": "^2.0.2",
+    "rollup": "^1.32.0",
     "rollup-plugin-babel": "^4.3.3",
     "semver": "^7.1.3",
     "stylis": "^3.5.4",

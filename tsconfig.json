@@ -9,6 +9,15 @@
     "module": "ES2015",
     "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node"
-  }
+    "moduleResolution": "Node",
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@react-style-system/*": ["packages/*/src/index.ts"]
+    }
+  },
+  "include": ["packages/**/*"],
+  "exclude": ["packages/**/*.test.js"]
 }

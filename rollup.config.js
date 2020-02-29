@@ -1,5 +1,6 @@
 const babel = require('rollup-plugin-babel');
 const resolve = require('@rollup/plugin-node-resolve');
+const { get } = require('lodash');
 
 const extensions = ['.js', '.ts', '.tsx'];
 
@@ -49,6 +50,13 @@ const getExternal = name => [
   ...Object.keys(
     require(`./packages/${name}/package.json`).peerDependencies || [],
   ),
+  ...Object.keys(
+    get(
+      require(`./packages/${name}/tsconfig.json`),
+      ['compilerOptions', 'paths'],
+      {},
+    ),
+  ),
 ];
 
 module.exports = [
@@ -73,6 +81,27 @@ module.exports = [
     },
     plugins: nodePlugins,
     external: ['fs', 'path', ...getExternal('collect')],
+  },
+  // COMMON
+  {
+    input: './packages/common/src/index.ts',
+    output: {
+      file: './dist/common/index.js',
+      format: 'cjs',
+      sourcemap: true,
+    },
+    plugins: nodePlugins,
+    external: ['fs', 'path', ...getExternal('common')],
+  },
+  {
+    input: './packages/common/src/index.ts',
+    output: {
+      file: './dist/common/index.esm.js',
+      format: 'esm',
+      sourcemap: true,
+    },
+    plugins: esmPlugins,
+    external: ['fs', 'path', ...getExternal('common')],
   },
   // CORE
   {

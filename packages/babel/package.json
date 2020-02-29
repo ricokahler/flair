@@ -1,15 +1,9 @@
 {
   "name": "@react-style-system/babel",
-  "version": "0.0.0",
-  "description": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Rico Kahler",
-  "license": "MIT",
   "dependencies": {
     "@babel/traverse": "^7.8.4",
     "@babel/types": "^7.8.3",
     "@types/node": "^13.7.4"
-  }
+  },
+  "private": true
 }

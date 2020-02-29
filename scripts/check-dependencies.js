@@ -25,15 +25,26 @@ async function checkDependencies() {
     }
 
     const packageJson = require(`${folderPath}/package.json`);
-    const { devDependencies, dependencies, peerDependencies } = packageJson;
+    const {
+      name,
+      devDependencies,
+      dependencies,
+      peerDependencies,
+    } = packageJson;
+
+    if (!name) {
+      throw new Error(`[${folderName}] did not have a name in package.json`);
+    }
+
+    if (!dependencies) {
+      throw new Error(`[${folderName}] did not have a dependencies object.`);
+    }
 
     if (devDependencies) {
       throw new Error(`[${folderName}] had devDependencies`);
     }
 
-    for (const [packageName, incomingVersion] of Object.entries(
-      dependencies || {},
-    )) {
+    for (const [packageName, incomingVersion] of Object.entries(dependencies)) {
       const expectedVersion = topLevelPackageJson.devDependencies[packageName];
       if (incomingVersion !== expectedVersion) {
         throw new Error(
