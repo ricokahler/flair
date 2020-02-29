@@ -3,7 +3,6 @@ import path from 'path';
 import { transform, traverse, parse } from '@babel/core';
 import generate from '@babel/generator';
 import { seek } from '@react-style-system/common';
-import * as t from '@babel/types';
 import plugin from './plugin';
 
 it('removes the tagged template literals and replaces it with array expressions', async () => {

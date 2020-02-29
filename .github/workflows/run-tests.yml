@@ -11,4 +11,5 @@ jobs:
         with:
           node-version: '12.x'
       - run: npm i
+      - run: npm run lint
       - run: npm t
