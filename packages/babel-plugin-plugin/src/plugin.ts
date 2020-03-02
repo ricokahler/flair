@@ -6,12 +6,13 @@ import collect from '@react-style-system/collect';
 import { seek, createFilenameHash } from '@react-style-system/common';
 
 interface Options {
-  importSourceValue?: string;
-  importedName?: string;
-  replacementImportSourceValue?: string;
   themePath: string;
   cacheDir: string;
 }
+
+const importSourceValue = 'react-style-system';
+const replacementImportSourceValue = '@react-style-system/ssr';
+const importedName = 'createStyles';
 
 function range(n: number) {
   return Array.from(Array(n)).map((_, i) => i);
@@ -45,11 +46,6 @@ function plugin(
   return {
     visitor: {
       Program(path, state) {
-        const {
-          importSourceValue = 'react-style-system',
-          importedName = 'createStyles',
-          replacementImportSourceValue = '@react-style-system/ssr',
-        } = state.opts;
         const { filename } = state.file.opts;
         const filenameHash = createFilenameHash(filename);
         const cssFilename = _path.join(cacheDir, `${filenameHash}.css`);

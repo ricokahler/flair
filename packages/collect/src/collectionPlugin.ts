@@ -5,10 +5,12 @@ import { Visitor } from '@babel/traverse';
 import { seek, createFilenameHash } from '@react-style-system/common';
 
 export interface Options {
-  importSourceValue?: string;
-  importedName?: string;
   themePath: string;
+  moduleResolver?: any;
 }
+
+const importSourceValue = 'react-style-system';
+const importedName = 'createStyles';
 
 function range(n: number) {
   return Array.from(Array(n)).map((_, i) => i);
@@ -25,11 +27,7 @@ function collectionPlugin(): {
       Program(path, state) {
         const { filename } = state.file.opts;
         const filenameHash = createFilenameHash(filename);
-        const {
-          importSourceValue = 'react-style-system',
-          importedName = 'createStyles',
-          themePath,
-        } = state.opts;
+        const { themePath } = state.opts;
 
         if (!themePath) throw new Error('themePath required');
 

@@ -24,21 +24,26 @@ function collect(filename: string, opts: Options) {
     }
   }
 
+  const babelConfig = (filename: string) => ({
+    filename,
+    presets: [
+      ['@babel/preset-env', { targets: { node: 'current' } }],
+      ['@babel/preset-typescript'],
+      ['@babel/preset-react'],
+    ],
+    plugins: [
+      '@babel/plugin-proposal-class-properties',
+      [collectionPlugin, opts],
+      ...(opts.moduleResolver
+        ? [['module-resolver', opts.moduleResolver]]
+        : []),
+    ],
+    babelrc: false,
+  });
+
   const revert = addHook(
     (code: string, filename: string) => {
-      const result = babel.transform(code, {
-        filename,
-        presets: [
-          ['@babel/preset-env', { targets: { node: 'current' } }],
-          ['@babel/preset-typescript'],
-          ['@babel/preset-react'],
-        ],
-        plugins: [
-          '@babel/plugin-proposal-class-properties',
-          [collectionPlugin, opts],
-        ],
-        babelrc: false,
-      });
+      const result = babel.transform(code, babelConfig(filename));
 
       if (!result?.code) {
         throw new Error('no transform');
@@ -51,16 +56,7 @@ function collect(filename: string, opts: Options) {
 
   try {
     const transformedCode = attempt(() => {
-      const result = babel.transform(code, {
-        filename,
-        presets: [
-          ['@babel/preset-env', { targets: { node: 'current' } }],
-          ['@babel/preset-typescript'],
-          ['@babel/preset-react'],
-        ],
-        plugins: [[collectionPlugin, opts]],
-        babelrc: false,
-      });
+      const result = babel.transform(code, babelConfig(filename));
 
       if (!result?.code) {
         throw new Error('no transform');
