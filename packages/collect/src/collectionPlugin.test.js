@@ -100,13 +100,13 @@ it('transforms the given code so that useStyles is exported', () => {
           background-color: \${\\"var(--Example--00000-root-1)\\"};
           width: 50%;
 
-          \${(0, _localModule.doThing)(theme.colors.brand)};
+          \${\\"var(--Example--00000-root-2)\\"};
 
           \${theme.down(theme.tablet)} {
             width: 100%;
           }
 
-          margin: \${\\"var(--Example--00000-root-2)\\"};
+          margin: \${\\"var(--Example--00000-root-3)\\"};
         \`
       };
     });

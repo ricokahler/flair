@@ -6,6 +6,11 @@ import { addHook } from 'pirates';
 import { createFilenameHash } from '@react-style-system/common';
 import collectionPlugin, { Options } from './collectionPlugin';
 
+stylis.set({
+  compress: true,
+  prefix: false,
+});
+
 function collect(filename: string, opts: Options) {
   const { themePath } = opts;
   const filenameHash = createFilenameHash(filename);

@@ -16,13 +16,14 @@ const useStyles = createStyles(({ css, theme }) => ({
     flex: 0 0 auto;
     margin-bottom: ${theme.space(1)};
     color: ${theme.colors.brand};
+    border-bottom: 1px solid ${theme.colors.brand};
 
     ${theme.down(theme.tablet)} {
       ${theme.fonts.h5};
     }
   `,
   body: css`
-    ${theme.fonts.body1}
+    ${theme.fonts.body1};
     flex: 1 1 auto;
   `,
 }));

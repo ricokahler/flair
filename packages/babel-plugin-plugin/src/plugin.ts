@@ -28,7 +28,7 @@ function createArrayPropertyValueFromTemplateLiteral(quasi: t.TemplateLiteral) {
     }))
     .filter(({ templateElement }) => {
       // must end with a `:` to signify that the expression is a CSS property
-      return templateElement.value.raw.trim().endsWith(':');
+      return templateElement.value.raw.includes(':');
     })
     .map(({ expression }) => expression);
 

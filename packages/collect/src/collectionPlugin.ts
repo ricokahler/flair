@@ -203,8 +203,8 @@ function collectionPlugin(): {
                     templateElement: quasis[i],
                     expression: expressions[i],
                   }))
-                  .map(({ templateElement, expression }, i) => {
-                    if (!templateElement.value.raw.trim().endsWith(':')) {
+                  .map(({ templateElement, expression }) => {
+                    if (!templateElement.value.raw.includes(':')) {
                       return expression;
                     }
 
