@@ -1,8 +1,8 @@
 {
   "name": "@react-style-system/ssr",
   "dependencies": {
-    "@types/classnames": "^2.2.9",
-    "classnames": "^2.2.6"
+    "@types/classnames": "2.2.10",
+    "classnames": "2.2.6"
   },
   "peerDependencies": {
     "@types/react": "^16.8.0",
