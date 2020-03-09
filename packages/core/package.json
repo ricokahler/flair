@@ -5,9 +5,9 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "@types/invariant": "^2.2.31",
-    "invariant": "^2.2.4",
-    "polished": "^3.4.4"
+    "@types/invariant": "2.2.31",
+    "invariant": "2.2.4",
+    "polished": "3.4.4"
   },
   "private": true
 }

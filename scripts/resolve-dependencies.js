@@ -113,11 +113,11 @@ async function resolveDependencies() {
   );
 
   const packageLockBefore = JSON.parse(
-    (await fs.promises.readFile(require.resolve('../package.json'))).toString(),
+    (await fs.promises.readFile(require.resolve('../package-lock.json'))).toString(),
   );
   await execute('npm i');
   const packageLockAfter = JSON.parse(
-    (await fs.promises.readFile(require.resolve('../package.json'))).toString(),
+    (await fs.promises.readFile(require.resolve('../package-lock.json'))).toString(),
   );
 
   if (!isEqual(packageLockBefore, packageLockAfter)) {

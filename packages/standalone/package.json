@@ -1,11 +1,11 @@
 {
   "name": "@react-style-system/standalone",
   "dependencies": {
-    "@types/classnames": "^2.2.9",
-    "@types/nanoid": "^2.1.0",
-    "classnames": "^2.2.6",
-    "nanoid": "^2.1.11",
-    "stylis": "^3.5.4"
+    "@types/classnames": "2.2.10",
+    "@types/nanoid": "2.1.0",
+    "classnames": "2.2.6",
+    "nanoid": "2.1.11",
+    "stylis": "3.5.4"
   },
   "peerDependencies": {
     "@types/react": "^16.8.0",
