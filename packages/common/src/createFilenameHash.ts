@@ -24,7 +24,7 @@ function createFilenameHash(filename: string) {
 
   const name = basename
     .substring(0, basename.length - extension.length)
-    .replace(/\w/g, '');
+    .replace(/\W/g, '');
 
   return `${name}-${hashString(filename).toString(16)}`;
 }
