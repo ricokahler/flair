@@ -14,23 +14,19 @@ const importSourceValue = 'react-style-system';
 const replacementImportSourceValue = '@react-style-system/ssr';
 const importedName = 'createStyles';
 
-function range(n: number) {
-  return Array.from(Array(n)).map((_, i) => i);
-}
-
 function createArrayPropertyValueFromTemplateLiteral(quasi: t.TemplateLiteral) {
-  const { expressions, quasis } = quasi;
+  const { expressions } = quasi;
 
-  const cssPropertyExpressions = range(expressions.length)
-    .map(i => ({
-      expression: expressions[i],
-      templateElement: quasis[i],
-    }))
-    .filter(({ templateElement }) => {
-      // must end with a `:` to signify that the expression is a CSS property
-      return templateElement.value.raw.includes(':');
-    })
-    .map(({ expression }) => expression);
+  const cssPropertyExpressions = expressions.filter(expression => {
+    if (
+      t.isCallExpression(expression) &&
+      t.isIdentifier(expression.callee) &&
+      expression.callee.name === 'staticVar'
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   return t.arrayExpression(cssPropertyExpressions);
 }

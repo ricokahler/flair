@@ -38,7 +38,8 @@ it('removes the tagged template literals and replaces it with array expressions'
   expect(useStylesCode).toMatchInlineSnapshot(`
     "const useStyles = (0, _ssr.createStyles)(({
       css,
-      theme
+      theme,
+      staticVar
     }) => ({
       root: [theme.block(5), (0, _submodule.default)()],
       title: [theme.space(1), theme.colors.brand],

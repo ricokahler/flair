@@ -2,7 +2,7 @@ import React from 'react';
 import { createStyles } from 'react-style-system';
 import getRed from './submodule';
 
-const useStyles = createStyles(({ css, theme }) => ({
+const useStyles = createStyles(({ css, theme, staticVar }) => ({
   root: css`
     height: ${theme.block(5)};
     display: flex;
@@ -11,17 +11,17 @@ const useStyles = createStyles(({ css, theme }) => ({
     color: ${getRed()};
   `,
   title: css`
-    ${theme.fonts.h4};
+    ${staticVar(theme.fonts.h4)};
     flex: 0 0 auto;
     margin-bottom: ${theme.space(1)};
     color: ${theme.colors.brand};
 
-    ${theme.down(theme.tablet)} {
-      ${theme.fonts.h5};
+    ${staticVar(theme.down(theme.tablet))} {
+      ${staticVar(theme.fonts.h5)};
     }
   `,
   body: css`
-    ${theme.fonts.body1}
+    ${staticVar(theme.fonts.body1)};
     flex: 1 1 auto;
   `,
 }));

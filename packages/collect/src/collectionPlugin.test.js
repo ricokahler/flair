@@ -8,7 +8,7 @@ it('transforms the given code so that useStyles is exported', () => {
     import { readableColor } from 'polished';
     import { doThing } from './localModule';
 
-    const useStyles = createStyles(({ css, theme }) => {
+    const useStyles = createStyles(({ css, theme, staticVar }) => {
       const danger = createReadablePalette(theme.colors.danger);
 
       return {
@@ -17,9 +17,9 @@ it('transforms the given code so that useStyles is exported', () => {
           background-color: \${readableColor(danger.readable)};
           width: 50%;
 
-          \${doThing(theme.colors.brand)};
+          \${staticVar(doThing(theme.colors.brand))};
 
-          \${theme.down(theme.tablet)} {
+          \${staticVar(theme.down(theme.tablet))} {
             width: 100%;
           }
 
@@ -81,17 +81,22 @@ it('transforms the given code so that useStyles is exported', () => {
         aaa: '#000'
       };
       const surface = '#fff';
+
+      const staticVar = t => t;
+
       return () => styleFn({
         css,
         theme,
         color,
-        surface
+        surface,
+        staticVar
       });
     };
 
     const useStyles = createStyles(({
       css,
-      theme
+      theme,
+      staticVar
     }) => {
       const danger = (0, _reactStyleSystem.createReadablePalette)(theme.colors.danger);
       return {
@@ -100,13 +105,13 @@ it('transforms the given code so that useStyles is exported', () => {
           background-color: \${\\"var(--Example--00000-root-1)\\"};
           width: 50%;
 
-          \${\\"var(--Example--00000-root-2)\\"};
+          \${staticVar((0, _localModule.doThing)(theme.colors.brand))};
 
-          \${theme.down(theme.tablet)} {
+          \${staticVar(theme.down(theme.tablet))} {
             width: 100%;
           }
 
-          margin: \${\\"var(--Example--00000-root-3)\\"};
+          margin: \${\\"var(--Example--00000-root-2)\\"};
         \`
       };
     });

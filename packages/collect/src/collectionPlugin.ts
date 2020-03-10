@@ -12,10 +12,6 @@ export interface Options {
 const importSourceValue = 'react-style-system';
 const importedName = 'createStyles';
 
-function range(n: number) {
-  return Array.from(Array(n)).map((_, i) => i);
-}
-
 function collectionPlugin(): {
   visitor: Visitor<{
     opts: Options;
@@ -109,7 +105,9 @@ function collectionPlugin(): {
             };
             const surface = '#fff';
 
-            return () => styleFn({ css, theme, color, surface });
+            const staticVar = t => t;
+
+            return () => styleFn({ css, theme, color, surface, staticVar });
           }
         `);
 
@@ -198,22 +196,21 @@ function collectionPlugin(): {
                 const { quasis, expressions } = quasi;
 
                 let index = 0;
-                const replacedExpressions = range(expressions.length)
-                  .map(i => ({
-                    templateElement: quasis[i],
-                    expression: expressions[i],
-                  }))
-                  .map(({ templateElement, expression }) => {
-                    if (!templateElement.value.raw.includes(':')) {
-                      return expression;
-                    }
+                const replacedExpressions = expressions.map(expression => {
+                  if (
+                    t.isCallExpression(expression) &&
+                    t.isIdentifier(expression.callee) &&
+                    expression.callee.name === 'staticVar'
+                  ) {
+                    return expression;
+                  }
 
-                    const literal = t.stringLiteral(
-                      `var(--${filenameHash}-${key.name}-${index})`,
-                    );
-                    index += 1;
-                    return literal;
-                  });
+                  const literal = t.stringLiteral(
+                    `var(--${filenameHash}-${key.name}-${index})`,
+                  );
+                  index += 1;
+                  return literal;
+                });
 
                 return t.objectProperty(
                   key,

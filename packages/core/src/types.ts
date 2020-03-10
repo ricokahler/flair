@@ -53,6 +53,7 @@ export type StyleFnArgs<Theme = any> = {
   color: ReadableColorPalette;
   theme: Theme;
   surface: string;
+  staticVar: (value: string) => string;
 };
 
 // TODO:

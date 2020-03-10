@@ -27,6 +27,8 @@ function hashStyleObj(styleObj: { [key: string]: string | undefined }) {
 // preserve the object reference
 const empty = {};
 
+const identity = <T extends any>(t: T) => t;
+
 function createStyles<Styles extends { [key: string]: string }, Theme = any>(
   stylesFn: (args: StyleFnArgs<Theme>) => Styles,
 ) {
@@ -62,6 +64,7 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
         color: createReadablePalette(color, surface),
         theme,
         surface,
+        staticVar: identity,
       });
 
       const { classNamePrefix, ...classNamesVariableValues } = variableObject;
