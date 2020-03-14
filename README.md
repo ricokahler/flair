@@ -43,7 +43,7 @@ function Component(props) {
 export default Component;
 ```
 
-This pattern rocks because it creates styles on a component level and it's simple for a parent component to override child styles. For example, in Material UI, a parent component can override `title` styles like so:
+This pattern is great because it creates styles on a component level and it's simple for a parent component to override child styles. For example, in Material UI, a parent component can override `title` styles like so:
 
 ```js
 // Parent.js
@@ -92,7 +92,7 @@ function Component() {
 
 ### 2. Embrace HTML semantics via `className`s
 
-Another issue I have with styled-components is the syntax (e.g. `styled.div`). This syntax abstracts away from HTML semantics and makes it challenging to use class names. Going back to Material UI again, their styling solution embraces class names and HTML semantics. Making it easy to use tools like [`classnames`](https://github.com/JedWatson/classnames) to conditionally apply CSS classnames.
+Another issue I have with styled-components is the syntax of `const Title = styled.div`. This syntax abstracts away from HTML semantics and makes it challenging to use class names. Going back to Material UI again, their styling solution embraces class names and HTML semantics. Making it easy to use tools like [`classnames`](https://github.com/JedWatson/classnames) to conditionally apply CSS classnames.
 
 ```js
 import React from 'react';
@@ -159,7 +159,7 @@ function Component() {
 }
 ```
 
-An issue I have with the above is that it becomes easy to forget that the `Title` component is an HTML `h1` tag (e.g., it's under a different name and the props are different now).
+The issue I have with the above is that it becomes easy to forget that the `Title` component is an HTML `h1` tag (e.g., it's under a different name and the props are different now).
 
 When you forget that HTML is HTML, you forget to do things like add `aria-label`s, linters have a harder time giving you HTML suggestions, concepts like class names become foreign, and you almost grow resentment towards using "raw" HTML elements. It's like the raw `button` element is ugly because it's not uppercase 🤷‍♀️
 
