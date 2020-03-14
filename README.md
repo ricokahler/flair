@@ -6,7 +6,7 @@
 
 <details>
   <summary>
-click to exapnd
+click to expand
 
 ## Why another CSS-in-JS lib?
 
@@ -18,9 +18,7 @@ Because there's no one lib that checks all the boxes. See below for an explanati
 
 ### 1. Component-centric semantics for styles
 
-If you've ever used Material UI or JSS, then you're familiar with this concept. In Material UI, you define styles using with `withStyles` or `makeStyles`. You pass into those function an object with style classes and it returns something that lets you inject styles into a component.
-
-e.g.
+If you used Material UI or JSS, then you're familiar with using `withStyles` or `makeStyles`. e.g.
 
 ```js
 // Component.js
@@ -45,9 +43,7 @@ function Component(props) {
 export default Component;
 ```
 
-What I like about this pattern is that it's clear that the styles you're writing are for a component and you can even have the integrate some styling APIs right into the component's API (i.e. its props).
-
-For example, in Material UI, a parent component can override `title` styles like so:
+This pattern rocks because it creates styles on a component level and it's simple for a parent component to override child styles. For example, in Material UI, a parent component can override `title` styles like so:
 
 ```js
 // Parent.js
@@ -96,7 +92,7 @@ function Component() {
 
 ### 2. Embrace HTML semantics via `className`s
 
-Another issue I have with styled-components like syntax (e.g. `styled.div`) is that it abstracts away HTML semantics and makes it uncomfortable to use class names. Going back to Material UI again, since their styling solution embraces class names and HTML semantics, it's easy to use tools like [`classnames`](https://github.com/JedWatson/classnames) to conditionally apply CSS classnames.
+Another issue I have with styled-components is the syntax (e.g. `styled.div`). This syntax abstracts away from HTML semantics and makes it challenging to use class names. Going back to Material UI again, their styling solution embraces class names and HTML semantics. Making it easy to use tools like [`classnames`](https://github.com/JedWatson/classnames) to conditionally apply CSS classnames.
 
 ```js
 import React from 'react';
@@ -139,7 +135,7 @@ function Component(props) {
 }
 ```
 
-It's possible to do the above with styled-components syntax however it requires passing props into the styled component. I find this uncomfortable because it adds to the API footprint of the styled component and further takes away from the raw HTML element.
+It's possible to do the above with styled-components syntax, however it requires passing props into the styled component. This is odd because it adds to the API footprint of the styled component and further takes away from the raw HTML element.
 
 ```js
 import React from 'react';
@@ -163,9 +159,9 @@ function Component() {
 }
 ```
 
-My issue with the above is that is it becomes easy to forget that the `Title` component is an HTML `h1` tag (e.g., it's under a different name and the props are different now).
+An issue I have with the above is that it becomes easy to forget that the `Title` component is an HTML `h1` tag (e.g., it's under a different name and the props are different now).
 
-When you forget that HTML is HTML, you forget to do things like add `aria-label`s, linters have a harder time giving you HTML suggestions, concepts like class names become foreign, and you almost grow resentment towards using a "raw" HTML elements. It's like the raw `button` element is ugly because it's not uppercase 🤷‍♀️
+When you forget that HTML is HTML, you forget to do things like add `aria-label`s, linters have a harder time giving you HTML suggestions, concepts like class names become foreign, and you almost grow resentment towards using "raw" HTML elements. It's like the raw `button` element is ugly because it's not uppercase 🤷‍♀️
 
 Anyway, embracing HTML makes it easier to embrace HTML semantic elements which is better for a11y and SEO.
 
@@ -178,9 +174,9 @@ This is where Material UI's styling solution falls short. I think it's better to
 
 ### 4. The ability to be define the color of a component dynamically, including derived states, in the context of a component
 
-This one is is a bit specific but important regarding the color system of Hacker UI so bare with me hear for a bit…
+This issue is a bit specific but important regarding the color system of [Hacker UI](https://hacker-ui.com/) so bare with me hear for a bit…
 
-If you take look at the styles for Material UI, you can see that they have styles for both the "primary" and "secondary" color form their theme, and besides the `primary` `secondary`, these styles are the same.
+If you take a look at the styles for Material UI, you can see that they have styles for both the "primary" and "secondary" color form their theme, and besides the `primary` `secondary`, these styles are the same.
 
 ```js
    /* Styles applied to the root element if `variant="contained"` and `color="primary"`. */
@@ -211,7 +207,7 @@ If you take look at the styles for Material UI, you can see that they have style
 
 [source](https://github.com/mui-org/material-ui/blob/f2d74e9144ffec1ba6a098528573c7dfb3957b48/packages/material-ui/src/Button/Button.js#L137-L160)
 
-So here's the goal: instead of having two or three related classes _just_ for colors, let's define a way to dynamically define one style class that works for all possible colors, and, let the user pass in the color via a prop.
+So here's the goal: instead of having two or three related classes _just_ for colors, let's define a way to dynamically define one style class that works for all possible colors, and let the user pass in the color via a prop.
 
 The end goal is to be able to write styles like this:
 
