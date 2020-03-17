@@ -64,14 +64,16 @@ export type GetComponentProps<
   ? JSX.IntrinsicElements[ComponentType]
   : any;
 
-export type UseStyles<T, ComponentType extends ReactComponent = 'div'> = (
-  props: StyleProps<T>,
+export type UseStyles<T, ComponentType extends ReactComponent = 'div'> = <
+  Props extends StyleProps<T>
+>(
+  props: Props,
   component?: ComponentType,
 ) => {
   Root: React.ComponentType<GetComponentProps<ComponentType>>;
   styles: { [P in keyof T]: string } & {
     cssVariableObject: { [key: string]: string };
   };
-};
+} & Omit<Props, keyof StyleProps<any>>;
 
 export type StylesObj = { [key: string]: string };
