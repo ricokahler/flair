@@ -4,24 +4,32 @@ import {
   ReactComponent,
   StyleProps,
   StyleFnArgs,
+  GetComponentProps,
+  UseStyles,
   css,
   useTheme,
   useColorContext,
   createReadablePalette,
 } from '@react-style-system/core';
 
-type GetComponentProps<
-  ComponentType extends ReactComponent
-> = ComponentType extends React.ComponentType<infer U>
-  ? U
-  : ComponentType extends keyof JSX.IntrinsicElements
-  ? JSX.IntrinsicElements[ComponentType]
-  : any;
+function hashStyleObj(
+  styleObj: { [key: string]: string | undefined } | null | undefined,
+) {
+  if (!styleObj) return '';
 
-function hashStyleObj(styleObj: { [key: string]: string | undefined }) {
   return Object.keys(styleObj)
     .map(key => `${key}_${styleObj[key]}`)
     .join('__|__');
+}
+
+function usePreserveReference<
+  T extends { [key: string]: string | undefined } | null | undefined
+>(styleObj: T): T {
+  return useMemo(
+    () => styleObj,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [hashStyleObj(styleObj)],
+  );
 }
 
 // preserve the object reference
@@ -40,7 +48,7 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
     component?: ComponentType,
   ): Omit<Props, 'surface' | 'color' | 'style' | 'styles' | 'className'> & {
     Root: React.ComponentType<GetComponentProps<ComponentType>>;
-    styles: Styles;
+    styles: Styles & { cssVariableObject: { [key: string]: string } };
   } {
     const theme = useTheme<Theme>();
     const colorContext = useColorContext();
@@ -49,13 +57,14 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
     const {
       color = defaultColor,
       surface = defaultSurfaceColor,
-      style: incomingStyle,
       className: incomingClassName,
-      styles: incomingStyles = empty as Styles,
+      style: _incomingStyle,
+      styles: _incomingStyles = empty as Styles,
       ...restOfProps
     } = props;
 
-    const incomingStyleHash = hashStyleObj(incomingStyles);
+    const incomingStyle = usePreserveReference(_incomingStyle as any);
+    const incomingStyles = usePreserveReference(_incomingStyles as any);
 
     // create a map of unprocessed styles
     const { cssVariableObject, classes, classNamePrefix } = useMemo(() => {
@@ -102,7 +111,7 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
     const mergedStyles = useMemo(() => {
       const thisStyleKeys = Object.keys(thisStyles) as Array<keyof Styles>;
 
-      return thisStyleKeys.reduce((merged, key) => {
+      const mergedStyles = thisStyleKeys.reduce((merged, key) => {
         const thisStyle = thisStyles[key];
         const incomingStyle = incomingStyles[key];
 
@@ -113,8 +122,9 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
 
         return merged;
       }, {} as Styles);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [thisStyles, incomingStyleHash]);
+
+      return { ...mergedStyles, cssVariableObject };
+    }, [thisStyles, cssVariableObject, incomingStyles]);
 
     const Component = (component || 'div') as React.ComponentType<any>;
 
@@ -139,9 +149,12 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
           />
         );
       }) as React.ComponentType<GetComponentProps<ComponentType>>;
-      // TODO: audit this 👇
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [incomingClassName, incomingStyleHash, mergedStyles.root, Component]);
+    }, [
+      mergedStyles.root,
+      incomingClassName,
+      incomingStyle,
+      cssVariableObject,
+    ]);
 
     return {
       Root,
@@ -149,6 +162,11 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
       ...restOfProps,
     };
   }
+
+  // This is a type-assertion so ensure that this type is compatible with the
+  // `UseStyles` type. TODO: may want to find a better way to enforce this
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  useStyles as UseStyles<any, any>;
 
   return useStyles;
 }

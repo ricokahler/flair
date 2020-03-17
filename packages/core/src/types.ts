@@ -56,7 +56,22 @@ export type StyleFnArgs<Theme = any> = {
   staticVar: (value: string) => string;
 };
 
-// TODO:
-// export type CreateStyles<Theme> = (
-//   styleFn: (args: StyleFnArgs<Theme>) => any,
-// ) => ReturnType<typeof import('./standalone/createStyles').default>;
+export type GetComponentProps<
+  ComponentType extends ReactComponent
+> = ComponentType extends React.ComponentType<infer U>
+  ? U
+  : ComponentType extends keyof JSX.IntrinsicElements
+  ? JSX.IntrinsicElements[ComponentType]
+  : any;
+
+export type UseStyles<T, ComponentType extends ReactComponent = 'div'> = (
+  props: StyleProps<T>,
+  component?: ComponentType,
+) => {
+  Root: React.ComponentType<GetComponentProps<ComponentType>>;
+  styles: { [P in keyof T]: string } & {
+    cssVariableObject: { [key: string]: string };
+  };
+};
+
+export type StylesObj = { [key: string]: string };

@@ -60,6 +60,7 @@ it('returns colors, styles, and the root component', async () => {
 
   expect(styles).toMatchInlineSnapshot(`
     Object {
+      "cssVariableObject": Object {},
       "root": "rss_root_id-0_id-1",
       "title": "rss_title_id-0_id-1",
     }
@@ -303,10 +304,11 @@ it('adds a style sheet to the DOM', async () => {
   });
 
   expect(styles).toMatchInlineSnapshot(`
-    Object {
-      "root": "rss_root_id-8_id-9",
-    }
-  `);
+Object {
+  "cssVariableObject": Object {},
+  "root": "rss_root_id-8_id-9",
+}
+`);
   const styleEls = Array.from(document.querySelectorAll('style'));
 
   const lastStyleEl = styleEls[styleEls.length - 1];
