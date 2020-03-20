@@ -1,11 +1,11 @@
 {
   "name": "@react-style-system/collect",
   "dependencies": {
-    "@babel/core": "7.8.7",
+    "@babel/core": "7.9.0",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/template": "7.8.6",
-    "@babel/traverse": "7.8.6",
-    "@babel/types": "7.8.7",
+    "@babel/traverse": "7.9.0",
+    "@babel/types": "7.9.0",
     "babel-plugin-module-resolver": "4.0.0",
     "@types/common-tags": "1.8.0",
     "@types/node": "13.9.2",
