@@ -2,7 +2,9 @@ import fs from 'fs';
 import _path from 'path';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
-import collect from '@react-style-system/collect';
+import collect, {
+  transformCssTemplateLiteral,
+} from '@react-style-system/collect';
 import { seek, createFilenameHash } from '@react-style-system/common';
 
 interface Options {
@@ -13,23 +15,6 @@ interface Options {
 const importSourceValue = 'react-style-system';
 const replacementImportSourceValue = '@react-style-system/ssr';
 const importedName = 'createStyles';
-
-function createArrayPropertyValueFromTemplateLiteral(quasi: t.TemplateLiteral) {
-  const { expressions } = quasi;
-
-  const cssPropertyExpressions = expressions.filter(expression => {
-    if (
-      t.isCallExpression(expression) &&
-      t.isIdentifier(expression.callee) &&
-      expression.callee.name === 'staticVar'
-    ) {
-      return false;
-    }
-    return true;
-  });
-
-  return t.arrayExpression(cssPropertyExpressions);
-}
 
 function plugin(
   _: any,
@@ -140,9 +125,26 @@ function plugin(
                 if (!t.isIdentifier(tag)) return property;
                 if (tag.name !== 'css') return property;
 
+                const transformedTemplateLiteral = transformCssTemplateLiteral(
+                  quasi,
+                );
+
+                const cssPropertyExpressions = transformedTemplateLiteral.expressions.filter(
+                  expression => {
+                    if (
+                      t.isCallExpression(expression) &&
+                      t.isIdentifier(expression.callee) &&
+                      expression.callee.name === 'staticVar'
+                    ) {
+                      return false;
+                    }
+                    return true;
+                  },
+                );
+
                 return t.objectProperty(
                   key,
-                  createArrayPropertyValueFromTemplateLiteral(quasi),
+                  t.arrayExpression(cssPropertyExpressions),
                 );
               },
             );

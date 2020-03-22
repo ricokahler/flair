@@ -2,26 +2,29 @@ import React from 'react';
 import { createStyles } from 'react-style-system';
 import getRed from './submodule';
 
-const useStyles = createStyles(({ css, theme, staticVar }) => ({
+const useStyles = createStyles(({ css, theme }) => ({
   root: css`
+    margin: ${theme.space(1)} ${theme.space(2)};
     height: ${theme.block(5)};
     display: flex;
     flex-direction: column;
+    transition: background-color ${theme.durations.standard},
+      border ${theme.durations.standard};
     overflow: hidden;
     color: ${getRed()};
   `,
   title: css`
-    ${staticVar(theme.fonts.h4)};
+    ${theme.fonts.h4};
     flex: 0 0 auto;
-    margin-bottom: ${theme.space(1)};
+    /* margin-bottom: calc(50vh - ${theme.space(2)}); */
     color: ${theme.colors.brand};
 
-    ${staticVar(theme.down(theme.tablet))} {
-      ${staticVar(theme.fonts.h5)};
+    ${theme.down(theme.tablet)} {
+      ${theme.fonts.h5};
     }
   `,
   body: css`
-    ${staticVar(theme.fonts.body1)};
+    border-bottom: 1px solid ${theme.colors.danger};
     flex: 1 1 auto;
   `,
 }));

@@ -8,18 +8,19 @@ it('transforms the given code so that useStyles is exported', () => {
     import { readableColor } from 'polished';
     import { doThing } from './localModule';
 
-    const useStyles = createStyles(({ css, theme, staticVar }) => {
+    const useStyles = createStyles(({ css, theme }) => {
       const danger = createReadablePalette(theme.colors.danger);
 
       return {
         root: css\`
+          padding: \${theme.space(0.75)} \${theme.space(1)};
           color: \${danger.readable};
           background-color: \${readableColor(danger.readable)};
           width: 50%;
 
-          \${staticVar(doThing(theme.colors.brand))};
+          \${doThing(theme.colors.brand)};
 
-          \${staticVar(theme.down(theme.tablet))} {
+          \${theme.down(theme.tablet)} {
             width: 100%;
           }
 
@@ -56,6 +57,8 @@ it('transforms the given code so that useStyles is exported', () => {
 
     var _localModule = require(\\"/usr/example/blah/localModule\\");
 
+    const staticVar = t => t;
+
     const createStyles = styleFn => {
       function css(strings, ...values) {
         let combined = '';
@@ -81,9 +84,6 @@ it('transforms the given code so that useStyles is exported', () => {
         aaa: '#000'
       };
       const surface = '#fff';
-
-      const staticVar = t => t;
-
       return () => styleFn({
         css,
         theme,
@@ -95,14 +95,14 @@ it('transforms the given code so that useStyles is exported', () => {
 
     const useStyles = createStyles(({
       css,
-      theme,
-      staticVar
+      theme
     }) => {
       const danger = (0, _reactStyleSystem.createReadablePalette)(theme.colors.danger);
       return {
         root: css\`
-          color: \${\\"var(--Example--00000-root-0)\\"};
-          background-color: \${\\"var(--Example--00000-root-1)\\"};
+          padding: \${\\"var(--Example--00000-root-0)\\"};
+          color: \${\\"var(--Example--00000-root-1)\\"};
+          background-color: \${\\"var(--Example--00000-root-2)\\"};
           width: 50%;
 
           \${staticVar((0, _localModule.doThing)(theme.colors.brand))};
@@ -111,7 +111,7 @@ it('transforms the given code so that useStyles is exported', () => {
             width: 100%;
           }
 
-          margin: \${\\"var(--Example--00000-root-2)\\"};
+          margin: \${\\"var(--Example--00000-root-3)\\"};
         \`
       };
     });

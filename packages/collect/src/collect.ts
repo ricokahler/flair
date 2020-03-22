@@ -61,7 +61,7 @@ function collect(filename: string, opts: Options) {
 
   try {
     const transformedCode = attempt(() => {
-      const result = babel.transform(code, babelConfig(filename));
+      const result = babel.transform(`require('@babel/polyfill');\n${code}`, babelConfig(filename));
 
       if (!result?.code) {
         throw new Error('no transform');

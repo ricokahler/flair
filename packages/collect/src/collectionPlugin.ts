@@ -3,6 +3,7 @@ import * as t from '@babel/types';
 import template from '@babel/template';
 import { Visitor } from '@babel/traverse';
 import { seek, createFilenameHash } from '@react-style-system/common';
+import transformCssTemplateLiteral from './transformCssTemplateLiteral';
 
 export interface Options {
   themePath: string;
@@ -105,11 +106,13 @@ function collectionPlugin(): {
             };
             const surface = '#fff';
 
-            const staticVar = t => t;
-
             return () => styleFn({ css, theme, color, surface, staticVar });
           }
         `);
+
+        path.node.body.unshift(
+          template.statement.ast`const staticVar = t => t;`,
+        );
 
         // Find the `useStyles` declaration and export it
         path.node.body = path.node.body.map(statement => {
@@ -193,32 +196,38 @@ function collectionPlugin(): {
                 if (!t.isIdentifier(tag)) return property;
                 if (tag.name !== 'css') return property;
 
-                const { quasis, expressions } = quasi;
+                const transformedQuasi = transformCssTemplateLiteral(quasi);
 
                 let index = 0;
-                const replacedExpressions = expressions.map(expression => {
-                  if (
-                    t.isCallExpression(expression) &&
-                    t.isIdentifier(expression.callee) &&
-                    expression.callee.name === 'staticVar'
-                  ) {
-                    return expression;
-                  }
+                const transformedExpressions = transformedQuasi.expressions.map(
+                  expression => {
+                    if (
+                      t.isCallExpression(expression) &&
+                      t.isIdentifier(expression.callee) &&
+                      expression.callee.name === 'staticVar'
+                    ) {
+                      return expression;
+                    }
 
-                  const literal = t.stringLiteral(
-                    `var(--${filenameHash}-${key.name}-${index})`,
-                  );
-                  index += 1;
-                  return literal;
-                });
+                    const ret = t.stringLiteral(
+                      `var(--${filenameHash}-${key.name}-${index})`,
+                    );
 
-                return t.objectProperty(
-                  key,
-                  t.taggedTemplateExpression(
-                    tag,
-                    t.templateLiteral(quasis, replacedExpressions),
+                    index += 1;
+
+                    return ret;
+                  },
+                );
+
+                const final = t.taggedTemplateExpression(
+                  tag,
+                  t.templateLiteral(
+                    transformedQuasi.quasis,
+                    transformedExpressions,
                   ),
                 );
+
+                return t.objectProperty(key, final);
               },
             );
           },
