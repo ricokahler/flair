@@ -3,7 +3,7 @@
   "dependencies": {
     "@babel/traverse": "7.9.0",
     "@babel/types": "7.9.0",
-    "@types/node": "13.9.2"
+    "@types/node": "13.9.3"
   },
   "private": true
 }
