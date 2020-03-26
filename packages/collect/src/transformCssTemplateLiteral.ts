@@ -1,5 +1,4 @@
 import * as t from '@babel/types';
-import requireFromString from 'require-from-string';
 import generate from '@babel/generator';
 
 const errorMessage =
@@ -53,9 +52,15 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
     ),
   );
 
-  const quasiQuotesCss: string = requireFromString(
-    `module.exports = ${quasiQuotesCssResult.code}`,
-  );
+
+  let quasiQuotesCss!: string;
+
+  // ===========================================================================
+  // TODO: is this a security risk?
+  // eslint-disable-next-line no-eval
+  eval(`quasiQuotesCss = ${quasiQuotesCssResult.code}`);
+  // ===========================================================================
+
   const propertyMatches = Array.from(quasiQuotesCss.matchAll(/:[^;:]*;/g));
 
   const quasiQuoteLocations = propertyMatches
@@ -120,9 +125,9 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
       if (!lastMatch) {
         throw new Error(`${errorMessage} code-3`);
       }
-      const lastIdk = str.substring(lastMatch.index! + lastMatch[0].length);
+      const last = str.substring(lastMatch.index! + lastMatch[0].length);
 
-      const pres = [...strParts.map(t => t.pre), lastIdk];
+      const pres = [...strParts.map(t => t.pre), last];
       const exps = strParts.map(t => t.expression);
 
       const revisedExpression = t.templateLiteral(
