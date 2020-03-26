@@ -94,16 +94,17 @@ it('removes the tagged template literals and replaces it with array expressions'
 
   // TODO: remove empty arrays (e.g. `body` is an empty array)
   expect(useStylesCode).toMatchInlineSnapshot(`
-"const useStyles = (0, _ssr.createStyles)(({
-  css,
-  theme
-}) => ({
-  root: [\`\${theme.space(1)} \${theme.space(2)}\`, \`\${theme.block(5)}\`, \`\${theme.durations.standard},\`, \`\${(0, _submodule.default)()}\`],
-  title: [\`\${theme.space(2)})\`, \`\${theme.colors.brand}\`],
-  body: [\`\${theme.colors.danger}\`],
-  classNamePrefix: \\"Example--00000\\"
-}));"
-`);
+    "const useStyles = (0, _ssr.createStyles)(({
+      css,
+      theme
+    }) => ({
+      root: [\`\${theme.space(1)} \${theme.space(2)}\`, \`\${theme.block(5)}\`, \`background-color \${theme.durations.standard},
+          border \${theme.durations.standard}\`, \`\${(0, _submodule.default)()}\`],
+      title: [\`calc(50vh - \${theme.space(2)})\`, \`\${theme.colors.brand}\`],
+      body: [\`1px solid \${theme.colors.danger}\`],
+      classNamePrefix: \\"Example--00000\\"
+    }));"
+  `);
 
   const css = collect(filename, {
     themePath: require.resolve('./exampleTheme'),
@@ -120,7 +121,7 @@ it('removes the tagged template literals and replaces it with array expressions'
   height: var(--Example--00000-root-1);
   display: flex;
   flex-direction: column;
-  transition: background-color var(--Example--00000-root-2) border 250ms;
+  transition: var(--Example--00000-root-2);
   overflow: hidden;
   color: var(--Example--00000-root-3);
 }
@@ -139,7 +140,7 @@ it('removes the tagged template literals and replaces it with array expressions'
   }
 }
 .Example--00000-body {
-  border-bottom: 1px solid var(--Example--00000-body-0);
+  border-bottom: var(--Example--00000-body-0);
   flex: 1 1 auto;
 }
 "

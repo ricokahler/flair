@@ -56,7 +56,7 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
   const quasiQuotesCss: string = requireFromString(
     `module.exports = ${quasiQuotesCssResult.code}`,
   );
-  const propertyMatches = Array.from(quasiQuotesCss.matchAll(/:\s*[^;]*\s*;/g));
+  const propertyMatches = Array.from(quasiQuotesCss.matchAll(/:[^;:]*;/g));
 
   const quasiQuoteLocations = propertyMatches
     // only grab the properties that are quasi quoted
@@ -64,9 +64,13 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
     // calculate the start and end for each property match
     .map(match => {
       const property = match[0];
-      const propertyMatch = /\S*xX__.*__Xx[^;]?/.exec(property)!;
-      const start = match.index! + propertyMatch!.index;
-      const end = start + propertyMatch[0].length;
+      const propertyMatch = /(:\s*)(.*xX__[^;:]*__Xx.*)\s*;/.exec(property);
+      if (!propertyMatch) {
+        throw new Error(`${errorMessage} code-1`);
+      }
+      const matchIndex = propertyMatch[1].length;
+      const start = match.index! + matchIndex;
+      const end = start + propertyMatch[2].length; // minus 1 to remove semi
 
       return { start, end };
     });

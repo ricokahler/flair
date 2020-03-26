@@ -41,8 +41,8 @@ it('takes in a CSS template literal and wraps non-CSS property expressions in `s
       flex: 0 0 auto;
       margin-bottom: \${\`-\${theme.space(1)}\`};
       color: \${\`\${theme.colors.brand}\`};
-      transition: background-color \${\`\${theme.durations.standard},\`}
-        border \${staticVar(theme.durations.standard)};
+      transition: \${\`background-color \${theme.durations.standard},
+        border \${theme.durations.standard}\`};
       border-bottom: \${\`-\${theme.space(1)} solid \${theme.colors.brand}\`};
       background: \${\`\${staticVar(transparentize(0.5, 'black'))}\`};
 
@@ -216,5 +216,10 @@ test('multiline CSS property', () => {
   const result = transformCssTemplateLiteral(templateLiteral);
 
   const { code: outputCode } = generate(result);
-  expect(outputCode.includes('staticVar')).toBe(false);
+  expect(outputCode).toMatchInlineSnapshot(`
+"\`
+    transition: \${\`background-color \${theme.durations.standard},
+      border \${theme.durations.standard}\`};
+  \`"
+`);
 });
