@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../",
+    "paths": {
+      "@react-style-system/standalone": ["standalone/src/index.ts"],
+      "@react-style-system/ssr": ["ssr/src/index.ts"],
+      "@react-style-system/core": ["ssr/core/index.ts"],
+      "@react-style-system/babel-plugin-plugin": [
+        "ssr/babel-plugin-plugin/index.ts"
+      ]
+    }
+  }
+}

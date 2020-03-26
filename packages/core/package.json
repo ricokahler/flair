@@ -1,0 +1,13 @@
+{
+  "name": "@react-style-system/core",
+  "peerDependencies": {
+    "@types/react": "^16.8.0",
+    "react": "^16.8.0"
+  },
+  "dependencies": {
+    "@types/invariant": "2.2.31",
+    "invariant": "2.2.4",
+    "polished": "3.5.1"
+  },
+  "private": true
+}

@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "module": "ES2015",
+    "outDir": "./dist",
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Node",
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@react-style-system/*": ["packages/*/src/index.ts"]
+    }
+  },
+  "include": ["packages/**/*"],
+  "exclude": ["packages/**/*.test.js"]
+}

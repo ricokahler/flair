@@ -1,0 +1,9 @@
+{
+  "name": "@react-style-system/babel-plugin-plugin",
+  "dependencies": {
+    "@babel/traverse": "7.9.0",
+    "@babel/types": "7.9.0",
+    "@types/node": "13.9.4"
+  },
+  "private": true
+}

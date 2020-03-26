@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": "../",
+    "paths": {
+      "@react-style-system/common": ["common/src/index.ts"]
+    }
+  }
+}
