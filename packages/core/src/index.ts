@@ -6,4 +6,6 @@ export { default as ThemeProvider } from './ThemeProvider';
 export { default as useColorContext } from './useColorContext';
 export { default as useTheme } from './useTheme';
 export { default as css } from './css';
+export { default as getContrast } from './getContrast';
+export { default as getLuminance } from './getLuminance';
 export * from './types';

@@ -5,9 +5,7 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "@types/invariant": "2.2.31",
-    "invariant": "2.2.4",
-    "polished": "3.5.1"
+    "@ricokahler/parse-to-rgba": "0.1.0"
   },
   "private": true
 }
