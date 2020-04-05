@@ -113,8 +113,6 @@ module.exports = [
       name: 'ReactStyleSystem',
       globals: {
         react: 'React',
-        polished: 'polished',
-        invariant: 'invariant',
       },
     },
     plugins: umdPlugins,

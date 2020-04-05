@@ -1,4 +1,6 @@
-import { getContrast, readableColor } from 'polished';
+import readableColor from './readableColor';
+import getContrast from './getContrast';
+
 import { ReadableColorPalette } from './types';
 
 const hasBadDecorativeContrast = (a: string, b: string) =>
