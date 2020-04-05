@@ -110,7 +110,7 @@ module.exports = [
       file: './dist/core/index.js',
       format: 'umd',
       sourcemap: true,
-      name: 'reactStyleSystem',
+      name: 'ReactStyleSystem',
       globals: {
         react: 'React',
         polished: 'polished',
@@ -130,7 +130,6 @@ module.exports = [
     plugins: esmPlugins,
     external: getExternal('core'),
   },
-
   // SSR
   {
     input: './packages/ssr/src/index.ts',
@@ -138,10 +137,10 @@ module.exports = [
       file: './dist/ssr/index.js',
       format: 'umd',
       sourcemap: true,
-      name: 'reactStyleSystem',
+      name: 'ReactStyleSystem',
       globals: {
         react: 'React',
-        '@react-style-system/core': 'reactStyleSystem',
+        '@react-style-system/core': 'ReactStyleSystem',
         classnames: 'classNames',
       },
     },
@@ -165,10 +164,10 @@ module.exports = [
       file: './dist/standalone/index.js',
       format: 'umd',
       sourcemap: true,
-      name: 'reactStyleSystem',
+      name: 'ReactStyleSystem',
       globals: {
         react: 'React',
-        '@react-style-system/core': 'reactStyleSystem',
+        '@react-style-system/core': 'ReactStyleSystem',
         classnames: 'classNames',
         nanoid: 'nanoId',
         stylis: 'stylis',
@@ -194,10 +193,10 @@ module.exports = [
       file: './dist/react-style-system/index.js',
       format: 'umd',
       sourcemap: true,
-      name: 'reactStyleSystem',
+      name: 'ReactStyleSystem',
       globals: {
         react: 'React',
-        '@react-style-system/standalone': 'ReactStylesSystem',
+        '@react-style-system/standalone': 'ReactStyleSystem',
         classnames: 'classNames',
         nanoid: 'nanoId',
         stylis: 'stylis',
