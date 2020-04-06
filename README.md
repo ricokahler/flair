@@ -1,265 +1,335 @@
 # React style system
 
-> a carefully thought-out system system for React components
+> a lean, component-centric style system for React components
 
-# ⚠️ this is all a work-in-progress, check back soon!
+## ⚠️ This library is still in heavy development with the best features coming soon
 
-<details>
-  <summary>
-click to expand
+Watch releases to be notified for new features.
 
-## Why another CSS-in-JS lib?
+## Features
 
-Click here to read more.
+- 🎣 hooks API
+- 👩‍🎨 theming
+- 🎨 advanced color context features including **dark mode**
+- 🧩 composable styles by default
+- 📦 small size, [6.6kB](https://bundlephobia.com/result?p=react-style-system)
 
-  </summary>
+**Features coming soon**
 
-Because there's no one lib that checks all the boxes. See below for an explanation.
+The best feature of this library are still in development!
 
-### 1. Component-centric semantics for styles
+- static CSS via [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (similar to Linaria)
+- SSR support
+- much smaller bundle [1.9kB](https://bundlephobia.com/result?p=@react-style-system/ssr)
+- performance improvements
 
-If you used Material UI or JSS, then you're familiar with using `withStyles` or `makeStyles`. e.g.
+## Installation
 
-```js
-// Component.js
+### Install
+
+```
+npm i --save react-style-system
+```
+
+### Create your theme
+
+`react-style-system`'s theming works by providing an object to all your components. This theme object should contain values to keep your app's styles consistent.
+
+[See theming usage for more info](#theming-usage)
+
+```ts
+// /src/theme.ts (or /src/theme.js)
+
+const theme = {
+  // see theming usage for more info
+  colors: {
+    brand: 'palevioletred',
+    accent: 'peachpuff',
+    surface: 'white',
+  },
+};
+
+export default theme;
+```
+
+### Provider installation
+
+```tsx
+// index.ts (or index.js)
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { render } from 'react-dom';
+import theme from './theme';
+import App from './App';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    /* styles go here */
-  },
-  title: {
-    /* styles go here */
-  },
+const container = document.querySelector('#root');
+
+render(
+  <ThemeProvider theme={theme}>
+    <ColorContextProvider
+      color={theme.colors.accent}
+      surface={theme.colors.surface}
+    >
+      <App />
+    </ColorContextProvider>
+  </ThemeProvider>,
+  container,
+);
+```
+
+### Add type augments
+
+If you're using typescript or an editor that supports the typescript language service (VS Code), you'll need to add one more file to configure the types and intellisense.
+
+Place this file at the root of your project.
+
+```tsx
+// /arguments.d.ts
+import {
+  StyleFnArgs,
+  ReactComponent,
+  StyleProps,
+  GetComponentProps,
+} from 'react-style-system';
+
+declare module 'react-style-system' {
+  // this should import your theme
+  type Theme = typeof import('./src/theme').default;
+
+  // provides an override type that includes the type for your theme
+  export function useTheme(): Theme;
+
+  // provides an override type that includes the type for your theme
+  export function createStyles<Styles, ComponentType extends ReactComponent>(
+    stylesFn: (args: StyleFnArgs<Theme>) => Styles,
+  ): <Props extends StyleProps<Styles>>(
+    props: Props,
+    component?: ComponentType,
+  ) => {
+    Root: React.ComponentType<GetComponentProps<ComponentType>>;
+    styles: { [P in keyof Styles]: string } & {
+      cssVariableObject: { [key: string]: string };
+    };
+  } & Omit<Props, keyof StyleProps<any>>;
+}
+```
+
+### VS Code Extension
+
+If you're using VSCode, we recommend installing the `vscode-styled-components` by [the styled-components team](https://github.com/styled-components/vscode-styled-components). This will add syntax highlighting for our style of CSS-in-JS.
+
+### CodeSandbox
+
+[See CodeSandbox for a full setup](#todo)
+
+## Usage
+
+### Basic Usage
+
+```tsx
+// Card.tsx
+import React from 'react';
+import { createStyles, PropsFromStyles } from 'react-style-system';
+
+// `react-style-system` works by creating a hook that intercepts your props
+const useStyles = createStyles(({ css, theme }) => ({
+  // here you return an object of styles
+  root: css`
+    padding: 1rem;
+    background-color: peachpuff;
+    /* you can pull in your theme like so */
+    border-right: 5px solid ${theme.colors.brand};
+  `,
+  title: css`
+    font-weight: bold;
+    font-weight: 3rem;
+    margin-bottom: 1rem;
+  `,
+  description: css`
+    line-height: 1.5;
+  `,
 }));
 
-function Component(props) {
-  const classes = useStyles(props);
-  // classes.root…
-  // classes.title…
+// write your props like normal, just add the `extends…` like so:
+interface Props extends PropsFromStyles<typeof useStyles> {
+  title: React.ReactNode;
+  description: React.ReactNode;
 }
 
-export default Component;
-```
-
-This pattern is great because it creates styles on a component level and it's simple for a parent component to override child styles. For example, in Material UI, a parent component can override `title` styles like so:
-
-```js
-// Parent.js
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import Component from './Component';
-
-const useStyles = makeStyles(theme => ({
-  root: {/* ... */},
-  modifedTitle: {/* ... */},
-});
-
-function Parent(props) {
-  const classes = useStyles(props);
+function Card(props: Props) {
+  // `useStyles` intercepts your props
+  const {
+    // `Root` and `styles` are props added via `useStyles
+    Root,
+    styles,
+    // `title` and `description` are the props you defined
+    title,
+    description,
+  } = useStyles(props);
 
   return (
-    <>
-      <Component classes={{ title: classes.modifiedTitle }} />
-    </>
+    // the `root` class is automatically applied to the `Root` component
+    <Root>
+      {/* the styles that come back are class names */}
+      <h2 className={styles.title}>{title}</h2>
+      <p className={styles.description}>{description}</p>
+    </Root>
   );
 }
+
+export default Card;
 ```
 
-In contrast, emotion and styled-components do not share these component rooted semantics. With emotion/styled-components, you're always writing styles for an individual element, not a component.
+[See in CodeSandbox](#todo)
 
-```js
+### Composability
+
+`react-style-system`'s styles are composable by default. This means that every style you write can be augmented and style props like `className` and `style` are automatically propagated to the subject `Root` component.
+
+Building from the example above:
+
+```tsx
+// Grid.tsx
 import React from 'react';
-import styled from 'styled-component';
+import { createStyles, PropsFromStyles } from 'react-style-system';
+import Cart from './Card';
 
-// no component semantics
-const Title = styled.div`
-  font-weight: bold;
-`;
-
-// no built-in ability to override the `Title` class
-function Component() {
-  return (
-    <>
-      {/* ... */}
-      <Title />
-      {/* ... */}
-    </>
-  );
-}
-```
-
-### 2. Embrace HTML semantics via `className`s
-
-Another issue I have with styled-components is the syntax of `const Title = styled.div`. This syntax abstracts away from HTML semantics and makes it challenging to use class names. Going back to Material UI again, their styling solution embraces class names and HTML semantics. Making it easy to use tools like [`classnames`](https://github.com/JedWatson/classnames) to conditionally apply CSS classnames.
-
-```js
-import React from 'react';
-import classNames from 'classnames';
-import { makeStyles } from '@material-ui/core';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    /* ... */
-  },
-  button: {
-    /* ... */
-  },
-  title: {
-    /* ... */
-  },
-  highlighted: {
-    /* ... */
-  },
+const useStyles = createStyles(({ css }) => ({
+  root: css`
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+  `,
+  card: css`
+    /* TODO */
+    box-shadow: 0 0 1px 1px;
+  `,
+  titleUnderlined: css`
+    text-decoration: underlined;
+  `,
 }));
 
-function Component(props) {
-  const classes = useStyles(props);
-  const [on, setOn] = useState(false);
+interface Props extends PropsFromStyles<typeof useStyles> {}
 
-  return (
-    <>
-      <button className={classes.button} onClick={() => setOn(!on)}>
-        toggle color
-      </button>
-      <h1
-        className={classNames(classes.title, {
-          [classes.highlighted]: on,
-        })}
-      >
-        color
-      </h1>
-    </>
-  );
-}
-```
-
-It's possible to do the above with styled-components syntax, however it requires passing props into the styled component. This is odd because it adds to the API footprint of the styled component and further takes away from the raw HTML element.
-
-```js
-import React from 'react';
-import styled from 'styled-components';
-
-const Root = styled.div`/* ... */`;
-// note: if you were using typescript, you'd have to write different props for this one now
-const Title = styled.h1`
-  color: ${props => props.highlighted ? 'red' : 'black'}
-`;
-
-function Component() {
-  const [on, setOn] = useState(false);
+function Grid(props: Props) {
+  const { Root, styles } = useStyles(props);
 
   return (
     <Root>
-      <button onClick={() => setOn(!on)}>toggle color</button>
-      <Title highlighted={on}>
+      <Card
+        // augments the `root` class in the Card
+        className={styles.card}
+        styles={{
+          // augments the `title` class in `Card`
+          title: styles.titleUnderlined,
+        }}
+        title="react-style-system"
+        description={
+          <>a lean, component-centric style system for React components</>
+        }
+      />
+
+      <Card
+        className={styles.card}
+        title="emotion"
+        description={
+          <>CSS-in-JS library designed for high performance style composition</>
+        }
+      />
+
+      <Card
+        className={styles.card}
+        title="styled-components"
+        description={
+          <>
+            Visual primitives for the component age. Use the best bits of ES6
+            and CSS to style your apps without stress
+          </>
+        }
+      />
     </Root>
   );
 }
 ```
 
-The issue I have with the above is that it becomes easy to forget that the `Title` component is an HTML `h1` tag (e.g., it's under a different name and the props are different now).
+### Dynamic Coloring
 
-When you forget that HTML is HTML, you forget to do things like add `aria-label`s, linters have a harder time giving you HTML suggestions, concepts like class names become foreign, and you almost grow resentment towards using "raw" HTML elements. It's like the raw `button` element is ugly because it's not uppercase 🤷‍♀️
+Every component styled with `react-style-system` supports dynamic coloring. This means you can pass the prop `color` to it and use that color when defining styles.
 
-Anyway, embracing HTML makes it easier to embrace HTML semantic elements which is better for a11y and SEO.
-
-### 3. Write actual CSS
-
-This is where Material UI's styling solution falls short. I think it's better to write actual CSS (vs the JS object styling syntax) because:
-
-1. It allows for better DX by being able to copy and paste CSS examples directly into code.
-2. It allows for editors to "switch modes". Specifically, another language service could be booted up inside of `css` tags allowing for autocomplete without using the TypeScript language service. There are many plugins/extensions for many different editors that do this.
-
-### 4. The ability to be define the color of a component dynamically, including derived states, in the context of a component
-
-This issue is a bit specific but important regarding the color system of [Hacker UI](https://hacker-ui.com/) so bare with me hear for a bit…
-
-If you take a look at the styles for Material UI, you can see that they have styles for both the "primary" and "secondary" color form their theme, and besides the `primary` `secondary`, these styles are the same.
-
-```js
-   /* Styles applied to the root element if `variant="contained"` and `color="primary"`. */
-  containedPrimary: {
-    color: theme.palette.primary.contrastText,
-    backgroundColor: theme.palette.primary.main,
-    '&:hover': {
-      backgroundColor: theme.palette.primary.dark,
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: theme.palette.primary.main,
-      },
-    },
-  },
-  /* Styles applied to the root element if `variant="contained"` and `color="secondary"`. */
-  containedSecondary: {
-    color: theme.palette.secondary.contrastText,
-    backgroundColor: theme.palette.secondary.main,
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.dark,
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: theme.palette.secondary.main,
-      },
-    },
-  },
+```tsx
+// passing the color prop
+<Button color="red">My Red Button</Button>
 ```
 
-[source](https://github.com/mui-org/material-ui/blob/f2d74e9144ffec1ba6a098528573c7dfb3957b48/packages/material-ui/src/Button/Button.js#L137-L160)
-
-So here's the goal: instead of having two or three related classes _just_ for colors, let's define a way to dynamically define one style class that works for all possible colors, and let the user pass in the color via a prop.
-
-The end goal is to be able to write styles like this:
-
-```js
-// Button.js
+```tsx
+// using the color prop to define styles
 import React from 'react';
-import { createStyles } from 'hacker-ui';
-import { readableColor } from 'polished';
+import { createStyles, PropsFromStyles } from 'react-style-system';
 
-const useStyles = createStyles(color => ({
-  button: css`
-    background-color: ${color},
-    color: ${readableColor(color)};
+// the `color` prop comes through here  👇
+const useStyles = createStyles(({ css, color, surface }) => ({
+  //                                           👆
+  // additionally, there is another prop `surface` that hold the color of the
+  // surface this component is on currently. this is usually black for dark mode
+  // and white for non-dark modes
+  root: css`
+    border: 1px solid ${color.decorative};
+    background-color: ${surface};
+    color: ${color.readable};
   `,
 }));
 
-function Button(props) {
+interface Props extends PropsFromStyles<typeof useStyles> {
+  children: React.ReactNode;
+  onClick: () => void;
+}
+
+function Button(props: Props) {
+  const { Root, children, onClick } = useStyles(props, 'children');
+  return <Root onClick={onClick}>{children}</Root>;
+}
+
+export default Button;
+```
+
+[See this demo in CodeSandbox](https://codesandbox.io/s/dynamic-coloring-7dr3n)
+
+### Color System Usage
+
+`react-style-system` ships with a simple yet robust color system. You can wrap your components in `ColorContextProvider`s to give your components context for what color they should expect. This works well when supporting dark mode.
+
+[See here for a full demo of color context.](https://codesandbox.io/s/nested-color-system-demo-qphro)
+
+### Theming Usage
+
+Theming is also pretty simple in `react-style-system`. Wrap your App in a `ThemeProvider` and give that `ThemeProvider` a theme object. That `theme` object will be available for use in all your components. See the [provider installation](#provider-installation) for more info.
+
+After your wrap in a theme provider, you can access the theme via the args in `createStyles`:
+
+```tsx
+//                                     👇👇👇
+const useStyles = createStyles(({ css, theme }) => ({
+  root: css`
+    color: ${theme.colors.brand};
+  `,
+}));
+```
+
+And inside your component, you can access the theme via `useTheme()`
+
+```tsx
+function Component(props: Props) {
+  const theme = useTheme();
+
   // ...
 }
 ```
 
-```js
-// Parent.js
-import Button from './Button';
+## Enabling the experimental babel plugin
 
-function Parent() {
-  return (
-    <>
-      {/* allow the user to pass in any color, the component styles will handle it. */}
-      <Button color="red" />
-      <Button color="blue" />
-    </>
-  );
-}
-```
+Docs coming soon…
 
-### 5. The ability to ship mostly static CSS (for better SSR/SEO/performance)
+Contact me at [ricokahler@me.com](mailto:ricokahler@me.com) if you're interesting in hearing more.
 
-If you're not familiar, linaria is a zero runtime CSS-in-JS solution that solved a lot of performance issues because it extracts all the styles you write with it to static CSS.
+## Why another CSS-in-JS lib?
 
-> Note: by ability tho ship static CSS, I mean that there is little to no javascript code related to styling left in the final bundle. This is different than SSR support.
->
-> For example, Material UI/JSS supports server-side rendered CSS but the resulting JavaScript still includes the code to create the styles. Because the JS still includes the styling code, it will slow down [TTI](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive).
-
-</details>
-
-### Feature comparison
-
-|                              | Material UI/JSS | styled-components | emotion | linaria | react-style-system |
-| ---------------------------- | --------------- | ----------------- | ------- | ------- | ------------------ |
-| Component-centric semantics  | ✅              | 🔴                | 🔴      | 🔴      | ✅                 |
-| Embraces HTML                | ✅              | 🔴                | ✅      | ✅      | ✅                 |
-| Actual CSS                   | 🔴              | ✅                | ✅      | ✅      | ✅                 |
-| Dynamic component coloring   | 🔴              | 🔴                | 🔴      | ✅      | ✅                 |
-| Ship (near) zero-runtime CSS | 🔴              | 🔴                | 🔴      | ✅      | ✅                 |
+[See here for more info](./why-another-css-in-js-lib.md)
