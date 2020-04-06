@@ -51,12 +51,10 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
     styles: Styles & { cssVariableObject: { [key: string]: string } };
   } {
     const theme = useTheme<Theme>();
-    const colorContext = useColorContext();
-    const defaultColor = colorContext.color;
-    const defaultSurfaceColor = colorContext.surface;
+    const { color, surface } = useColorContext(props);
     const {
-      color = defaultColor,
-      surface = defaultSurfaceColor,
+      color: _color,
+      surface: _surface,
       className: incomingClassName,
       style: _incomingStyle,
       styles: _incomingStyles = empty as Styles,
@@ -70,7 +68,7 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
     const { cssVariableObject, classes, classNamePrefix } = useMemo(() => {
       const variableObject: any = stylesFn({
         css,
-        color: createReadablePalette(color, surface),
+        color,
         theme,
         surface,
         staticVar: identity,
