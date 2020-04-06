@@ -16,9 +16,7 @@ Watch releases to be notified for new features.
 
 **Features coming soon**
 
-The best features of this library are still in development!
-
-Coming soon:
+The best features of this library are still in development! Coming soon:
 
 - static CSS via [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (similar to Linaria)
 - SSR support
@@ -298,7 +296,7 @@ export default Button;
 
 Theming in `react-style-system` is implemented as one object that will be available to all your components in the app. You can use this object to store values to make your app's styles consistent. We recommend referring to [`material-ui`'s theme object](https://material-ui.com/customization/default-theme/#default-theme) for idea on how to define your own theme's shape.
 
-Wrap your App in a `ThemeProvider` and give that `ThemeProvider` a theme object. That `theme` object will be available for use in all your components. See the [provider installation](#provider-installation) for more info.
+Wrap your App in a `ThemeProvider` and give that `ThemeProvider` a theme object.
 
 After your wrap in a theme provider, you can access the theme via the args in `createStyles`:
 
@@ -311,7 +309,7 @@ const useStyles = createStyles(({ css, theme }) => ({
 }));
 ```
 
-And inside your component, you can access the theme via `useTheme()`
+And inside your component. You can access the theme via `useTheme()`
 
 ```tsx
 function Component(props: Props) {
