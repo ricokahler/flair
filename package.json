@@ -50,7 +50,7 @@
     "@ricokahler/parse-to-rgba": "0.1.0",
     "babel-eslint": "10.1.0",
     "babel-plugin-module-resolver": "4.0.0",
-    "canvas": "^2.6.1",
+    "canvas": "2.6.1",
     "classnames": "2.2.6",
     "common-tags": "1.8.0",
     "eslint": "6.8.0",
