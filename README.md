@@ -16,7 +16,9 @@ Watch releases to be notified for new features.
 
 **Features coming soon**
 
-The best feature of this library are still in development!
+The best features of this library are still in development!
+
+Coming soon:
 
 - static CSS via [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (similar to Linaria)
 - SSR support
@@ -117,10 +119,6 @@ declare module 'react-style-system' {
 
 If you're using VSCode, we recommend installing the `vscode-styled-components` by [the styled-components team](https://github.com/styled-components/vscode-styled-components). This will add syntax highlighting for our style of CSS-in-JS.
 
-### CodeSandbox
-
-[See CodeSandbox for a full setup](#todo)
-
 ## Usage
 
 ### Basic Usage
@@ -179,8 +177,6 @@ function Card(props: Props) {
 export default Card;
 ```
 
-[See in CodeSandbox](#todo)
-
 ### Composability
 
 `react-style-system`'s styles are composable by default. This means that every style you write can be augmented and style props like `className` and `style` are automatically propagated to the subject `Root` component.
@@ -200,8 +196,7 @@ const useStyles = createStyles(({ css }) => ({
     grid-template-columns: repeat(3, 1fr);
   `,
   card: css`
-    /* TODO */
-    box-shadow: 0 0 1px 1px;
+    box-shadow: 0 0 45px 0 rgba(0, 0, 0, 0.2);
   `,
   titleUnderlined: css`
     text-decoration: underlined;
@@ -301,7 +296,9 @@ export default Button;
 
 ### Theming Usage
 
-Theming is also pretty simple in `react-style-system`. Wrap your App in a `ThemeProvider` and give that `ThemeProvider` a theme object. That `theme` object will be available for use in all your components. See the [provider installation](#provider-installation) for more info.
+Theming in `react-style-system` is implemented as one object that will be available to all your components in the app. You can use this object to store values to make your app's styles consistent. We recommend referring to [`material-ui`'s theme object](https://material-ui.com/customization/default-theme/#default-theme) for idea on how to define your own theme's shape.
+
+Wrap your App in a `ThemeProvider` and give that `ThemeProvider` a theme object. That `theme` object will be available for use in all your components. See the [provider installation](#provider-installation) for more info.
 
 After your wrap in a theme provider, you can access the theme via the args in `createStyles`:
 
