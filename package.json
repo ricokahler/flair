@@ -62,7 +62,7 @@
     "eslint-plugin-react-hooks": "3.0.0",
     "folder-hash": "3.3.0",
     "hacker-ui": "0.1.0-alpha.1",
-    "jest": "25.1.0",
+    "jest": "25.2.7",
     "jsdom": "16.2.2",
     "nanoid": "2.1.11",
     "pirates": "4.0.1",
