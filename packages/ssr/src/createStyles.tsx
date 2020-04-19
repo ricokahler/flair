@@ -9,7 +9,6 @@ import {
   css,
   useTheme,
   useColorContext,
-  createReadablePalette,
 } from '@react-style-system/core';
 
 function hashStyleObj(

@@ -10,7 +10,6 @@ import {
   css,
   useTheme,
   useColorContext,
-  createReadablePalette,
 } from '@react-style-system/core';
 import tryGetCurrentFilename from './tryGetCurrentFilename';
 
