@@ -113,6 +113,7 @@ module.exports = [
       name: 'ReactStyleSystem',
       globals: {
         react: 'React',
+        '@ricokahler/parse-to-rgba': 'parseToRgba',
       },
     },
     plugins: umdPlugins,

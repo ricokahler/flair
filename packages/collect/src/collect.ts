@@ -3,6 +3,7 @@ import * as babel from '@babel/core';
 import stylis from 'stylis';
 import { addHook } from 'pirates';
 import { createFilenameHash } from '@react-style-system/common';
+import requireFromString from 'require-from-string';
 import collectionPlugin, { Options } from './collectionPlugin';
 
 stylis.set({
@@ -75,14 +76,8 @@ function collect(filename: string, opts: Options) {
     const pullStyles = attempt(
       () =>
         (() => {
-          let exports = {} as any;
-          // ===================================================================
-          // TODO: is this a security risk?
-          // eslint-disable-next-line no-eval
-          eval(transformedCode);
-          // ===================================================================
-
-          return exports.useStyles;
+          const result = requireFromString(transformedCode);
+          return result.useStyles;
         })(),
       'Failed to execute file',
     );

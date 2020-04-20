@@ -3,7 +3,7 @@ import path from 'path';
 import { transform, traverse, parse } from '@babel/core';
 import generate from '@babel/generator';
 import { seek } from '@react-style-system/common';
-import collect from '@react-style-system/collect';
+import { collect } from '@react-style-system/collect';
 import prettier from 'prettier';
 import plugin from './plugin';
 

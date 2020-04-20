@@ -2,7 +2,8 @@ import fs from 'fs';
 import _path from 'path';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
-import collect, {
+import {
+  collect,
   transformCssTemplateLiteral,
 } from '@react-style-system/collect';
 import { seek, createFilenameHash } from '@react-style-system/common';

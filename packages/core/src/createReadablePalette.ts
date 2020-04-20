@@ -13,7 +13,7 @@ function createReadablePalette(
   color: string,
   surface = '#fff',
 ): ReadableColorPalette {
-  const readableContrast = readableColor(color);
+  const readableContrast = readableColor(surface);
 
   return {
     original: color,
