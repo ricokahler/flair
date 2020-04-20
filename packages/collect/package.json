@@ -13,7 +13,9 @@
     "@types/node": "13.11.0",
     "common-tags": "1.8.0",
     "pirates": "4.0.1",
-    "stylis": "3.5.4"
+    "stylis": "3.5.4",
+    "require-from-string": "2.0.2",
+    "@types/require-from-string": "1.2.0"
   },
   "peerDependencies": {
     "@babel/preset-typescript": "^7.0.0",

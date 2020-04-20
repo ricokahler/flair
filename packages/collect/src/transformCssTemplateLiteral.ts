@@ -1,5 +1,6 @@
 import * as t from '@babel/types';
 import generate from '@babel/generator';
+import requireFromString from 'require-from-string';
 
 const errorMessage =
   'This is a bug in react-style-system. Please open an issue.';
@@ -53,13 +54,7 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
   );
 
 
-  let quasiQuotesCss!: string;
-
-  // ===========================================================================
-  // TODO: is this a security risk?
-  // eslint-disable-next-line no-eval
-  eval(`quasiQuotesCss = ${quasiQuotesCssResult.code}`);
-  // ===========================================================================
+  const quasiQuotesCss: string = requireFromString(`module.exports = ${quasiQuotesCssResult.code}`);
 
   const propertyMatches = Array.from(quasiQuotesCss.matchAll(/:[^;:]*;/g));
 
