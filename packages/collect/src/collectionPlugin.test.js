@@ -100,9 +100,9 @@ it('transforms the given code so that useStyles is exported', () => {
       const danger = (0, _reactStyleSystem.createReadablePalette)(theme.colors.danger);
       return {
         root: css\`
-          padding: \${\\"var(--Example--00000-root-0)\\"};
-          color: \${\\"var(--Example--00000-root-1)\\"};
-          background-color: \${\\"var(--Example--00000-root-2)\\"};
+          padding: \${\\"var(--Example--00000-0-root-0)\\"};
+          color: \${\\"var(--Example--00000-0-root-1)\\"};
+          background-color: \${\\"var(--Example--00000-0-root-2)\\"};
           width: 50%;
 
           \${staticVar((0, _localModule.doThing)(theme.colors.brand))};
@@ -111,7 +111,7 @@ it('transforms the given code so that useStyles is exported', () => {
             width: 100%;
           }
 
-          margin: \${\\"var(--Example--00000-root-3)\\"};
+          margin: \${\\"var(--Example--00000-0-root-3)\\"};
         \`
       };
     });

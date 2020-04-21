@@ -22,6 +22,12 @@ function collectionPlugin(): {
   return {
     visitor: {
       Program(path, state) {
+        /**
+         * this is used to match the `useStyle` index. because we allow more than one
+         * `createStyles` call, we need to keep track of what number this one is.
+         */
+        let useStyleIndex = 0;
+
         const { filename } = state.file.opts;
         const filenameHash = createFilenameHash(filename);
         const { themePath } = state.opts;
@@ -230,7 +236,7 @@ function collectionPlugin(): {
                     }
 
                     const ret = t.stringLiteral(
-                      `var(--${filenameHash}-${key.name}-${index})`,
+                      `var(--${filenameHash}-${useStyleIndex}-${key.name}-${index})`,
                     );
 
                     index += 1;
@@ -250,6 +256,8 @@ function collectionPlugin(): {
                 return t.objectProperty(key, final);
               },
             );
+
+            useStyleIndex += 1;
           },
         });
       },

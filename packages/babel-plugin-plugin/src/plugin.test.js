@@ -117,20 +117,20 @@ it('removes the tagged template literals and replaces it with array expressions'
 
   expect(prettyCss).toMatchInlineSnapshot(`
     ".Example--00000-0-root {
-      margin: var(--Example--00000-root-0);
-      height: var(--Example--00000-root-1);
+      margin: var(--Example--00000-0-root-0);
+      height: var(--Example--00000-0-root-1);
       display: flex;
       flex-direction: column;
-      transition: var(--Example--00000-root-2);
+      transition: var(--Example--00000-0-root-2);
       overflow: hidden;
-      color: var(--Example--00000-root-3);
+      color: var(--Example--00000-0-root-3);
     }
     .Example--00000-0-title {
       font-size: 32px;
       font-weight: bold;
       margin: 0;
       flex: 0 0 auto;
-      color: var(--Example--00000-title-1);
+      color: var(--Example--00000-0-title-1);
     }
     @media (max-width: 768px) {
       .Example--00000-0-title {
@@ -140,7 +140,7 @@ it('removes the tagged template literals and replaces it with array expressions'
       }
     }
     .Example--00000-0-body {
-      border-bottom: var(--Example--00000-body-0);
+      border-bottom: var(--Example--00000-0-body-0);
       flex: 1 1 auto;
     }
     "
