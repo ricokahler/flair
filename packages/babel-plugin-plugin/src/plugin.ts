@@ -28,6 +28,12 @@ function plugin(
   return {
     visitor: {
       Program(path, state) {
+        /**
+         * this is used to match the `useStyle` index. because we allow more than one
+         * `createStyles` call, we need to keep track of what number this one is.
+         */
+        let useStyleIndex = 0;
+
         const { filename } = state.file.opts;
         const filenameHash = createFilenameHash(filename);
         const cssFilename = _path.join(cacheDir, `${filenameHash}.css`);
@@ -153,9 +159,13 @@ function plugin(
             stylesObjectExpression.properties.push(
               t.objectProperty(
                 t.identifier('classNamePrefix'),
-                t.stringLiteral(createFilenameHash(filename)),
+                t.stringLiteral(
+                  `${createFilenameHash(filename)}-${useStyleIndex}`,
+                ),
               ),
             );
+
+            useStyleIndex += 1;
           },
         });
 

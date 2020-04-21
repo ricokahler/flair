@@ -73,28 +73,33 @@ function collect(filename: string, opts: Options) {
       return result.code;
     }, 'Failed to transform');
 
-    const pullStyles = attempt(
+    const stylesToPull = attempt(
       () =>
         (() => {
           const result = requireFromString(transformedCode);
-          return result.useStyles;
+          return Object.values(result).filter(
+            (maybeFn: any) => maybeFn.__cssExtractable,
+          ) as Array<() => { [key: string]: string }>;
         })(),
       'Failed to execute file',
     );
 
-    const unprocessedCss = attempt(
-      () => pullStyles(),
-      'Failed to evaluate CSS strings',
-    ) as { [key: string]: string };
+    const unprocessedCss = attempt(() => {
+      return stylesToPull.map(fn => fn());
+    }, 'Failed to evaluate CSS strings') as Array<{ [key: string]: string }>;
 
     const finalCss = attempt(
       () =>
-        Object.entries(unprocessedCss)
-          .filter(([_key, value]) => typeof value === 'string')
-          .map(([key, value]) => {
-            const className = `.${filenameHash}-${key}`;
-            return stylis(className, value as string);
-          })
+        unprocessedCss
+          .map((styleObj, index) =>
+            Object.entries(styleObj)
+              .filter(([_key, value]) => typeof value === 'string')
+              .map(([key, value]) => {
+                const className = `.${filenameHash}-${index}-${key}`;
+                return stylis(className, value as string);
+              })
+              .join('\n'),
+          )
           .join('\n'),
       'Failed to process styles',
     );

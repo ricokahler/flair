@@ -51,12 +51,15 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
   const sheetId = nanoId();
   const fileName = tryGetCurrentFilename();
 
-  // NOTE: this is, in-fact, a side effect
-  // TODO: add docs here
-  const sheetEl = document.createElement('style');
-  sheetEl.dataset.reactStyleSystem = 'true';
-  sheetEl.id = sheetId;
-  document.head.appendChild(sheetEl);
+  // this makes it work in browser but a no-op in node.
+  const doc = typeof document !== 'undefined' ? document : null;
+  const sheetEl = doc?.createElement('style');
+  if (sheetEl) {
+    sheetEl.dataset.reactStyleSystem = 'true';
+    sheetEl.id = sheetId;
+    // NOTE: this is, in-fact, a side effect
+    doc?.head.appendChild(sheetEl);
+  }
 
   function useStyles<
     Props extends StyleProps<Styles>,
@@ -131,7 +134,9 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
         })
         .join('\n\n');
 
-      sheetEl.innerHTML += processedSheet;
+      if (sheetEl) {
+        sheetEl.innerHTML += processedSheet;
+      }
     }, [thisStyles, unprocessedStyles]);
 
     const mergedStyles = useMemo(() => {

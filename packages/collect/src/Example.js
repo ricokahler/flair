@@ -28,6 +28,12 @@ const useStyles = createStyles(({ css, theme }) => ({
   `,
 }));
 
+const useAnother = createStyles(({ css }) => ({
+  root: css`
+    color: black;
+  `,
+}));
+
 function Card(props) {
   const { Root, styles, title, description } = useStyles(props);
 
