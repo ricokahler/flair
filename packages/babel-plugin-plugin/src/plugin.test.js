@@ -102,7 +102,7 @@ it('removes the tagged template literals and replaces it with array expressions'
           border \${theme.durations.standard}\`, \`\${(0, _submodule.default)()}\`],
       title: [\`calc(50vh - \${theme.space(2)})\`, \`\${theme.colors.brand}\`],
       body: [\`1px solid \${theme.colors.danger}\`],
-      classNamePrefix: \\"Example--00000\\"
+      classNamePrefix: \\"Example--00000-0\\"
     }));"
   `);
 
@@ -116,33 +116,33 @@ it('removes the tagged template literals and replaces it with array expressions'
   });
 
   expect(prettyCss).toMatchInlineSnapshot(`
-".Example--00000-root {
-  margin: var(--Example--00000-root-0);
-  height: var(--Example--00000-root-1);
-  display: flex;
-  flex-direction: column;
-  transition: var(--Example--00000-root-2);
-  overflow: hidden;
-  color: var(--Example--00000-root-3);
-}
-.Example--00000-title {
-  font-size: 32px;
-  font-weight: bold;
-  margin: 0;
-  flex: 0 0 auto;
-  color: var(--Example--00000-title-1);
-}
-@media (max-width: 768px) {
-  .Example--00000-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
-  }
-}
-.Example--00000-body {
-  border-bottom: var(--Example--00000-body-0);
-  flex: 1 1 auto;
-}
-"
-`);
+    ".Example--00000-0-root {
+      margin: var(--Example--00000-root-0);
+      height: var(--Example--00000-root-1);
+      display: flex;
+      flex-direction: column;
+      transition: var(--Example--00000-root-2);
+      overflow: hidden;
+      color: var(--Example--00000-root-3);
+    }
+    .Example--00000-0-title {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 0;
+      flex: 0 0 auto;
+      color: var(--Example--00000-title-1);
+    }
+    @media (max-width: 768px) {
+      .Example--00000-0-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+    .Example--00000-0-body {
+      border-bottom: var(--Example--00000-body-0);
+      flex: 1 1 auto;
+    }
+    "
+  `);
 });

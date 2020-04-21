@@ -115,6 +115,7 @@ it('transforms the given code so that useStyles is exported', () => {
         \`
       };
     });
-    exports.useStyles = useStyles;"
+    exports.useStyles = useStyles;
+    useStyles.__cssExtractable = true;"
   `);
 });

@@ -115,26 +115,46 @@ function collectionPlugin(): {
         );
 
         // Find the `useStyles` declaration and export it
-        path.node.body = path.node.body.map(statement => {
-          if (!t.isVariableDeclaration(statement)) return statement;
-          if (!statement.declarations.length) return statement;
+        path.node.body = path.node.body
+          .map(statement => {
+            if (!t.isVariableDeclaration(statement)) return statement;
+            if (!statement.declarations.length) return statement;
 
-          const isCreateStylesDeclaration = statement.declarations.some(
-            declaration => {
-              const { init } = declaration;
-              if (!t.isCallExpression(init)) return false;
-              const { callee } = init;
-              if (!t.isIdentifier(callee)) return false;
-              if (callee.name !== importedName) return false;
-              return true;
-            },
-          );
-          if (!isCreateStylesDeclaration) return statement;
+            const createStylesDeclarations = statement.declarations.filter(
+              declaration => {
+                const { init, id } = declaration;
+                if (!t.isIdentifier(id)) return false;
+                if (!t.isCallExpression(init)) return false;
+                const { callee } = init;
+                if (!t.isIdentifier(callee)) return false;
 
-          // if we get this far, then this is the createStyles declaration
-          // and we'll export it
-          return t.exportNamedDeclaration(statement);
-        });
+                if (callee.name !== importedName) return false;
+                return true;
+              },
+            );
+            if (createStylesDeclarations.length <= 0) return statement;
+            const variableNames = createStylesDeclarations.map(declaration => {
+              const { id } = declaration;
+              if (!t.isIdentifier(id)) {
+                throw new Error(
+                  `Expected to find identifier but found "${id.type}"`,
+                );
+              }
+
+              return id.name;
+            });
+
+            // if we get this far, then this is the createStyles declaration
+            // and we'll export it
+            return [
+              t.exportNamedDeclaration(statement),
+              ...variableNames.map(
+                name =>
+                  template.statement.ast`${name}.__cssExtractable = true;`,
+              ),
+            ];
+          })
+          .flat();
 
         // Take all the relative file imports and make them absolute using the
         // filename path
