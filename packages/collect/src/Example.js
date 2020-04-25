@@ -3,6 +3,10 @@ import { createStyles } from 'react-style-system';
 import getRed from './submodule';
 import Example2 from './Example2';
 
+import 'thing.css';
+// eslint-disable-next-line no-unused-vars
+import * as styles from './thing.module.scss';
+
 const useStyles = createStyles(({ css, theme }) => ({
   root: css`
     height: ${theme.block(5)};
@@ -28,6 +32,7 @@ const useStyles = createStyles(({ css, theme }) => ({
   `,
 }));
 
+// eslint-disable-next-line no-unused-vars
 const useAnother = createStyles(({ css }) => ({
   root: css`
     color: black;

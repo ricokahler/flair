@@ -5,10 +5,11 @@ import * as t from '@babel/types';
 import {
   collect,
   transformCssTemplateLiteral,
+  CollectionPluginOptions,
 } from '@react-style-system/collect';
 import { seek, createFilenameHash } from '@react-style-system/common';
 
-interface Options {
+interface Options extends CollectionPluginOptions {
   themePath: string;
   cacheDir: string;
 }

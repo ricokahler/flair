@@ -8,6 +8,7 @@ import transformCssTemplateLiteral from './transformCssTemplateLiteral';
 export interface Options {
   themePath: string;
   moduleResolver?: any;
+  ignoreImportPattern?: string;
 }
 
 const importSourceValue = 'react-style-system';
@@ -30,9 +31,23 @@ function collectionPlugin(): {
 
         const { filename } = state.file.opts;
         const filenameHash = createFilenameHash(filename);
-        const { themePath } = state.opts;
+        const {
+          themePath,
+          ignoreImportPattern = '\\.((css)|(scss))$',
+        } = state.opts;
 
         if (!themePath) throw new Error('themePath required');
+
+        // remove ignored import statement
+        path.node.body = path.node.body.filter(statement => {
+          if (!t.isImportDeclaration(statement)) return true;
+
+          const { source } = statement;
+          const match = new RegExp(ignoreImportPattern).exec(source.value);
+          if (!match) return true;
+
+          return false;
+        });
 
         // Check if this file should be transformed
         const foundCreateStyles = seek<boolean>(report => {
