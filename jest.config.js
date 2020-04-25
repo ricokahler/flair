@@ -5,5 +5,5 @@ module.exports = {
     '^react-style-system$': '<rootDir>/packages/react-style-system/src',
     '^prettier$': '<rootDir>/node_modules/prettier',
   },
-  modulePathIgnorePatterns: ['<rootDir>/dist/'],
+  modulePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/example-sites/'],
 };

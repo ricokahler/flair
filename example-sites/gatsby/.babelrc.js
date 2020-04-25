@@ -6,7 +6,7 @@ module.exports = {
       "babel-preset-gatsby",
       {
         targets: {
-          browsers: [">0.25%", "not dead"],
+          browsers: [">0.25%", "not dead", "not IE 11"],
         },
       },
     ],
@@ -17,14 +17,7 @@ module.exports = {
       "@react-style-system/plugin",
       {
         themePath: path.resolve(__dirname, "./src/styles/theme.js"),
-        cacheDir: path.resolve(__dirname, "./.cache/caches/rss"),
-        moduleResolver: {
-          root: [__dirname],
-          alias: {
-            gatsby: require.resolve("./noop.js"),
-            "^.*css$": require.resolve("./noop.js"),
-          },
-        },
+        cacheDir: path.resolve(__dirname, "./.rss-cache"),
       },
     ],
   ],
