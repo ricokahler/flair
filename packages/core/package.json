@@ -3,10 +3,10 @@
   "peerDependencies": {
     "@types/react": "^16.8.0",
     "react": "^16.8.0",
-    "canvas": "^2.0.0"
+    "polished": "^3.0.0"
   },
   "dependencies": {
-    "@ricokahler/parse-to-rgba": "0.1.0"
+    "@ricokahler/parse-to-rgba": "0.2.1"
   },
   "private": true
 }
