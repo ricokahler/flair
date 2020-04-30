@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { act, create } from 'react-test-renderer';
 import { ThemeProvider, ColorContextProvider } from '@react-style-system/core';
-import { DeferredPromise } from '@react-style-system/common';
 import createStyles from './createStyles';
 
 const theme = { colors: { brand: '#00f' } };
@@ -18,11 +17,10 @@ jest.mock('nanoid', () => ({
 
 const delay = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-it('returns colors, styles, and the root component', async () => {
+it('returns colors, styles, and the root component', () => {
   const stylesHandler = jest.fn();
   const createStylesHandler = jest.fn();
   const rootHandler = jest.fn();
-  const done = new DeferredPromise();
 
   const useStyles = createStyles(({ color, theme, css }) => {
     createStylesHandler({ color, theme, css });
@@ -39,13 +37,12 @@ it('returns colors, styles, and the root component', async () => {
     useEffect(() => {
       stylesHandler(styles);
       rootHandler(Root);
-      done.resolve();
     }, [Root, styles]);
 
     return <Root>blah</Root>;
   }
 
-  await act(async () => {
+  act(() => {
     create(
       <ThemeProvider theme={theme}>
         <ColorContextProvider color={theme.colors.brand} surface="#fff">
@@ -53,7 +50,6 @@ it('returns colors, styles, and the root component', async () => {
         </ColorContextProvider>
       </ThemeProvider>,
     );
-    await done;
   });
 
   const styles = stylesHandler.mock.calls[0][0];
@@ -142,7 +138,10 @@ it('composes the classnames', () => {
 });
 
 test("the root node doesn't remount when classnames changes", async () => {
-  const done = new DeferredPromise();
+  let resolve;
+  const done = new Promise((thisResolve) => {
+    resolve = thisResolve;
+  });
 
   const useStyles = createStyles(() => ({
     root: 'style-root',
@@ -175,7 +174,7 @@ test("the root node doesn't remount when classnames changes", async () => {
           await delay();
           setCount((count) => count + 1);
         }
-        done.resolve();
+        resolve();
       })();
     }, []);
 
@@ -207,7 +206,8 @@ test("the root node doesn't remount when classnames changes", async () => {
 });
 
 it('memoizes the Root component reference and the styles reference', async () => {
-  const done = new DeferredPromise();
+  let resolve;
+  const done = new Promise((thisResolve) => (resolve = thisResolve));
 
   const useStyles = createStyles(() => ({
     root: 'style-root',
@@ -245,7 +245,7 @@ it('memoizes the Root component reference and the styles reference', async () =>
           await delay();
           setCount((count) => count + 1);
         }
-        done.resolve();
+        resolve();
       })();
     }, []);
 
@@ -274,7 +274,10 @@ it('memoizes the Root component reference and the styles reference', async () =>
 });
 
 it('adds a style sheet to the DOM', async () => {
-  const done = new DeferredPromise();
+  let resolve;
+  const done = new Promise((thisResolve) => {
+    resolve = thisResolve;
+  });
 
   const useStyles = createStyles(({ css }) => ({
     root: css`
@@ -286,7 +289,7 @@ it('adds a style sheet to the DOM', async () => {
     const { Root, styles } = useStyles(props);
 
     useEffect(() => {
-      done.resolve(styles);
+      resolve(styles);
     }, [styles]);
 
     return <Root>blah</Root>;
