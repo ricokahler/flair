@@ -1,12 +1,10 @@
 import React, { forwardRef, useMemo } from 'react';
-import classNames from 'classnames';
 import {
   ReactComponent,
   StyleProps,
   StyleFnArgs,
   GetComponentProps,
   UseStyles,
-  css,
   useTheme,
   useColorContext,
 } from '@react-style-system/core';
@@ -66,7 +64,9 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
     // create a map of unprocessed styles
     const { cssVariableObject, classes, classNamePrefix } = useMemo(() => {
       const variableObject: any = stylesFn({
-        css,
+        css: () => {
+          throw new Error('css tag was executed in SSR mode');
+        },
         color,
         theme,
         surface,
@@ -112,10 +112,9 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
         const thisStyle = thisStyles[key];
         const incomingStyle = incomingStyles[key];
 
-        merged[key] = classNames(
-          thisStyle,
-          incomingStyle,
-        ) as Styles[keyof Styles];
+        merged[key] = [thisStyle, incomingStyle]
+          .filter(Boolean)
+          .join(' ') as Styles[keyof Styles];
 
         return merged;
       }, {} as Styles);
@@ -133,11 +132,9 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
           <Component
             {...rootProps}
             ref={ref}
-            className={classNames(
-              mergedStyles.root,
-              rootClassName,
-              incomingClassName,
-            )}
+            className={[mergedStyles.root, rootClassName, incomingClassName]
+              .filter(Boolean)
+              .join(' ')}
             style={{
               ...rootStyles,
               ...incomingStyle,
