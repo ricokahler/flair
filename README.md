@@ -18,9 +18,9 @@ Watch releases to be notified for new features.
 
 The best features of this library are still in development! Coming soon:
 
-- static CSS via [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (similar to Linaria)
+- static CSS similar to [Linaria](https://github.com/callstack/linaria) via [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library)
 - SSR support
-- much smaller bundle [1.9kB](https://bundlephobia.com/result?p=@react-style-system/ssr)
+- much smaller bundle [1.8kB](https://bundlephobia.com/result?p=@react-style-system/ssr@0.0.0-cdc69bb60)
 - performance improvements
 
 ## Why another CSS-in-JS lib?
