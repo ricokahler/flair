@@ -1,6 +1,8 @@
 import React, { forwardRef, useMemo, useLayoutEffect } from 'react';
 import classNames from 'classnames';
-import nanoId from 'nanoid';
+import { nanoid } from 'nanoid';
+// the types for stylis seems to have been deleted at this time of writing
+// @ts-ignore
 import stylis from 'stylis';
 import {
   ReactComponent,
@@ -27,7 +29,7 @@ function hashStyleObj(
   if (!styleObj) return '';
 
   return Object.keys(styleObj)
-    .map(key => `${key}_${styleObj[key]}`)
+    .map((key) => `${key}_${styleObj[key]}`)
     .join('__|__');
 }
 
@@ -48,7 +50,7 @@ const identity = <T extends any>(t: T) => t;
 function createStyles<Styles extends { [key: string]: string }, Theme = any>(
   stylesFn: (args: StyleFnArgs<Theme>) => Styles,
 ) {
-  const sheetId = nanoId();
+  const sheetId = nanoid();
   const fileName = tryGetCurrentFilename();
 
   // this makes it work in browser but a no-op in node.
@@ -97,12 +99,12 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
       });
     }, [color, surface, theme]);
 
-    const styleId = useMemo(nanoId, [unprocessedStyles]);
+    const styleId = useMemo(nanoid, [unprocessedStyles]);
 
     // calculate the class names
     const thisStyles = useMemo(() => {
       return Object.keys(unprocessedStyles)
-        .map(key => [
+        .map((key) => [
           key,
           // the replace is ensure the class name only uses css safe characters
           `${fileName || 'rss'}_${key}_${sheetId}_${styleId}`.replace(
@@ -121,7 +123,7 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
       const keys = Object.keys(thisStyles);
 
       const processedSheet = keys
-        .map(key => {
+        .map((key) => {
           const className = thisStyles[key];
           const unprocessedStyle = unprocessedStyles[key];
 

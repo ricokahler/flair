@@ -1,7 +1,7 @@
 import DeferredPromise from './DeferredPromise';
 
-const delay = milliseconds =>
-  new Promise(resolve => setTimeout(resolve, milliseconds));
+const delay = (milliseconds) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 test('it allows resolve to be called outside of the scope of itself', async () => {
   const deferredPromise = new DeferredPromise();

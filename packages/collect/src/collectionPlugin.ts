@@ -39,7 +39,7 @@ function collectionPlugin(): {
         if (!themePath) throw new Error('themePath required');
 
         // remove ignored import statement
-        path.node.body = path.node.body.filter(statement => {
+        path.node.body = path.node.body.filter((statement) => {
           if (!t.isImportDeclaration(statement)) return true;
 
           const { source } = statement;
@@ -50,7 +50,7 @@ function collectionPlugin(): {
         });
 
         // Check if this file should be transformed
-        const foundCreateStyles = seek<boolean>(report => {
+        const foundCreateStyles = seek<boolean>((report) => {
           path.traverse({
             ImportDeclaration(path) {
               const { specifiers, source } = path.node;
@@ -58,7 +58,7 @@ function collectionPlugin(): {
               const hasPackageName = source.value === importSourceValue;
               if (!hasPackageName) return;
 
-              const hasCreateStyles = specifiers.some(node => {
+              const hasCreateStyles = specifiers.some((node) => {
                 if (!t.isImportSpecifier(node)) return false;
                 return node.imported.name === importedName;
               });
@@ -80,7 +80,7 @@ function collectionPlugin(): {
             const hasPackageName = source.value === importSourceValue;
             if (!hasPackageName) return;
 
-            path.node.specifiers = specifiers.filter(node => {
+            path.node.specifiers = specifiers.filter((node) => {
               if (!t.isImportSpecifier(node)) return true;
 
               // return false in this case bc we're removing it
@@ -137,12 +137,12 @@ function collectionPlugin(): {
 
         // Find the `useStyles` declaration and export it
         path.node.body = path.node.body
-          .map(statement => {
+          .map((statement) => {
             if (!t.isVariableDeclaration(statement)) return statement;
             if (!statement.declarations.length) return statement;
 
             const createStylesDeclarations = statement.declarations.filter(
-              declaration => {
+              (declaration) => {
                 const { init, id } = declaration;
                 if (!t.isIdentifier(id)) return false;
                 if (!t.isCallExpression(init)) return false;
@@ -154,23 +154,25 @@ function collectionPlugin(): {
               },
             );
             if (createStylesDeclarations.length <= 0) return statement;
-            const variableNames = createStylesDeclarations.map(declaration => {
-              const { id } = declaration;
-              if (!t.isIdentifier(id)) {
-                throw new Error(
-                  `Expected to find identifier but found "${id.type}"`,
-                );
-              }
+            const variableNames = createStylesDeclarations.map(
+              (declaration) => {
+                const { id } = declaration;
+                if (!t.isIdentifier(id)) {
+                  throw new Error(
+                    `Expected to find identifier but found "${id.type}"`,
+                  );
+                }
 
-              return id.name;
-            });
+                return id.name;
+              },
+            );
 
             // if we get this far, then this is the createStyles declaration
             // and we'll export it
             return [
               t.exportNamedDeclaration(statement),
               ...variableNames.map(
-                name =>
+                (name) =>
                   template.statement.ast`${name}.__cssExtractable = true;`,
               ),
             ];
@@ -179,7 +181,7 @@ function collectionPlugin(): {
 
         // Take all the relative file imports and make them absolute using the
         // filename path
-        path.node.body = path.node.body.map(statement => {
+        path.node.body = path.node.body.map((statement) => {
           if (!t.isImportDeclaration(statement)) return statement;
           if (!statement.source.value.startsWith('.')) return statement;
 
@@ -207,27 +209,29 @@ function collectionPlugin(): {
               return;
             }
 
-            const stylesObjectExpression = seek<t.ObjectExpression>(report => {
-              const { body } = firstArgument;
+            const stylesObjectExpression = seek<t.ObjectExpression>(
+              (report) => {
+                const { body } = firstArgument;
 
-              if (t.isObjectExpression(body)) {
-                report(body);
-              }
+                if (t.isObjectExpression(body)) {
+                  report(body);
+                }
 
-              path.traverse({
-                ReturnStatement(path) {
-                  const { argument } = path.node;
+                path.traverse({
+                  ReturnStatement(path) {
+                    const { argument } = path.node;
 
-                  if (!t.isObjectExpression(argument)) return;
-                  report(argument);
-                },
-              });
-            });
+                    if (!t.isObjectExpression(argument)) return;
+                    report(argument);
+                  },
+                });
+              },
+            );
 
             // Go through each property and replace it with strings that can be
             // replaced with CSS variables
             stylesObjectExpression.properties = stylesObjectExpression.properties.map(
-              property => {
+              (property) => {
                 if (!t.isObjectProperty(property)) return property;
 
                 const { value, key } = property;
@@ -241,7 +245,7 @@ function collectionPlugin(): {
 
                 let index = 0;
                 const transformedExpressions = transformedQuasi.expressions.map(
-                  expression => {
+                  (expression) => {
                     if (
                       t.isCallExpression(expression) &&
                       t.isIdentifier(expression.callee) &&

@@ -45,7 +45,7 @@ const esmPlugins = [
   }),
 ];
 
-const getExternal = name => [
+const getExternal = (name) => [
   ...Object.keys(require(`./packages/${name}/package.json`).dependencies || []),
   ...Object.keys(
     require(`./packages/${name}/package.json`).peerDependencies || [],
@@ -191,7 +191,7 @@ module.exports = [
         react: 'React',
         '@react-style-system/core': 'ReactStyleSystem',
         classnames: 'classNames',
-        nanoid: 'nanoId',
+        nanoid: 'nanoid',
         stylis: 'stylis',
       },
     },
@@ -220,7 +220,7 @@ module.exports = [
         react: 'React',
         '@react-style-system/standalone': 'ReactStyleSystem',
         classnames: 'classNames',
-        nanoid: 'nanoId',
+        nanoid: 'nanoid',
         stylis: 'stylis',
       },
     },

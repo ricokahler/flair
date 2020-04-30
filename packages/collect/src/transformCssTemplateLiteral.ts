@@ -7,7 +7,7 @@ const errorMessage =
 
 function parsePre(pre: string, expressions: t.Expression[]) {
   const preExpressionMatches = Array.from(pre.matchAll(/xX__\d+__Xx/g));
-  const preLocations = preExpressionMatches.map(expressionMatch => {
+  const preLocations = preExpressionMatches.map((expressionMatch) => {
     const start = expressionMatch.index!;
     const end = expressionMatch.index! + expressionMatch[0].length;
 
@@ -53,16 +53,17 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
     ),
   );
 
-
-  const quasiQuotesCss: string = requireFromString(`module.exports = ${quasiQuotesCssResult.code}`);
+  const quasiQuotesCss: string = requireFromString(
+    `module.exports = ${quasiQuotesCssResult.code}`,
+  );
 
   const propertyMatches = Array.from(quasiQuotesCss.matchAll(/:[^;:]*;/g));
 
   const quasiQuoteLocations = propertyMatches
     // only grab the properties that are quasi quoted
-    .filter(match => /xX__\d+__Xx/.test(match[0]))
+    .filter((match) => /xX__\d+__Xx/.test(match[0]))
     // calculate the start and end for each property match
-    .map(match => {
+    .map((match) => {
       const property = match[0];
       const propertyMatch = /(:\s*)(.*xX__[^;:]*__Xx.*)\s*;/.exec(property);
       if (!propertyMatch) {
@@ -92,10 +93,10 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
     const parsed = parsePre(quasiQuotesCss, expressions);
     return t.templateLiteral(
       [
-        ...parsed.tuples.map(t => t.templateElement),
+        ...parsed.tuples.map((t) => t.templateElement),
         parsed.lastTemplateElement,
       ],
-      parsed.tuples.map(t => t.expression),
+      parsed.tuples.map((t) => t.expression),
     );
   }
   const lastPart = quasiQuotesCss.substring(lastLocation.end);
@@ -122,11 +123,11 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
       }
       const last = str.substring(lastMatch.index! + lastMatch[0].length);
 
-      const pres = [...strParts.map(t => t.pre), last];
-      const exps = strParts.map(t => t.expression);
+      const pres = [...strParts.map((t) => t.pre), last];
+      const exps = strParts.map((t) => t.expression);
 
       const revisedExpression = t.templateLiteral(
-        pres.map(pre => t.templateElement({ raw: pre })),
+        pres.map((pre) => t.templateElement({ raw: pre })),
         exps,
       );
 
@@ -143,14 +144,14 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
   const last = parsePre(lastPart, expressions);
 
   const templateElements = [
-    ...tuples.map(tuple => tuple.templateElement),
-    ...last.tuples.map(tuple => tuple.templateElement),
+    ...tuples.map((tuple) => tuple.templateElement),
+    ...last.tuples.map((tuple) => tuple.templateElement),
     last.lastTemplateElement,
   ];
 
   const finalExpressions = [
-    ...tuples.map(tuple => tuple.expression),
-    ...last.tuples.map(tuple => tuple.expression),
+    ...tuples.map((tuple) => tuple.expression),
+    ...last.tuples.map((tuple) => tuple.expression),
   ];
 
   return t.templateLiteral(templateElements, finalExpressions);

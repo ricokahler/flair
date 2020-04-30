@@ -8,13 +8,15 @@ const theme = { colors: { brand: '#00f' } };
 
 let mockIndex = 0;
 
-jest.mock('nanoid', () => () => {
-  const mockId = `id-${mockIndex}`;
-  mockIndex += 1;
-  return mockId;
-});
+jest.mock('nanoid', () => ({
+  nanoid: () => {
+    const mockId = `id-${mockIndex}`;
+    mockIndex += 1;
+    return mockId;
+  },
+}));
 
-const delay = () => new Promise(resolve => setTimeout(resolve, 0));
+const delay = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 it('returns colors, styles, and the root component', async () => {
   const stylesHandler = jest.fn();
@@ -171,7 +173,7 @@ test("the root node doesn't remount when classnames changes", async () => {
       (async () => {
         for (let i = 0; i < 3; i += 1) {
           await delay();
-          setCount(count => count + 1);
+          setCount((count) => count + 1);
         }
         done.resolve();
       })();
@@ -193,7 +195,7 @@ test("the root node doesn't remount when classnames changes", async () => {
 
   expect(rerenderHandler).toHaveBeenCalledTimes(1);
 
-  const classNamesOverTime = rootClassHandler.mock.calls.map(args => args[0]);
+  const classNamesOverTime = rootClassHandler.mock.calls.map((args) => args[0]);
   expect(classNamesOverTime).toMatchInlineSnapshot(`
     Array [
       "rss_root_id-4_id-5 count-0",
@@ -241,7 +243,7 @@ it('memoizes the Root component reference and the styles reference', async () =>
       (async () => {
         for (let i = 0; i < 3; i += 1) {
           await delay();
-          setCount(count => count + 1);
+          setCount((count) => count + 1);
         }
         done.resolve();
       })();

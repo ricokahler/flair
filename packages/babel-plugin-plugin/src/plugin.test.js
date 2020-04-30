@@ -82,7 +82,7 @@ it('removes the tagged template literals and replaces it with array expressions'
 
   expect(result.code.includes('@react-style-system/loader')).toBe(true);
 
-  const useStylesAst = seek(report => {
+  const useStylesAst = seek((report) => {
     traverse(parse(result.code, { filename }), {
       VariableDeclaration(path) {
         const [variableDeclarator] = path.node.declarations;

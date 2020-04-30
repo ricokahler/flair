@@ -1,4 +1,6 @@
 import fs from 'fs';
+// the types for stylis seems to have been deleted at this time of writing
+// @ts-ignore
 import stylis from 'stylis';
 import * as babel from '@babel/core';
 import { addHook } from 'pirates';
@@ -85,7 +87,7 @@ function collect(filename: string, opts: Options) {
     );
 
     const unprocessedCss = attempt(() => {
-      return stylesToPull.map(fn => fn());
+      return stylesToPull.map((fn) => fn());
     }, 'Failed to evaluate CSS strings') as Array<{ [key: string]: string }>;
 
     const finalCss = attempt(

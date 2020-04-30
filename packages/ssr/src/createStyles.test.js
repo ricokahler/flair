@@ -12,7 +12,7 @@ it('takes a styles function and returns a hook', async () => {
   const stylesHandler = jest.fn();
 
   let resolve;
-  const done = new Promise(thisResolve => (resolve = thisResolve));
+  const done = new Promise((thisResolve) => (resolve = thisResolve));
 
   function Example(props) {
     const { Root, styles } = useStyles(props);
