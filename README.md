@@ -23,6 +23,10 @@ The best features of this library are still in development! Coming soon:
 - much smaller bundle [1.9kB](https://bundlephobia.com/result?p=@react-style-system/ssr)
 - performance improvements
 
+## Why another CSS-in-JS lib?
+
+[See here for more info](./why-another-css-in-js-lib.md)
+
 ## Installation
 
 ### Install
@@ -57,6 +61,7 @@ export default theme;
 ```tsx
 // index.ts (or index.js)
 import React from 'react';
+import { ThemeProvider, ColorContextProvider } from 'react-style-system';
 import { render } from 'react-dom';
 import theme from './theme';
 import App from './App';
@@ -154,17 +159,22 @@ interface Props extends PropsFromStyles<typeof useStyles> {
 function Card(props: Props) {
   // `useStyles` intercepts your props
   const {
-    // `Root` and `styles` are props added via `useStyles
+    // `Root` and `styles` are props added via `useStyles`
     Root,
     styles,
     // `title` and `description` are the props you defined
     title,
     description,
-  } = useStyles(props);
+  } = useStyles(props, 'div' /* 👈 `div` is the default if you omit this */);
 
   return (
     // the `root` class is automatically applied to the `Root` component
-    <Root>
+    <Root
+      onClick={() => {
+        // you can supply any props you would send to the root component
+        // (which is a `div` in this case)
+      }}
+    >
       {/* the styles that come back are class names */}
       <h2 className={styles.title}>{title}</h2>
       <p className={styles.description}>{description}</p>
@@ -321,10 +331,52 @@ function Component(props: Props) {
 
 ## Enabling the experimental babel plugin
 
-Docs coming soon…
+> ⚠️ In order to get this to work, you need to be able to freely configure babel _and_ webpack. This is currently _not_ possible with `create-react-app`.
 
-Contact me at [ricokahler@me.com](mailto:ricokahler@me.com) if you're interesting in hearing more.
+### Configure babel
 
-## Why another CSS-in-JS lib?
+Create or modify your `.babelrc` configuration file at the root of your folder.
 
-[See here for more info](./why-another-css-in-js-lib.md)
+```json
+{
+  "presets": [
+    [
+      // rest of your presets
+    ]
+  ],
+  "plugins": [
+    // ... rest of your plugins
+    [
+      "@react-style-system/plugin",
+      {
+        "themePath": "./src/styles/theme.js"
+      }
+    ]
+  ]
+}
+```
+
+### Configure Webpack
+
+In your webpack config, create a new rule for `.rss-css` files and include the `@react-style-system/loader` in the chain.
+
+```js
+module.exports = {
+  // ...
+  module: {
+    // ...
+    rules: [
+      // ...
+      {
+        test: /\.rss-css$/,
+        use: [
+          'style-loader', // you can use the mini-css-extract-plugin instead too
+          'css-loader',
+          // react-style-system loader must be last
+          '@react-style-system/loader',
+        ],
+      },
+    ],
+  },
+};
+```

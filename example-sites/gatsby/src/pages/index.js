@@ -6,9 +6,10 @@ import Layout from "../components/layout"
 // import Image from "../components/image"
 import SEO from "../components/seo"
 
-const useStyles = createStyles(({ css, color }) => ({
+const useStyles = createStyles(({ css, color, theme }) => ({
   root: css`
     background-color: ${color.original};
+    color: ${theme.colors.primary};
   `,
 }))
 
