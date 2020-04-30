@@ -1,6 +1,6 @@
 ## Why another CSS-in-JS lib?
 
-Because there's no one lib that checks all the boxes. See below for an explanation.
+Because there's no one lib that checks all the boxes for me. See below for an explanation.
 
 ### 1. Component-centric semantics for styles
 

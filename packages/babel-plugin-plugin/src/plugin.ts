@@ -1,14 +1,13 @@
-import fs from 'fs';
-import _path from 'path';
 import { Visitor } from '@babel/traverse';
 import * as t from '@babel/types';
 import {
   collect,
   transformCssTemplateLiteral,
+  CollectionPluginOptions,
 } from '@react-style-system/collect';
 import { seek, createFilenameHash } from '@react-style-system/common';
 
-interface Options {
+interface Options extends CollectionPluginOptions {
   themePath: string;
   cacheDir: string;
 }
@@ -23,8 +22,6 @@ function plugin(
 ): {
   visitor: Visitor<{ opts: Options; file: { opts: { filename: string } } }>;
 } {
-  const { cacheDir } = opts;
-
   return {
     visitor: {
       Program(path, state) {
@@ -35,8 +32,6 @@ function plugin(
         let useStyleIndex = 0;
 
         const { filename } = state.file.opts;
-        const filenameHash = createFilenameHash(filename);
-        const cssFilename = _path.join(cacheDir, `${filenameHash}.css`);
 
         // Find create styles before continuing
         const foundCreateStyles = seek<boolean>(report => {
@@ -68,7 +63,14 @@ function plugin(
 
         // Add the import for the CSS filename
         path.node.body.unshift(
-          t.importDeclaration([], t.stringLiteral(cssFilename)),
+          t.importDeclaration(
+            [],
+            t.stringLiteral(
+              `@react-style-system/loader/load.rss-css?css=${encodeURIComponent(
+                css,
+              )}`,
+            ),
+          ),
         );
 
         path.traverse({
@@ -168,17 +170,6 @@ function plugin(
             useStyleIndex += 1;
           },
         });
-
-        // Tradeoff alert:
-        //
-        // using fs.writeFileSync allows us to write a file from a babel plugin.
-        // this means we don't need any bundler integration for this thing to
-        // work but it's kind of weird to see this kind of side-effect inside of
-        // a babel plugin
-        if (!fs.existsSync(cacheDir)) {
-          fs.mkdirSync(cacheDir);
-        }
-        fs.writeFileSync(cssFilename, css);
       },
     },
   };

@@ -43,12 +43,16 @@ async function publish() {
 
   for (const folderName of folderNames.slice().reverse()) {
     console.log(`Publishing ${folderName}`);
-    await execute(
-      `npm publish --otp=${otp} ${path.resolve(
-        __dirname,
-        `../dist/${folderName}`,
-      )}`,
-    );
+    try {
+      await execute(
+        `npm publish --otp=${otp} --access=public ${path.resolve(
+          __dirname,
+          `../dist/${folderName}`,
+        )}`,
+      );
+    } catch (e) {
+      console.warn(e);
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import fs from 'fs';
-import * as babel from '@babel/core';
 import stylis from 'stylis';
+import * as babel from '@babel/core';
 import { addHook } from 'pirates';
 import { createFilenameHash } from '@react-style-system/common';
 import requireFromString from 'require-from-string';
