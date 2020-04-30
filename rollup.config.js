@@ -82,6 +82,29 @@ module.exports = [
     plugins: nodePlugins,
     external: ['fs', 'path', ...getExternal('collect')],
   },
+  // LOADER
+  {
+    input: './packages/loader/src/index.ts',
+    output: [
+      {
+        file: './dist/loader/index.js',
+        format: 'cjs',
+        sourcemap: true,
+      },
+    ],
+    plugins: nodePlugins,
+  },
+  // LOADER no-op
+  {
+    input: './packages/loader/src/load.ts',
+    output: [
+      {
+        file: './dist/loader/load.rss-css',
+        format: 'cjs',
+      },
+    ],
+    plugins: nodePlugins,
+  },
   // COMMON
   {
     input: './packages/common/src/index.ts',

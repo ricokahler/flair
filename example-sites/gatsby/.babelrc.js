@@ -12,13 +12,12 @@ module.exports = {
     ],
   ],
   plugins: [
-    "@babel/plugin-proposal-optional-chaining",
     [
       "@react-style-system/plugin",
       {
         themePath: path.resolve(__dirname, "./src/styles/theme.js"),
-        cacheDir: path.resolve(__dirname, "./.rss-cache"),
       },
     ],
+    "@babel/plugin-proposal-optional-chaining",
   ],
 }
