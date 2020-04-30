@@ -11,7 +11,7 @@ If you used Material UI or JSS, then you're familiar with using `withStyles` or 
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     /* styles go here */
   },
@@ -85,7 +85,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     /* ... */
   },
@@ -202,7 +202,7 @@ The end goal is to be able to write styles like this:
 import React from 'react';
 import { createStyles, readableColor } from 'react-style-system';
 
-const useStyles = createStyles(color => ({
+const useStyles = createStyles((color) => ({
   button: css`
     background-color: ${color},
     color: ${readableColor(color)};

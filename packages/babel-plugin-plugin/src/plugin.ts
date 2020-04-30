@@ -34,7 +34,7 @@ function plugin(
         const { filename } = state.file.opts;
 
         // Find create styles before continuing
-        const foundCreateStyles = seek<boolean>(report => {
+        const foundCreateStyles = seek<boolean>((report) => {
           path.traverse({
             ImportDeclaration(path) {
               const { specifiers, source } = path.node;
@@ -42,7 +42,7 @@ function plugin(
               const hasPackageName = source.value === importSourceValue;
               if (!hasPackageName) return;
 
-              const hasCreateStyles = specifiers.some(node => {
+              const hasCreateStyles = specifiers.some((node) => {
                 if (!t.isImportSpecifier(node)) return false;
                 return node.imported.name === importedName;
               });
@@ -77,7 +77,7 @@ function plugin(
           // Rewrite imports
           ImportDeclaration(path) {
             const { specifiers, source } = path.node;
-            const hasCreateStyles = specifiers.some(node => {
+            const hasCreateStyles = specifiers.some((node) => {
               if (!t.isImportSpecifier(node)) return false;
               return node.imported.name === importedName;
             });
@@ -106,25 +106,27 @@ function plugin(
 
             const { body } = firstArgument;
 
-            const stylesObjectExpression = seek<t.ObjectExpression>(report => {
-              if (t.isObjectExpression(body)) {
-                report(body);
-              }
+            const stylesObjectExpression = seek<t.ObjectExpression>(
+              (report) => {
+                if (t.isObjectExpression(body)) {
+                  report(body);
+                }
 
-              path.traverse({
-                ReturnStatement(path) {
-                  const { argument } = path.node;
+                path.traverse({
+                  ReturnStatement(path) {
+                    const { argument } = path.node;
 
-                  if (!t.isObjectExpression(argument)) return;
-                  report(argument);
-                },
-              });
-            });
+                    if (!t.isObjectExpression(argument)) return;
+                    report(argument);
+                  },
+                });
+              },
+            );
 
             // Go through each property and replace it with strings that can be
             // replaced with CSS variables
             stylesObjectExpression.properties = stylesObjectExpression.properties.map(
-              property => {
+              (property) => {
                 if (!t.isObjectProperty(property)) return property;
 
                 const { value, key } = property;
@@ -139,7 +141,7 @@ function plugin(
                 );
 
                 const cssPropertyExpressions = transformedTemplateLiteral.expressions.filter(
-                  expression => {
+                  (expression) => {
                     if (
                       t.isCallExpression(expression) &&
                       t.isIdentifier(expression.callee) &&

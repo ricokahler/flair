@@ -5,7 +5,7 @@ import webpack from 'webpack';
  * plugins and sends it back out to other CSS loaders in your webpack loader
  * chain
  */
-const loader: webpack.loader.Loader = function() {
+const loader: webpack.loader.Loader = function () {
   return new URLSearchParams(this.resourceQuery).get('css') || '';
 };
 

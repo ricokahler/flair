@@ -17,7 +17,7 @@ function hashStyleObj(
   if (!styleObj) return '';
 
   return Object.keys(styleObj)
-    .map(key => `${key}_${styleObj[key]}`)
+    .map((key) => `${key}_${styleObj[key]}`)
     .join('__|__');
 }
 
@@ -98,7 +98,7 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
     // calculate the class names
     const thisStyles = useMemo(() => {
       return classes
-        .map(key => [key, `${classNamePrefix}-${key}`])
+        .map((key) => [key, `${classNamePrefix}-${key}`])
         .reduce((acc, [key, className]) => {
           acc[key as keyof Styles] = className as Styles[keyof Styles];
           return acc;
