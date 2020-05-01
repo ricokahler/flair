@@ -2,6 +2,30 @@
 
 > a lean, component-centric style system for React components
 
+**Table of contents**
+
+- [React Style System](#react-style-system)
+  - [⚠️ This library is still in heavy development with the best features coming soon](#%E2%9A%A0%EF%B8%8F-this-library-is-still-in-heavy-development-with-the-best-features-coming-soon)
+  - [Features](#features)
+  - [Why another CSS-in-JS lib?](#why-another-css-in-js-lib)
+  - [Installation](#installation)
+    - [Install](#install)
+    - [Create your theme](#create-your-theme)
+    - [Provider installation](#provider-installation)
+    - [Add type augments](#add-type-augments)
+    - [VS Code extension](#vs-code-extension)
+  - [Usage](#usage)
+    - [Basic usage](#basic-usage)
+    - [Composability](#composability)
+    - [Dynamic coloring](#dynamic-coloring)
+    - [Color system usage](#color-system-usage)
+    - [Theming usage](#theming-usage)
+  - [Implementations](#implementations)
+    - [How does this all work?](#how-does-this-all-work)
+    - [Enabling the experiemental SSR mode (`@react-style-system/ssr`)](#enabling-the-experiemental-ssr-mode-react-style-systemssr)
+    - [Configure babel](#configure-babel)
+    - [Configure Webpack](#configure-webpack)
+
 ## ⚠️ This library is still in heavy development with the best features coming soon
 
 Watch releases to be notified for new features.
