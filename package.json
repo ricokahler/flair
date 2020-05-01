@@ -43,7 +43,6 @@
     "@types/babel__traverse": "7.0.11",
     "@types/classnames": "2.2.10",
     "@types/common-tags": "1.8.0",
-    "@types/nanoid": "2.1.0",
     "@types/node": "13.13.4",
     "@types/react": "16.9.34",
     "@types/require-from-string": "1.2.0",
@@ -65,7 +64,6 @@
     "folder-hash": "3.3.0",
     "jest": "25.5.3",
     "jsdom": "16.2.2",
-    "nanoid": "3.1.3",
     "pirates": "4.0.1",
     "prettier": "2.0.5",
     "react": "16.13.1",
@@ -77,6 +75,7 @@
     "semver": "7.3.2",
     "stylis": "3.5.4",
     "typescript": "3.8.3",
+    "uid": "1.0.0",
     "webpack": "4.43.0"
   },
   "peerDependencies": {
