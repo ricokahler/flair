@@ -16,7 +16,7 @@ Watch releases to be notified for new features.
 
 **Experimental features**
 
-The best features of this library are still in development! Coming soon:
+The best features of this library are still in development:
 
 - static and extracted CSS similar to [Linaria](https://github.com/callstack/linaria) via [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library)
 - SSR support
