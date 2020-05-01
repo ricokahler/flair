@@ -30,7 +30,7 @@ The best features of this library are still in development:
 
 ## Why another CSS-in-JS lib?
 
-[Glad you asked. See here for more info](./why-another-css-in-js-lib.md)
+[Glad you asked! See here for more info.](./why-another-css-in-js-lib.md)
 
 ## Installation
 
