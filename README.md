@@ -338,6 +338,12 @@ function Component(props: Props) {
 
 This repo has two implementations that are better suited for different environments/setups.
 
+Both implementations share the exact same API and even use the same import (the SSR version rewrites the imports via the babel plugin).
+
+In general, the standalone implementation is easier to get started with, works in more environments, and is currently much more stable than the SSR counterpart.
+
+With the existence of both versions, you can get started using the standalone version and optimize later with the SSR version.
+
 <!-- prettier-ignore-start -->
 | Feature | `@react-style-system/standalone` | `@react-style-system/ssr` |
 |--|--|--|
@@ -352,11 +358,7 @@ This repo has two implementations that are better suited for different environme
 | Same lean API | 😎 | 😎 |
 <!-- prettier-ignore-end -->
 
-Both implementations share the exact same API and even use the same import (the SSR version rewrites the imports via the babel plugin).
-
-In general, the standalone implementation is easier to get started with, works in more environments, and is currently much more stable than the SSR counterpart.
-
-With both versions, you can get started using the standalone version and optimize later with the SSR version.
+### How does this all work?
 
 [See the architecture docs for more info.](./architecture.md)
 
