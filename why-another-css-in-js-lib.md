@@ -63,6 +63,8 @@ function Parent(props) {
 }
 ```
 
+This is great because it quickly transforms your class names into part of your component's API. To me, this is an execellent way to enable composition on a style-level and eliminate unscalable style-related props like `underlined`, `hasBorder` etc. I think the ability to augment a style like this is just as powerful as the [`children` prop is in React](https://youtu.be/3XaXKiXtNjw?t=651).
+
 In contrast, emotion and styled-components do not share these component rooted semantics. With emotion/styled-components, you're always writing styles for an individual element, not a component.
 
 ```js
