@@ -18,9 +18,9 @@ Watch releases to be notified for new features.
 
 The best features of this library are still in development:
 
-- static and extracted CSS similar to [Linaria](https://github.com/callstack/linaria) via [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library)
+- static and extracted CSS similar to [Linaria](https://github.com/callstack/linaria) via a [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library when stable)
 - SSR support
-- much smaller bundle [1.8kB](https://bundlephobia.com/result?p=@react-style-system/ssr@0.0.0-cdc69bb60)
+- much smaller bundle [1.8kB](https://bundlephobia.com/result?p=@react-style-system/ssr)
 - performance improvements
 
 **Requirements**
@@ -192,7 +192,7 @@ export default Card;
 
 ### Composability
 
-`react-style-system`'s styles are composable by default. This means that every style you write can be augmented and style props like `className` and `style` are automatically propagated to the subject `Root` component.
+`react-style-system`'s styles are composable by default. This means that every style you write can be augmented because the style props `className`, `style`, and `styles` are automatically propagated to the subject `Root` component.
 
 Building from the example above:
 
@@ -303,7 +303,7 @@ export default Button;
 
 ### Color system usage
 
-`react-style-system` ships with a simple yet robust color system. You can wrap your components in `ColorContextProvider`s to give your components context for what color they should expect. This works well when supporting dark mode.
+`react-style-system` ships with a simple yet robust color system. You can wrap your components in `ColorContextProvider`s to give your components context for what color they should expect to be on top of. This works well when supporting dark mode.
 
 [See here for a full demo of color context.](https://codesandbox.io/s/nested-color-system-demo-qphro)
 
@@ -360,7 +360,7 @@ With both versions, you can get started using the standalone version and optimiz
 
 [See the architecture docs for more info.](./architecture.md)
 
-### Enabling `@react-style-system/ssr`
+### Enabling the experiemental SSR mode (`@react-style-system/ssr`)
 
 > ⚠️ In order to get this to work, you need to be able to freely configure babel and webpack. This is currently _not_ possible with `create-react-app`.
 
@@ -378,6 +378,8 @@ Create or modify your `.babelrc` configuration file at the root of your folder.
     [
       "@react-style-system/plugin",
       {
+        // this is the theme file. refer to here:
+        // https://github.com/ricokahler/react-style-system#create-your-theme
         "themePath": "./src/styles/theme.js"
       }
     ]
