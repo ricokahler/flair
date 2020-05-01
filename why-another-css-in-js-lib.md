@@ -94,6 +94,7 @@ function Component() {
 Another issue I have with styled-components is the syntax of `const Title = styled.div`. This syntax abstracts away from HTML semantics and makes it challenging to use class names. Going back to Material UI again, their styling solution embraces class names and HTML semantics. Making it easy to use tools like [`classnames`](https://github.com/JedWatson/classnames) to conditionally apply CSS classnames.
 
 ```js
+// [material-ui] example
 import React from 'react';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core';
@@ -137,6 +138,7 @@ function Component(props) {
 It's possible to do the above with styled-components syntax, however it requires passing props into the styled component. This is odd because it adds to the API footprint of the styled component and further takes away from the raw HTML element.
 
 ```js
+// [styled-components] example
 import React from 'react';
 import styled from 'styled-components';
 
@@ -178,6 +180,7 @@ This issue is a bit specific but important regarding the color systems for compo
 If you take a look at the styles for Material UI, you can see that they have two styles for both the "primary" and "secondary" color that are exactly the same besides the `primary` `secondary` values.
 
 ```js
+// taken from [material-ui]
    /* Styles applied to the root element if `variant="contained"` and `color="primary"`. */
   containedPrimary: {
     color: theme.palette.primary.contrastText,
