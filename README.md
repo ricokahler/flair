@@ -1,4 +1,4 @@
-# React style system
+# React Style System
 
 > a lean, component-centric style system for React components
 
@@ -12,20 +12,25 @@ Watch releases to be notified for new features.
 - 👩‍🎨 theming
 - 🎨 advanced color context features including **dark mode**
 - 🧩 composable styles by default
-- 📦 small size, [6.6kB](https://bundlephobia.com/result?p=react-style-system)
+- 📦 small size, [6.7kB](https://bundlephobia.com/result?p=react-style-system)
 
-**Features coming soon**
+**Experimental features**
 
-The best features of this library are still in development! Coming soon:
+The best features of this library are still in development:
 
-- static CSS similar to [Linaria](https://github.com/callstack/linaria) via [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library)
+- static and extracted CSS similar to [Linaria](https://github.com/callstack/linaria) via a [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library when stable)
 - SSR support
-- much smaller bundle [1.8kB](https://bundlephobia.com/result?p=@react-style-system/ssr@0.0.0-cdc69bb60)
+- much smaller bundle [1.8kB](https://bundlephobia.com/result?p=@react-style-system/ssr)
 - performance improvements
+
+**Requirements**
+
+- React `>16.8.0` (requires hooks)
+- No IE 11 support
 
 ## Why another CSS-in-JS lib?
 
-[See here for more info](./why-another-css-in-js-lib.md)
+[Glad you asked! See here for more info.](./why-another-css-in-js-lib.md)
 
 ## Installation
 
@@ -118,13 +123,13 @@ declare module 'react-style-system' {
 }
 ```
 
-### VS Code Extension
+### VS Code extension
 
 If you're using VSCode, we recommend installing the `vscode-styled-components` by [the styled-components team](https://github.com/styled-components/vscode-styled-components). This will add syntax highlighting for our style of CSS-in-JS.
 
 ## Usage
 
-### Basic Usage
+### Basic usage
 
 ```tsx
 // Card.tsx
@@ -187,7 +192,7 @@ export default Card;
 
 ### Composability
 
-`react-style-system`'s styles are composable by default. This means that every style you write can be augmented and style props like `className` and `style` are automatically propagated to the subject `Root` component.
+`react-style-system`'s styles are composable by default. This means that every style you write can be augmented because the style props `className`, `style`, and `styles` are automatically propagated to the subject `Root` component.
 
 Building from the example above:
 
@@ -254,7 +259,7 @@ function Grid(props: Props) {
 }
 ```
 
-### Dynamic Coloring
+### Dynamic coloring
 
 Every component styled with `react-style-system` supports dynamic coloring. This means you can pass the prop `color` to it and use that color when defining styles.
 
@@ -296,13 +301,13 @@ export default Button;
 
 [See this demo in CodeSandbox](https://codesandbox.io/s/dynamic-coloring-7dr3n)
 
-### Color System Usage
+### Color system usage
 
-`react-style-system` ships with a simple yet robust color system. You can wrap your components in `ColorContextProvider`s to give your components context for what color they should expect. This works well when supporting dark mode.
+`react-style-system` ships with a simple yet robust color system. You can wrap your components in `ColorContextProvider`s to give your components context for what color they should expect to be on top of. This works well when supporting dark mode.
 
 [See here for a full demo of color context.](https://codesandbox.io/s/nested-color-system-demo-qphro)
 
-### Theming Usage
+### Theming usage
 
 Theming in `react-style-system` is implemented as one object that will be available to all your components in the app. You can use this object to store values to make your app's styles consistent. We recommend referring to [`material-ui`'s theme object](https://material-ui.com/customization/default-theme/#default-theme) for idea on how to define your own theme's shape.
 
@@ -329,32 +334,62 @@ function Component(props: Props) {
 }
 ```
 
-## Enabling the experimental babel plugin
+## Implementations
 
-> ⚠️ In order to get this to work, you need to be able to freely configure babel _and_ webpack. This is currently _not_ possible with `create-react-app`.
+This repo has two implementations that are better suited for different environments/setups.
+
+Both implementations share the exact same API and even use the same import (the SSR version rewrites the imports via the babel plugin).
+
+In general, the standalone implementation is easier to get started with, works in more environments, and is currently much more stable than the SSR counterpart.
+
+With the existence of both versions, you can get started using the standalone version and optimize later with the SSR version.
+
+<!-- prettier-ignore-start -->
+| Feature | `@react-style-system/standalone` | `@react-style-system/ssr` |
+|--|--|--|
+| Works standalone without any babel plugins or webpack loaders (for `create-react-app` support) | ✅ | 🔴 |
+| Zero config | ✅ | 🔴 |
+| Faster, static CSS 🚀 | 🔴 | ✅ |
+| Extracts CSS from JS bundle | 🔴 | ✅ |
+| Stability | 👍 beta | 🤔 experimental |
+| Bundle size | [6.7kB](https://bundlephobia.com/result?p=@react-style-system/standalone) 🤷‍♀️ | [2kB](https://bundlephobia.com/result?p=@react-style-system/ssr) 😎 |
+| [Theming](#theming-usage) | ✅ | ✅ |
+| [Dynamic coloring](#dynamic-coloring) | ✅ | ✅ |
+| Same lean API | 😎 | 😎 |
+<!-- prettier-ignore-end -->
+
+### How does this all work?
+
+[See the architecture docs for more info.](./architecture.md)
+
+### Enabling the experiemental SSR mode (`@react-style-system/ssr`)
+
+> ⚠️ In order to get this to work, you need to be able to freely configure babel and webpack. This is currently _not_ possible with `create-react-app`.
 
 ### Configure babel
 
 Create or modify your `.babelrc` configuration file at the root of your folder.
 
-```json
+```js
 {
   "presets": [
-    [
-      // rest of your presets
-    ]
+    // ...rest of your presets
   ],
   "plugins": [
-    // ... rest of your plugins
+    // ...rest of your plugins
     [
       "@react-style-system/plugin",
       {
+        // this is the theme file. refer to here:
+        // https://github.com/ricokahler/react-style-system#create-your-theme
         "themePath": "./src/styles/theme.js"
       }
     ]
   ]
 }
 ```
+
+> **Note:** You do _not_ need to change your imports. The babel plugin `@react-style-system/plugin` will re-write your imports to use the `@react-style-system/ssr` package
 
 ### Configure Webpack
 
