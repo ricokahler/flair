@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/ricokahler/react-style-system.git"
   },
-  "description": "a carefully thought-out system system for React components",
+  "description": "a lean, component-centric style system for React components",
   "keywords": [
     "css",
     "css-in-js",

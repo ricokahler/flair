@@ -237,14 +237,16 @@ If you're not familiar, linaria is a zero runtime CSS-in-JS solution that solved
 >
 > For example, Material UI/JSS supports server-side rendered CSS but the resulting JavaScript still includes the code to create the styles. Because the JS still includes the styling code, it will slow down [TTI](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive).
 
-</details>
-
 ### Feature comparison
 
 |                              | Material UI/JSS | styled-components | emotion | linaria | react-style-system |
 | ---------------------------- | --------------- | ----------------- | ------- | ------- | ------------------ |
 | Component-centric semantics  | ✅              | 🔴                | 🔴      | 🔴      | ✅                 |
-| Embraces HTML                | ✅              | 🔴                | ✅      | ✅      | ✅                 |
+| Embraces HTML                | ✅              | 🔴                | ✅      | ✅[*][1]| ✅                 |
 | Actual CSS                   | 🔴              | ✅                | ✅      | ✅      | ✅                 |
 | Dynamic component coloring   | 🔴              | 🔴                | 🔴      | ✅      | ✅                 |
 | Ship (near) zero-runtime CSS | 🔴              | 🔴                | 🔴      | ✅      | ✅                 |
+
+[1]: #
+
+#### only when 
