@@ -1,5 +1,15 @@
 ## Why another CSS-in-JS lib?
 
+> **~**<br/>
+> **a lil preface 😅**:<br/>
+> **~**
+> 
+> I think by the nature of styling itself, the way we style can be just as opinionated as the styles themselves.
+>
+> Please read this with an open mind and feel free to [open an issue](https://github.com/ricokahler/react-style-system/issues) or [email me](mailto:ricokahler@me.com) with any feedback or corrections!
+
+Why another CSS-in-JS lib?
+
 Because there's no one lib that checks all the boxes for me. See below for an explanation.
 
 ### 1. Component-centric semantics for styles
@@ -7,7 +17,7 @@ Because there's no one lib that checks all the boxes for me. See below for an ex
 If you used Material UI or JSS, then you're familiar with using `withStyles` or `makeStyles`. e.g.
 
 ```js
-// Component.js
+// Component.js in [material-ui]
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 
@@ -32,7 +42,7 @@ export default Component;
 This pattern is great because it creates styles on a component level and it's simple for a parent component to override child styles. For example, in Material UI, a parent component can override `title` styles like so:
 
 ```js
-// Parent.js
+// Parent.js in [material-ui]
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import Component from './Component';
@@ -56,8 +66,9 @@ function Parent(props) {
 In contrast, emotion and styled-components do not share these component rooted semantics. With emotion/styled-components, you're always writing styles for an individual element, not a component.
 
 ```js
+// [emotion] or [styled-compoennts] like example
 import React from 'react';
-import styled from 'styled-component';
+import styled from 'styled-components';
 
 // no component semantics
 const Title = styled.div`
@@ -149,7 +160,7 @@ The issue I have with the above is that it becomes easy to forget that the `Titl
 
 When you forget that HTML is HTML, you forget to do things like add `aria-label`s, linters have a harder time giving you HTML suggestions, concepts like class names become foreign, and you almost grow resentment towards using "raw" HTML elements. It's like the raw `button` element is ugly because it's not uppercase 🤷‍♀️
 
-Anyway, embracing HTML makes it easier to embrace HTML semantic elements which is better for a11y and SEO.
+Embracing HTML makes it easier to embrace HTML semantic elements which is better for a11y and SEO.
 
 ### 3. Write actual CSS
 
@@ -160,9 +171,9 @@ This is where Material UI's styling solution falls short. I think it's better to
 
 ### 4. The ability to be define the color of a component dynamically, including derived states, in the context of a component
 
-This issue is a bit specific but important regarding the color system of [Hacker UI](https://hacker-ui.com/) so bare with me hear for a bit…
+This issue is a bit specific but important regarding the color systems for components libs like [Hacker UI](https://hacker-ui.com/) so bare with me hear for a bit…
 
-If you take a look at the styles for Material UI, you can see that they have styles for both the "primary" and "secondary" color form their theme, and besides the `primary` `secondary`, these styles are the same.
+If you take a look at the styles for Material UI, you can see that they have two styles for both the "primary" and "secondary" color that are exactly the same besides the `primary` `secondary` values.
 
 ```js
    /* Styles applied to the root element if `variant="contained"` and `color="primary"`. */
@@ -192,6 +203,8 @@ If you take a look at the styles for Material UI, you can see that they have sty
 ```
 
 [source](https://github.com/mui-org/material-ui/blob/f2d74e9144ffec1ba6a098528573c7dfb3957b48/packages/material-ui/src/Button/Button.js#L137-L160)
+
+This is an issue because it doesn't scale.
 
 So here's the goal: instead of having two or three related classes _just_ for colors, let's define a way to dynamically define one style class that works for all possible colors, and let the user pass in the color via a prop.
 
@@ -233,20 +246,16 @@ function Parent() {
 
 If you're not familiar, linaria is a zero runtime CSS-in-JS solution that solved a lot of performance issues because it extracts all the styles you write with it to static CSS.
 
-> Note: by ability tho ship static CSS, I mean that there is little to no javascript code related to styling left in the final bundle. This is different than SSR support.
+> Note: by ability to ship static CSS, I mean that there is little to no javascript code related to styling left in the final bundle. This is different than SSR support.
 >
-> For example, Material UI/JSS supports server-side rendered CSS but the resulting JavaScript still includes the code to create the styles. Because the JS still includes the styling code, it will slow down [TTI](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive).
+> For example, Material UI/JSS supports server-side rendered CSS but the resulting JavaScript will still includs the code to create the styles. Because the JS still includes the styling code, it will increase download times and slow down [TTI](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive).
 
 ### Feature comparison
 
-|                              | Material UI/JSS | styled-components | emotion | linaria | react-style-system |
-| ---------------------------- | --------------- | ----------------- | ------- | ------- | ------------------ |
-| Component-centric semantics  | ✅              | 🔴                | 🔴      | 🔴      | ✅                 |
-| Embraces HTML                | ✅              | 🔴                | ✅      | ✅[*][1]| ✅                 |
-| Actual CSS                   | 🔴              | ✅                | ✅      | ✅      | ✅                 |
-| Dynamic component coloring   | 🔴              | 🔴                | 🔴      | ✅      | ✅                 |
-| Ship (near) zero-runtime CSS | 🔴              | 🔴                | 🔴      | ✅      | ✅                 |
-
-[1]: #
-
-#### only when 
+|                               | Material UI/JSS | styled-components | emotion | linaria | react-style-system |
+| ----------------------------- | --------------- | ----------------- | ------- | ------- | ------------------ |
+| Component-centric semantics   | ✅              | 🔴                | 🔴      | 🔴      | ✅                 |
+| Embraces HTML                 | ✅              | 🔴                | ✅      | ✅      | ✅                 |
+| Actual CSS                    | 🔴              | ✅                | ✅      | ✅      | ✅                 |
+| Contextual component coloring | 🔴              | 🔴                | 🔴      | 🔴      | ✅                 |
+| Ship static CSS               | 🔴              | 🔴                | 🔴      | ✅      | ✅                 |
