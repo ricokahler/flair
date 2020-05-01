@@ -3,5 +3,5 @@
   "groupName": "all",
   "schedule": "before 3am on the first day of the month",
   "rebaseWhen": "behind-base-branch",
-  "ignoreDeps": ["stylis"]
+  "ignoreDeps": ["stylis", "react-style-system"]
 }
