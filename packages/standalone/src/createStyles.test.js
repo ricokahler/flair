@@ -7,13 +7,11 @@ const theme = { colors: { brand: '#00f' } };
 
 let mockIndex = 0;
 
-jest.mock('nanoid', () => ({
-  nanoid: () => {
-    const mockId = `id-${mockIndex}`;
-    mockIndex += 1;
-    return mockId;
-  },
-}));
+jest.mock('uid', () => () => {
+  const mockId = `id-${mockIndex}`;
+  mockIndex += 1;
+  return mockId;
+});
 
 const delay = () => new Promise((resolve) => setTimeout(resolve, 0));
 

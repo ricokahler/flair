@@ -1,6 +1,6 @@
 import React, { forwardRef, useMemo, useLayoutEffect } from 'react';
 import classNames from 'classnames';
-import { nanoid } from 'nanoid';
+import uid from 'uid';
 // the types for stylis seems to have been deleted at this time of writing
 // @ts-ignore
 import stylis from 'stylis';
@@ -50,7 +50,7 @@ const identity = <T extends any>(t: T) => t;
 function createStyles<Styles extends { [key: string]: string }, Theme = any>(
   stylesFn: (args: StyleFnArgs<Theme>) => Styles,
 ) {
-  const sheetId = nanoid();
+  const sheetId = uid();
   const fileName = tryGetCurrentFilename();
 
   // this makes it work in browser but a no-op in node.
@@ -99,7 +99,7 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
       });
     }, [color, surface, theme]);
 
-    const styleId = useMemo(nanoid, [unprocessedStyles]);
+    const styleId = useMemo(uid, [unprocessedStyles]);
 
     // calculate the class names
     const thisStyles = useMemo(() => {
