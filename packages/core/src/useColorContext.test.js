@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect } from 'react';
+import React, { Component, useEffect } from 'react';
 import { act, create } from 'react-test-renderer';
 import ColorContextProvider from './ColorContextProvider';
 import useColorContext from './useColorContext';
