@@ -1,4 +1,4 @@
-# React style system
+# React Style System
 
 > a lean, component-centric style system for React components
 
