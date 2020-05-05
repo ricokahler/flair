@@ -429,9 +429,16 @@ module.exports = {
         test: /\.rss-css$/,
         use: [
           'style-loader', // you can use the mini-css-extract-plugin instead too
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: { importLoaders: 2 },
+          },
           // react-style-system loader must be last
           '@react-style-system/loader',
+        ],
+        include: [
+          require.resolve('@react-style-system/loader/load.rss-css'),
+          // ...
         ],
       },
     ],
