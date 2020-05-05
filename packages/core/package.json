@@ -6,7 +6,8 @@
     "polished": "^3.0.0"
   },
   "dependencies": {
-    "@ricokahler/parse-to-rgba": "0.2.1"
+    "@ricokahler/parse-to-rgba": "0.2.1",
+    "@babel/runtime": "7.9.6"
   },
   "private": true
 }
