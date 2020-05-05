@@ -13,6 +13,7 @@ Watch releases to be notified for new features.
 - 🎨 advanced color context features including **dark mode**
 - 🧩 composable styles by default
 - 📦 small size, [6.7kB](https://bundlephobia.com/result?p=react-style-system)
+- ⛓ full TypeScript and enhanced DX
 
 **Experimental features**
 
