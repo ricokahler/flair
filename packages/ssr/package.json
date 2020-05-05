@@ -2,7 +2,8 @@
   "name": "@react-style-system/ssr",
   "dependencies": {
     "@types/classnames": "2.2.10",
-    "classnames": "2.2.6"
+    "classnames": "2.2.6",
+    "@babel/runtime": "7.9.6"
   },
   "peerDependencies": {
     "@types/react": "^16.8.0",

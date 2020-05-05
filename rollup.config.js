@@ -1,6 +1,6 @@
-const babel = require('rollup-plugin-babel');
-const resolve = require('@rollup/plugin-node-resolve');
-const { get } = require('lodash');
+import babel from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import { get } from 'lodash';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
@@ -28,7 +28,7 @@ const umdPlugins = [
       '@babel/preset-react',
       '@babel/preset-typescript',
     ],
-    runtimeHelpers: true,
+    babelHelpers: 'bundled',
     extensions,
   }),
 ];
@@ -36,11 +36,13 @@ const umdPlugins = [
 const esmPlugins = [
   resolve({
     extensions,
+    modulesOnly: true,
   }),
   babel({
     babelrc: false,
     presets: ['@babel/preset-react', '@babel/preset-typescript'],
-    runtimeHelpers: true,
+    plugins: ['@babel/plugin-transform-runtime'],
+    babelHelpers: 'runtime',
     extensions,
   }),
 ];
@@ -57,6 +59,10 @@ const getExternal = (name) => [
       {},
     ),
   ),
+  // mark all babel runtime deps are external
+  ...(require(`./packages/${name}/package.json`).dependencies['@babel/runtime']
+    ? [/^@babel\/runtime/]
+    : []),
 ];
 
 module.exports = [
