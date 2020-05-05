@@ -64,7 +64,7 @@ module.exports = [
   {
     input: './packages/babel-plugin-plugin/src/index.ts',
     output: {
-      file: './dist/babel-plugin-plugin/index.js',
+      file: './dist/babel-plugin-plugin/babel-plugin-plugin.js',
       format: 'cjs',
       sourcemap: true,
     },
@@ -75,7 +75,7 @@ module.exports = [
   {
     input: './packages/collect/src/index.ts',
     output: {
-      file: './dist/collect/index.js',
+      file: './dist/collect/collect.js',
       format: 'cjs',
       sourcemap: true,
     },
@@ -87,7 +87,7 @@ module.exports = [
     input: './packages/loader/src/index.ts',
     output: [
       {
-        file: './dist/loader/index.js',
+        file: './dist/loader/loader.js',
         format: 'cjs',
         sourcemap: true,
       },
@@ -109,7 +109,7 @@ module.exports = [
   {
     input: './packages/common/src/index.ts',
     output: {
-      file: './dist/common/index.js',
+      file: './dist/common/common.js',
       format: 'cjs',
       sourcemap: true,
     },
@@ -119,7 +119,7 @@ module.exports = [
   {
     input: './packages/common/src/index.ts',
     output: {
-      file: './dist/common/index.esm.js',
+      file: './dist/common/common.esm.js',
       format: 'esm',
       sourcemap: true,
     },
@@ -130,7 +130,7 @@ module.exports = [
   {
     input: './packages/core/src/index.ts',
     output: {
-      file: './dist/core/index.js',
+      file: './dist/core/core.js',
       format: 'umd',
       sourcemap: true,
       name: 'ReactStyleSystem',
@@ -145,7 +145,7 @@ module.exports = [
   {
     input: './packages/core/src/index.ts',
     output: {
-      file: './dist/core/index.esm.js',
+      file: './dist/core/core.esm.js',
       format: 'esm',
       sourcemap: true,
     },
@@ -156,7 +156,7 @@ module.exports = [
   {
     input: './packages/ssr/src/index.ts',
     output: {
-      file: './dist/ssr/index.js',
+      file: './dist/ssr/ssr.js',
       format: 'umd',
       sourcemap: true,
       name: 'ReactStyleSystem',
@@ -172,7 +172,7 @@ module.exports = [
   {
     input: './packages/ssr/src/index.ts',
     output: {
-      file: './dist/ssr/index.esm.js',
+      file: './dist/ssr/ssr.esm.js',
       format: 'esm',
       sourcemap: true,
     },
@@ -183,7 +183,7 @@ module.exports = [
   {
     input: './packages/standalone/src/index.ts',
     output: {
-      file: './dist/standalone/index.js',
+      file: './dist/standalone/standalone.js',
       format: 'umd',
       sourcemap: true,
       name: 'ReactStyleSystem',
@@ -201,7 +201,7 @@ module.exports = [
   {
     input: './packages/standalone/src/index.ts',
     output: {
-      file: './dist/standalone/index.esm.js',
+      file: './dist/standalone/standalone.esm.js',
       format: 'esm',
       sourcemap: true,
     },
@@ -212,7 +212,7 @@ module.exports = [
   {
     input: './packages/react-style-system/src/index.ts',
     output: {
-      file: './dist/react-style-system/index.js',
+      file: './dist/react-style-system/root.js',
       format: 'umd',
       sourcemap: true,
       name: 'ReactStyleSystem',
@@ -230,7 +230,7 @@ module.exports = [
   {
     input: './packages/react-style-system/src/index.ts',
     output: {
-      file: './dist/react-style-system/index.esm.js',
+      file: './dist/react-style-system/root.esm.js',
       format: 'esm',
       sourcemap: true,
     },
