@@ -89,9 +89,30 @@ test('multiline CSS property', () => {
 
   const { code: outputCode } = generate(result);
   expect(outputCode).toMatchInlineSnapshot(`
-"\`
-    transition: \${\`background-color \${theme.durations.standard},
-      border \${theme.durations.standard}\`};
-  \`"
-`);
+    "\`
+        transition: \${\`background-color \${theme.durations.standard},
+          border \${theme.durations.standard}\`};
+      \`"
+  `);
+});
+
+test('`!important`s should be kept in the string', () => {
+  const code = stripIndent`\`
+    background-color: \${theme.colors.brand} !important;
+  \``;
+
+  const file = parse(code, { filename: 'example.js' });
+
+  const [firstStatement] = file.program.body;
+  const templateLiteral = firstStatement.expression;
+  expect(t.isTemplateLiteral(templateLiteral)).toBe(true);
+
+  const result = transformCssTemplateLiteral(templateLiteral);
+
+  const { code: outputCode } = generate(result);
+  expect(outputCode).toMatchInlineSnapshot(`
+    "\`
+        background-color: \${\`\${theme.colors.brand} \`}!important;
+      \`"
+  `);
 });

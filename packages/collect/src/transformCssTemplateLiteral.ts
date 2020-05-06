@@ -41,6 +41,31 @@ function parsePre(pre: string, expressions: t.Expression[]) {
   return { tuples: preTuples, lastTemplateElement: lastPreTemplateElement };
 }
 
+/**
+ * This function takes in CSS template literals and rewrites them so that CSS
+ * properties are re-written in nested template strings.
+ *
+ * That way the plugin downstream and replace template string expressions with
+ * CSS variables.
+ *
+ * in:
+ *
+ * ```js
+ * css`
+ *   background-color: red;
+ *   border: 1px solid ${theme.colors.brand};
+ * `
+ * ```
+ *
+ * out:
+ *
+ * ```js
+ * css`
+ *   background-color: red;
+ *   border: ${`1px solid ${theme.colors.brand}`};
+ * `
+ * ```
+ */
 function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
   const { quasis, expressions } = templateLiteral;
 
@@ -65,7 +90,9 @@ function transformCssTemplateLiteral(templateLiteral: t.TemplateLiteral) {
     // calculate the start and end for each property match
     .map((match) => {
       const property = match[0];
-      const propertyMatch = /(:\s*)(.*xX__[^;:]*__Xx.*)\s*;/.exec(property);
+      const propertyMatch = /(:\s*)(.*xX__[^;:]*__Xx[^!]*)(!important)?\s*;/.exec(
+        property,
+      );
       if (!propertyMatch) {
         throw new Error(`${errorMessage} code-1`);
       }

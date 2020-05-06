@@ -67,7 +67,7 @@ function plugin(
             [],
             t.stringLiteral(
               `@react-style-system/loader/load.rss-css?css=${encodeURIComponent(
-                css,
+                Buffer.from(css).toString('base64'),
               )}`,
             ),
           ),
