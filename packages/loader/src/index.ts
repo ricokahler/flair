@@ -6,7 +6,10 @@ import webpack from 'webpack';
  * chain
  */
 const loader: webpack.loader.Loader = function () {
-  return new URLSearchParams(this.resourceQuery).get('css') || '';
+  return Buffer.from(
+    new URLSearchParams(this.resourceQuery).get('css') || '',
+    'base64',
+  );
 };
 
 export default loader;
