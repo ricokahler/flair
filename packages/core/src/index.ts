@@ -9,4 +9,7 @@ export { default as css } from './css';
 export { default as getContrast } from './getContrast';
 export { default as getLuminance } from './getLuminance';
 export { default as readableColor } from './readableColor';
+export { default as lightnessDarken } from './lightnessDarken';
+export { default as getBrightness } from './getBrightness';
+export { default as darken } from './darken';
 export * from './types';
