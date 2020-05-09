@@ -73,7 +73,7 @@
     "react-dom": "16.13.1",
     "react-test-renderer": "16.13.1",
     "require-from-string": "2.0.2",
-    "rollup": "2.7.6",
+    "rollup": "2.8.2",
     "semver": "7.3.2",
     "stylis": "3.5.4",
     "typescript": "3.8.3",
