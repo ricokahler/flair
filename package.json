@@ -39,7 +39,7 @@
     "@babel/template": "7.8.6",
     "@babel/traverse": "7.9.6",
     "@babel/types": "7.9.6",
-    "@color2k/compat": "^1.0.0-rc.4",
+    "@color2k/compat": "1.0.0-rc.4",
     "@ricokahler/parse-to-rgba": "0.3.2",
     "@rollup/plugin-babel": "5.0.0",
     "@rollup/plugin-node-resolve": "7.1.3",
