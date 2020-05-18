@@ -1,6 +1,4 @@
-import readableColor from './readableColor';
-import getContrast from './getContrast';
-
+import { readableColor, getContrast } from 'color2k';
 import { ReadableColorPalette } from './types';
 
 const hasBadDecorativeContrast = (a: string, b: string) =>

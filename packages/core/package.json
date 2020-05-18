@@ -2,11 +2,10 @@
   "name": "@react-style-system/core",
   "peerDependencies": {
     "@types/react": "^16.8.0",
-    "react": "^16.8.0",
-    "polished": "^3.0.0"
+    "react": "^16.8.0"
   },
   "dependencies": {
-    "@ricokahler/parse-to-rgba": "0.3.2",
+    "color2k": "1.0.0-rc.4",
     "@babel/runtime": "7.9.6"
   },
   "private": true
