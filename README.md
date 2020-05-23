@@ -13,6 +13,7 @@ Watch releases to be notified for new features.
 - 🎨 advanced color context features including **dark mode**
 - 🧩 composable styles by default
 - 📦 small size, [6.7kB](https://bundlephobia.com/result?p=react-style-system)
+- 🎨 full color manipulation library included ([colork2k](https://github.com/ricokahler/color2k))
 - ⛓ full TypeScript support and enhanced DX
 
 **Experimental features**
@@ -386,7 +387,7 @@ With the existence of both versions, you can get started using the standalone ve
 
 [See the architecture docs for more info.](./architecture.md)
 
-### Enabling the experiemental SSR mode (`@react-style-system/ssr`)
+### Enabling the experimental SSR mode (`@react-style-system/ssr`)
 
 > ⚠️ In order to get this to work, you need to be able to freely configure babel and webpack. This is currently _not_ possible with `create-react-app`.
 
