@@ -12,38 +12,6 @@ afterEach(() => {
   global.console.error.mockRestore();
 });
 
-it('throws if there is no wrapping color context', () => {
-  const errorHandler = jest.fn();
-
-  class ErrorBoundary extends Component {
-    componentDidCatch(e) {
-      errorHandler(e);
-    }
-    render() {
-      return this.props.children;
-    }
-  }
-
-  function ExampleComponent() {
-    useColorContext();
-    return null;
-  }
-
-  act(() => {
-    create(
-      <ErrorBoundary>
-        <ExampleComponent />
-      </ErrorBoundary>,
-    );
-  });
-
-  expect(errorHandler).toHaveBeenCalled();
-  const first = errorHandler.mock.calls[0][0];
-  expect(first.message).toMatchInlineSnapshot(
-    `"Could not find color context. Ensure this component is wrapped in a ColorContextProvider."`,
-  );
-});
-
 it('returns a the current context color wrapped in `createReadablePalette` with the surface color', () => {
   const effectHandler = jest.fn();
 
