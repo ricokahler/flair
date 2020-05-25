@@ -12,8 +12,8 @@ Watch releases to be notified for new features.
 - 👩‍🎨 theming
 - 🎨 advanced color context features including **dark mode**
 - 🧩 composable styles by default
-- 📦 small size, [6.7kB](https://bundlephobia.com/result?p=react-style-system)
-- 🎨 full color manipulation library included ([colork2k](https://github.com/ricokahler/color2k))
+- 📦 small size, [7.3kB](https://bundlephobia.com/result?p=react-style-system)
+- 👩‍🎨 full color manipulation library included ([colork2k](https://github.com/ricokahler/color2k)) (no need for chroma-js or polished)
 - ⛓ full TypeScript support and enhanced DX
 
 **Experimental features**
@@ -22,7 +22,7 @@ The best features of this library are still in development:
 
 - static and extracted CSS similar to [Linaria](https://github.com/callstack/linaria) via a [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library when stable)
 - SSR support
-- much smaller bundle [1.8kB](https://bundlephobia.com/result?p=@react-style-system/ssr)
+- much smaller bundle [2.5kB](https://bundlephobia.com/result?p=@react-style-system/ssr)
 - performance improvements
 
 **Requirements**
@@ -377,7 +377,7 @@ With the existence of both versions, you can get started using the standalone ve
 | Faster, static CSS 🚀 | 🔴 | ✅ |
 | Extracts CSS from JS bundle | 🔴 | ✅ |
 | Stability | 👍 beta | 🤔 experimental |
-| Bundle size | [6.7kB](https://bundlephobia.com/result?p=@react-style-system/standalone) 🤷‍♀️ | [2kB](https://bundlephobia.com/result?p=@react-style-system/ssr) 😎 |
+| Bundle size | [7.3kB](https://bundlephobia.com/result?p=@react-style-system/standalone) 🤷‍♀️ | [2.5kB](https://bundlephobia.com/result?p=@react-style-system/ssr) 😎 |
 | [Theming](#theming-usage) | ✅ | ✅ |
 | [Dynamic coloring](#dynamic-coloring) | ✅ | ✅ |
 | Same lean API | 😎 | 😎 |
