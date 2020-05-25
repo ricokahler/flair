@@ -5,7 +5,7 @@
     "react": "^16.8.0"
   },
   "dependencies": {
-    "color2k": "1.0.0-rc.4",
+    "color2k": "1.0.0-rc.5",
     "@babel/runtime": "7.9.6"
   },
   "private": true
