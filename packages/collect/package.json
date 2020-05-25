@@ -13,7 +13,7 @@
     "@types/node": "13.13.9",
     "common-tags": "1.8.0",
     "pirates": "4.0.1",
-    "stylis": "3.5.4",
+    "stylis": "4.0.1",
     "require-from-string": "2.0.2",
     "@types/require-from-string": "1.2.0"
   },
