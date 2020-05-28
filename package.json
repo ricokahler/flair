@@ -40,7 +40,6 @@
     "@babel/traverse": "7.9.6",
     "@babel/types": "7.9.6",
     "@color2k/compat": "1.0.0-rc.5",
-    "@ricokahler/parse-to-rgba": "0.3.2",
     "@rollup/plugin-babel": "5.0.2",
     "@rollup/plugin-node-resolve": "8.0.0",
     "@types/babel__core": "7.1.7",
