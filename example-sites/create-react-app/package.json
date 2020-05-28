@@ -9,7 +9,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-scripts": "3.4.1",
-    "react-style-system": "0.0.0-af376dbc1"
+    "flair": "0.0.0-af376dbc1"
   },
   "scripts": {
     "start": "react-scripts start",

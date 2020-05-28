@@ -1,1 +1,1 @@
-export * from '@react-style-system/standalone';
+export * from '@flair/standalone';

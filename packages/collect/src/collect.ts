@@ -4,7 +4,7 @@ import fs from 'fs';
 import stylis from 'stylis';
 import * as babel from '@babel/core';
 import { addHook } from 'pirates';
-import { createFilenameHash } from '@react-style-system/common';
+import { createFilenameHash } from '@flair/common';
 import requireFromString from 'require-from-string';
 import collectionPlugin, { Options } from './collectionPlugin';
 

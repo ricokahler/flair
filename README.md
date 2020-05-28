@@ -1,4 +1,4 @@
-# React Style System
+# Flair
 
 > a lean, component-centric style system for React components
 
@@ -12,7 +12,7 @@ Watch releases to be notified for new features.
 - 👩‍🎨 theming
 - 🎨 advanced color context features including **dark mode**
 - 🧩 composable styles by default
-- 📦 small size, [7.3kB](https://bundlephobia.com/result?p=react-style-system)
+- 📦 small size, [7.3kB](https://bundlephobia.com/result?p=flair)
 - 👩‍🎨 full color manipulation library included ([colork2k](https://github.com/ricokahler/color2k)) (no need for chroma-js or polished)
 - ⛓ full TypeScript support and enhanced DX
 
@@ -20,9 +20,9 @@ Watch releases to be notified for new features.
 
 The best features of this library are still in development:
 
-- static and extracted CSS similar to [Linaria](https://github.com/callstack/linaria) via a [Babel Plugin](https://github.com/ricokahler/react-style-system/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library when stable)
+- static and extracted CSS similar to [Linaria](https://github.com/callstack/linaria) via a [Babel Plugin](https://github.com/ricokahler/flair/tree/master/packages/babel-plugin-plugin) (this will become the preferred way to use the library when stable)
 - SSR support
-- much smaller bundle [2.5kB](https://bundlephobia.com/result?p=@react-style-system/ssr)
+- much smaller bundle [2.5kB](https://bundlephobia.com/result?p=@flair/ssr)
 - performance improvements
 
 **Requirements**
@@ -32,7 +32,7 @@ The best features of this library are still in development:
 
 **Table of contents**
 
-- [React Style System](#react-style-system)
+- [Flair](#flair)
   - [Features](#features)
   - [Why another CSS-in-JS lib?](#why-another-css-in-js-lib)
   - [Installation](#installation)
@@ -49,7 +49,7 @@ The best features of this library are still in development:
     - [Theming usage](#theming-usage)
   - [Implementations](#implementations)
     - [How does this all work?](#how-does-this-all-work)
-    - [Enabling the experiemental SSR mode (`@react-style-system/ssr`)](#enabling-the-experiemental-ssr-mode-react-style-systemssr)
+    - [Enabling the experiemental SSR mode (`@flair/ssr`)](#enabling-the-experiemental-ssr-mode-flairssr)
     - [Configure babel](#configure-babel)
     - [Configure Webpack](#configure-webpack)
 
@@ -62,12 +62,12 @@ The best features of this library are still in development:
 ### Install
 
 ```
-npm i --save react-style-system
+npm i --save flair
 ```
 
 ### Create your theme
 
-`react-style-system`'s theming works by providing an object to all your components. This theme object should contain values to keep your app's styles consistent.
+`flair`'s theming works by providing an object to all your components. This theme object should contain values to keep your app's styles consistent.
 
 [See theming usage for more info](#theming-usage)
 
@@ -91,7 +91,7 @@ export default theme;
 ```tsx
 // index.ts (or index.js)
 import React from 'react';
-import { ThemeProvider, ColorContextProvider } from 'react-style-system';
+import { ThemeProvider, ColorContextProvider } from 'flair';
 import { render } from 'react-dom';
 import theme from './theme';
 import App from './App';
@@ -124,9 +124,9 @@ import {
   ReactComponent,
   StyleProps,
   GetComponentProps,
-} from 'react-style-system';
+} from 'flair';
 
-declare module 'react-style-system' {
+declare module 'flair' {
   // this should import your theme
   type Theme = typeof import('./src/theme').default;
 
@@ -159,9 +159,9 @@ If you're using VSCode, we recommend installing the `vscode-styled-components` b
 ```tsx
 // Card.tsx
 import React from 'react';
-import { createStyles, PropsFromStyles } from 'react-style-system';
+import { createStyles, PropsFromStyles } from 'flair';
 
-// `react-style-system` works by creating a hook that intercepts your props
+// `flair` works by creating a hook that intercepts your props
 const useStyles = createStyles(({ css, theme }) => ({
   // here you return an object of styles
   root: css`
@@ -217,14 +217,14 @@ export default Card;
 
 ### Composability
 
-`react-style-system`'s styles are composable by default. This means that every style you write can be augmented because the style props `className`, `style`, and `styles` are automatically propagated to the subject `Root` component.
+`flair`'s styles are composable by default. This means that every style you write can be augmented because the style props `className`, `style`, and `styles` are automatically propagated to the subject `Root` component.
 
 Building from the example above:
 
 ```tsx
 // Grid.tsx
 import React from 'react';
-import { createStyles, PropsFromStyles } from 'react-style-system';
+import { createStyles, PropsFromStyles } from 'flair';
 import Cart from './Card';
 
 const useStyles = createStyles(({ css }) => ({
@@ -255,7 +255,7 @@ function Grid(props: Props) {
           // augments the `title` class in `Card`
           title: styles.titleUnderlined,
         }}
-        title="react-style-system"
+        title="flair"
         description={
           <>a lean, component-centric style system for React components</>
         }
@@ -286,7 +286,7 @@ function Grid(props: Props) {
 
 ### Dynamic coloring
 
-Every component styled with `react-style-system` supports dynamic coloring. This means you can pass the prop `color` to it and use that color when defining styles.
+Every component styled with `flair` supports dynamic coloring. This means you can pass the prop `color` to it and use that color when defining styles.
 
 ```tsx
 // passing the color prop
@@ -296,7 +296,7 @@ Every component styled with `react-style-system` supports dynamic coloring. This
 ```tsx
 // using the color prop to define styles
 import React from 'react';
-import { createStyles, PropsFromStyles } from 'react-style-system';
+import { createStyles, PropsFromStyles } from 'flair';
 
 // the `color` prop comes through here  👇
 const useStyles = createStyles(({ css, color, surface }) => ({
@@ -328,13 +328,13 @@ export default Button;
 
 ### Color system usage
 
-`react-style-system` ships with a simple yet robust color system. You can wrap your components in `ColorContextProvider`s to give your components context for what color they should expect to be on top of. This works well when supporting dark mode.
+`flair` ships with a simple yet robust color system. You can wrap your components in `ColorContextProvider`s to give your components context for what color they should expect to be on top of. This works well when supporting dark mode.
 
 [See here for a full demo of color context.](https://codesandbox.io/s/nested-color-system-demo-qphro)
 
 ### Theming usage
 
-Theming in `react-style-system` is implemented as one object that will be available to all your components in the app. You can use this object to store values to make your app's styles consistent. We recommend referring to [`material-ui`'s theme object](https://material-ui.com/customization/default-theme/#default-theme) for idea on how to define your own theme's shape.
+Theming in `flair` is implemented as one object that will be available to all your components in the app. You can use this object to store values to make your app's styles consistent. We recommend referring to [`material-ui`'s theme object](https://material-ui.com/customization/default-theme/#default-theme) for idea on how to define your own theme's shape.
 
 Wrap your App in a `ThemeProvider` and give that `ThemeProvider` a theme object.
 
@@ -370,14 +370,14 @@ In general, the standalone implementation is easier to get started with, works i
 With the existence of both versions, you can get started using the standalone version and optimize later with the SSR version.
 
 <!-- prettier-ignore-start -->
-| Feature | `@react-style-system/standalone` | `@react-style-system/ssr` |
+| Feature | `@flair/standalone` | `@flair/ssr` |
 |--|--|--|
 | Works standalone without any babel plugins or webpack loaders (for `create-react-app` support) | ✅ | 🔴 |
 | Zero config | ✅ | 🔴 |
 | Faster, static CSS 🚀 | 🔴 | ✅ |
 | Extracts CSS from JS bundle | 🔴 | ✅ |
 | Stability | 👍 beta | 🤔 experimental |
-| Bundle size | [7.3kB](https://bundlephobia.com/result?p=@react-style-system/standalone) 🤷‍♀️ | [2.5kB](https://bundlephobia.com/result?p=@react-style-system/ssr) 😎 |
+| Bundle size | [7.3kB](https://bundlephobia.com/result?p=@flair/standalone) 🤷‍♀️ | [2.5kB](https://bundlephobia.com/result?p=@flair/ssr) 😎 |
 | [Theming](#theming-usage) | ✅ | ✅ |
 | [Dynamic coloring](#dynamic-coloring) | ✅ | ✅ |
 | Same lean API | 😎 | 😎 |
@@ -387,7 +387,7 @@ With the existence of both versions, you can get started using the standalone ve
 
 [See the architecture docs for more info.](./architecture.md)
 
-### Enabling the experimental SSR mode (`@react-style-system/ssr`)
+### Enabling the experimental SSR mode (`@flair/ssr`)
 
 > ⚠️ In order to get this to work, you need to be able to freely configure babel and webpack. This is currently _not_ possible with `create-react-app`.
 
@@ -403,10 +403,10 @@ Create or modify your `.babelrc` configuration file at the root of your folder.
   "plugins": [
     // ...rest of your plugins
     [
-      "@react-style-system/plugin",
+      "@flair/plugin",
       {
         // this is the theme file. refer to here:
-        // https://github.com/ricokahler/react-style-system#create-your-theme
+        // https://github.com/ricokahler/flair#create-your-theme
         "themePath": "./src/styles/theme.js"
       }
     ]
@@ -414,11 +414,11 @@ Create or modify your `.babelrc` configuration file at the root of your folder.
 }
 ```
 
-> **Note:** You do _not_ need to change your imports. The babel plugin `@react-style-system/plugin` will re-write your imports to use the `@react-style-system/ssr` package
+> **Note:** You do _not_ need to change your imports. The babel plugin `@flair/plugin` will re-write your imports to use the `@flair/ssr` package
 
 ### Configure Webpack
 
-In your webpack config, create a new rule for `.rss-css` files and include the `@react-style-system/loader` in the chain.
+In your webpack config, create a new rule for `.rss-css` files and include the `@flair/loader` in the chain.
 
 ```js
 module.exports = {
@@ -435,15 +435,71 @@ module.exports = {
             loader: 'css-loader',
             options: { importLoaders: 2 },
           },
-          // react-style-system loader must be last
-          '@react-style-system/loader',
+          // flair loader must be last
+          '@flair/loader',
         ],
         include: [
-          require.resolve('@react-style-system/loader/load.rss-css'),
+          require.resolve('@flair/loader/load.rss-css'),
           // ...
         ],
       },
     ],
   },
 };
+```
+
+```js
+import { createStyles } from 'flair';
+
+const useStyles = createStyles(({ css, theme }) => ({
+  root: css`
+    background-color: ${theme.brand};
+    color: ${readableColor(theme.brand)};
+    width: 100%;
+  `,
+}));
+
+function MyComponent(props) {
+  const { Root, styles } = useStyles(props);
+
+  return (
+    <Root>
+      <div>stuff</div>
+    </Root>
+  );
+}
+```
+
+```js
+import { createStyles } from 'flair';
+
+import '@flair/loader/load.rss-css?hash=egmx6wi&css=.egmx6wi{background-color:var(--egmx6wi)}';
+import '@flair/loader/load.rss-css?hash=y5hdyrw&css=.y5hdyrw{color:var(--y5hdyrw)}';
+import '@flair/loader/load.rss-css?hash=vaw6ac0&css=.vaw6ac0{width:100%}';
+
+const useStyles = createStyles(({ css, theme }) => ({
+  root: {
+    egmx6wi: theme.brand,
+    y5hdyrw: readableColor(theme.brand),
+    vaw6ac0: true,
+  },
+}));
+
+function MyComponent(props) {
+  const { Root, styles } = useStyles(props);
+
+  return (
+    <Root>
+      <div>stuff</div>
+    </Root>
+  );
+}
+```
+
+```
+.test {
+  &:hover {
+    
+  }
+}
 ```

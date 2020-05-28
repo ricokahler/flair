@@ -3,13 +3,13 @@
   "compilerOptions": {
     "baseUrl": "../",
     "paths": {
-      "@react-style-system/standalone": ["standalone/src/index.ts"],
-      "@react-style-system/ssr": ["ssr/src/index.ts"],
-      "@react-style-system/core": ["core/src/index.ts"],
-      "@react-style-system/babel-plugin-plugin": [
+      "@flair/standalone": ["standalone/src/index.ts"],
+      "@flair/ssr": ["ssr/src/index.ts"],
+      "@flair/core": ["core/src/index.ts"],
+      "@flair/babel-plugin-plugin": [
         "babel-plugin-plugin/src/index.ts"
       ],
-      "@react-style-system/loader": ["loader/src/index.ts"]
+      "@flair/loader": ["loader/src/index.ts"]
     }
   }
 }

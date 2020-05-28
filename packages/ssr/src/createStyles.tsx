@@ -7,7 +7,7 @@ import {
   UseStyles,
   useTheme,
   useColorContext,
-} from '@react-style-system/core';
+} from '@flair/core';
 
 function hashStyleObj(
   styleObj: { [key: string]: string | undefined } | null | undefined,

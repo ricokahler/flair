@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "gatsby"
-import { createStyles } from "react-style-system"
+import { createStyles } from "flair"
 
 import Layout from "../components/layout"
 // import Image from "../components/image"

@@ -1,5 +1,5 @@
 {
-  "name": "@react-style-system/core",
+  "name": "@flair/core",
   "peerDependencies": {
     "@types/react": "^16.8.0",
     "react": "^16.8.0"

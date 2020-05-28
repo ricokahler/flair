@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { transform, traverse, parse } from '@babel/core';
 import generate from '@babel/generator';
-import { seek } from '@react-style-system/common';
-import { collect } from '@react-style-system/collect';
+import { seek } from '@flair/common';
+import { collect } from '@flair/collect';
 import prettier from 'prettier';
 import plugin from './plugin';
 
@@ -13,7 +13,7 @@ it('removes the tagged template literals and replaces it with array expressions'
 
   expect(code).toMatchInlineSnapshot(`
     "import React from 'react';
-    import { createStyles } from 'react-style-system';
+    import { createStyles } from 'flair';
     import getRed from './submodule';
 
     const useStyles = createStyles(({ css, theme }) => ({
@@ -80,7 +80,7 @@ it('removes the tagged template literals and replaces it with array expressions'
     ],
   });
 
-  expect(result.code.includes('@react-style-system/loader')).toBe(true);
+  expect(result.code.includes('@flair/loader')).toBe(true);
 
   const useStylesAst = seek((report) => {
     traverse(parse(result.code, { filename }), {

@@ -3,7 +3,7 @@ import generate from '@babel/generator';
 import requireFromString from 'require-from-string';
 
 const errorMessage =
-  'This is a bug in react-style-system. Please open an issue.';
+  'This is a bug in flair. Please open an issue.';
 
 function parsePre(pre: string, expressions: t.Expression[]) {
   const preExpressionMatches = Array.from(pre.matchAll(/xX__\d+__Xx/g));

@@ -1,7 +1,7 @@
 import path from 'path';
-import * as ReactStyleSystem from '@react-style-system/common';
+import * as Flair from '@flair/common';
 
-const { createFilenameHash, ...rest } = ReactStyleSystem;
+const { createFilenameHash, ...rest } = Flair;
 
 module.exports = {
   createFilenameHash: filename => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStyles } from 'react-style-system';
+import { createStyles } from 'flair';
 import getRed from './submodule';
 
 const useStyles = createStyles(({ css, theme }) => ({

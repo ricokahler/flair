@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { createStyles } from 'react-style-system';
+import { createStyles } from 'flair';
 
 const useStyles = createStyles(({ css }) => ({
   root: css`
