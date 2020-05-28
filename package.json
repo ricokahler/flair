@@ -77,7 +77,7 @@
     "require-from-string": "2.0.2",
     "rollup": "2.10.9",
     "semver": "7.3.2",
-    "stylis": "4.0.1",
+    "stylis": "3.5.4",
     "typescript": "3.9.3",
     "uid": "1.0.0",
     "webpack": "4.43.0"

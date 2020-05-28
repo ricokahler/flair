@@ -448,58 +448,6 @@ module.exports = {
 };
 ```
 
-```js
-import { createStyles } from 'flair';
+### Credits
 
-const useStyles = createStyles(({ css, theme }) => ({
-  root: css`
-    background-color: ${theme.brand};
-    color: ${readableColor(theme.brand)};
-    width: 100%;
-  `,
-}));
-
-function MyComponent(props) {
-  const { Root, styles } = useStyles(props);
-
-  return (
-    <Root>
-      <div>stuff</div>
-    </Root>
-  );
-}
-```
-
-```js
-import { createStyles } from 'flair';
-
-import '@flair/loader/load.rss-css?hash=egmx6wi&css=.egmx6wi{background-color:var(--egmx6wi)}';
-import '@flair/loader/load.rss-css?hash=y5hdyrw&css=.y5hdyrw{color:var(--y5hdyrw)}';
-import '@flair/loader/load.rss-css?hash=vaw6ac0&css=.vaw6ac0{width:100%}';
-
-const useStyles = createStyles(({ css, theme }) => ({
-  root: {
-    egmx6wi: theme.brand,
-    y5hdyrw: readableColor(theme.brand),
-    vaw6ac0: true,
-  },
-}));
-
-function MyComponent(props) {
-  const { Root, styles } = useStyles(props);
-
-  return (
-    <Root>
-      <div>stuff</div>
-    </Root>
-  );
-}
-```
-
-```
-.test {
-  &:hover {
-    
-  }
-}
-```
+Big thanks to [`@lepture`](https://twitter.com/lepture) for the name `flair` ❤️
