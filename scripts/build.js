@@ -104,6 +104,8 @@ async function main() {
     );
   }
 
+  // TODO: copy README into dist folder
+
   console.log('DONE!');
 }
 
