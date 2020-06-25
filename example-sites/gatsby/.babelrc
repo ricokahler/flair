@@ -11,7 +11,7 @@
   ],
   "plugins": [
     [
-      "@react-style-system/plugin",
+      "@flair/plugin",
       {
         "themePath": "./src/styles/theme.js"
       }

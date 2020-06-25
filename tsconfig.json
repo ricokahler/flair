@@ -15,7 +15,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@react-style-system/*": ["packages/*/src/index.ts"]
+      "@flair/*": ["packages/*/src/index.ts"]
     }
   },
   "include": ["packages/**/*"],

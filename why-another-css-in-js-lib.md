@@ -6,7 +6,7 @@
 > 
 > I think by the nature of styling itself, the way we style can be just as opinionated as the styles themselves.
 >
-> Please read this with an open mind and feel free to [open an issue](https://github.com/ricokahler/react-style-system/issues) or [email me](mailto:ricokahler@me.com) with any feedback or corrections!
+> Please read this with an open mind and feel free to [open an issue](https://github.com/ricokahler/flair/issues) or [email me](mailto:ricokahler@me.com) with any feedback or corrections!
 
 Why another CSS-in-JS lib?
 
@@ -218,7 +218,7 @@ The end goal is to be able to write styles like this:
 ```js
 // Button.js
 import React from 'react';
-import { createStyles, readableColor } from 'react-style-system';
+import { createStyles, readableColor } from 'flair';
 
 const useStyles = createStyles((color) => ({
   button: css`
@@ -257,7 +257,7 @@ If you're not familiar, linaria is a zero runtime CSS-in-JS solution that solved
 
 ### Feature comparison
 
-|                               | Material UI/JSS | styled-components | emotion | linaria | react-style-system |
+|                               | Material UI/JSS | styled-components | emotion | linaria | flair |
 | ----------------------------- | --------------- | ----------------- | ------- | ------- | ------------------ |
 | Component-centric semantics   | ✅              | 🔴                | 🔴      | 🔴      | ✅                 |
 | Embraces HTML                 | ✅              | 🔴                | ✅      | ✅      | ✅                 |

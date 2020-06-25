@@ -4,16 +4,16 @@ import {
   collect,
   transformCssTemplateLiteral,
   CollectionPluginOptions,
-} from '@react-style-system/collect';
-import { seek, createFilenameHash } from '@react-style-system/common';
+} from '@flair/collect';
+import { seek, createFilenameHash } from '@flair/common';
 
 interface Options extends CollectionPluginOptions {
   themePath: string;
   cacheDir: string;
 }
 
-const importSourceValue = 'react-style-system';
-const replacementImportSourceValue = '@react-style-system/ssr';
+const importSourceValue = 'flair';
+const replacementImportSourceValue = '@flair/ssr';
 const importedName = 'createStyles';
 
 function plugin(
@@ -66,7 +66,7 @@ function plugin(
           t.importDeclaration(
             [],
             t.stringLiteral(
-              `@react-style-system/loader/load.rss-css?css=${encodeURIComponent(
+              `@flair/loader/load.rss-css?css=${encodeURIComponent(
                 Buffer.from(css).toString('base64'),
               )}`,
             ),

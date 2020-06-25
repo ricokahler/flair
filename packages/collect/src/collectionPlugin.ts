@@ -2,7 +2,7 @@ import _path from 'path';
 import * as t from '@babel/types';
 import template from '@babel/template';
 import { Visitor } from '@babel/traverse';
-import { seek, createFilenameHash } from '@react-style-system/common';
+import { seek, createFilenameHash } from '@flair/common';
 import transformCssTemplateLiteral from './transformCssTemplateLiteral';
 
 export interface Options {
@@ -11,7 +11,7 @@ export interface Options {
   ignoreImportPattern?: string;
 }
 
-const importSourceValue = 'react-style-system';
+const importSourceValue = 'flair';
 const importedName = 'createStyles';
 
 function collectionPlugin(): {

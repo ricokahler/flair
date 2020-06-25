@@ -4,7 +4,7 @@ import plugin from './collectionPlugin';
 
 it('transforms the given code so that useStyles is exported', () => {
   const code = stripIndent`
-    import { createStyles, createReadablePalette } from 'react-style-system';
+    import { createStyles, createReadablePalette } from 'flair';
     import { readableColor } from 'polished';
     import { doThing } from './localModule';
 
@@ -51,7 +51,7 @@ it('transforms the given code so that useStyles is exported', () => {
     });
     exports.useStyles = void 0;
 
-    var _reactStyleSystem = require(\\"react-style-system\\");
+    var _flair = require(\\"flair\\");
 
     var _polished = require(\\"polished\\");
 
@@ -97,7 +97,7 @@ it('transforms the given code so that useStyles is exported', () => {
       css,
       theme
     }) => {
-      const danger = (0, _reactStyleSystem.createReadablePalette)(theme.colors.danger);
+      const danger = (0, _flair.createReadablePalette)(theme.colors.danger);
       return {
         root: css\`
           padding: \${\\"var(--Example--00000-0-root-0)\\"};

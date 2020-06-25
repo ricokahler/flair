@@ -17,7 +17,7 @@ exports.onCreateWebpackConfig = (
           loaders.miniCssExtract(),
           loaders.css({ ...cssLoaderOptions, importLoaders: 2 }),
           loaders.postcss({ plugins: postCssPlugins }),
-          "@react-style-system/loader",
+          "@flair/loader",
         ],
   }
 

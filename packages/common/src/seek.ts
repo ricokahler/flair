@@ -18,7 +18,7 @@ function seek<T>(traverse: (report: (t: T) => never) => void): T {
   }
 
   throw new Error(
-    'seek report was never called. This is probably a bug in react-style-system',
+    'seek report was never called. This is probably a bug in flair',
   );
 }
 

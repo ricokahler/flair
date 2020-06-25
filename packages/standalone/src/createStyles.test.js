@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { act, create } from 'react-test-renderer';
-import { ThemeProvider, ColorContextProvider } from '@react-style-system/core';
+import { ThemeProvider, ColorContextProvider } from '@flair/core';
 import createStyles from './createStyles';
 
 const theme = { colors: { brand: '#00f' } };

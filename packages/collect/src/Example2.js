@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStyles } from 'react-style-system';
+import { createStyles } from 'flair';
 
 const useStyles = createStyles(({ css }) => ({
   root: css``,

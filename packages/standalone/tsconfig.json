@@ -3,8 +3,8 @@
   "compilerOptions": {
     "baseUrl": "../",
     "paths": {
-      "@react-style-system/core": ["core/src/index.ts"],
-      "@react-style-system/common": ["common/src/index.ts"]
+      "@flair/core": ["core/src/index.ts"],
+      "@flair/common": ["common/src/index.ts"]
     }
   }
 }

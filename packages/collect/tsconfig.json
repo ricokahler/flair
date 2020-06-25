@@ -4,7 +4,7 @@
     "types": ["node"],
     "baseUrl": "../",
     "paths": {
-      "@react-style-system/common": ["common/src/index.ts"]
+      "@flair/common": ["common/src/index.ts"]
     }
   }
 }

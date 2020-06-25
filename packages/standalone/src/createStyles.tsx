@@ -12,7 +12,7 @@ import {
   css,
   useTheme,
   useColorContext,
-} from '@react-style-system/core';
+} from '@flair/core';
 import tryGetCurrentFilename from './tryGetCurrentFilename';
 
 type GetComponentProps<
@@ -57,7 +57,7 @@ function createStyles<Styles extends { [key: string]: string }, Theme = any>(
   const doc = typeof document !== 'undefined' ? document : null;
   const sheetEl = doc?.createElement('style');
   if (sheetEl) {
-    sheetEl.dataset.reactStyleSystem = 'true';
+    sheetEl.dataset.flairStyles = 'true';
     sheetEl.id = sheetId;
     // NOTE: this is, in-fact, a side effect
     doc?.head.appendChild(sheetEl);
