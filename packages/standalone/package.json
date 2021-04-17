@@ -5,7 +5,7 @@
     "classnames": "2.2.6",
     "uid": "1.0.0",
     "stylis": "3.5.4",
-    "@babel/runtime": "7.9.6"
+    "@babel/runtime": "7.10.3"
   },
   "peerDependencies": {
     "@types/react": "^16.8.0",

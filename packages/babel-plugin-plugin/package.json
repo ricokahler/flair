@@ -1,8 +1,8 @@
 {
   "name": "@flair/babel-plugin-plugin",
   "dependencies": {
-    "@babel/traverse": "7.9.6",
-    "@babel/types": "7.9.6",
+    "@babel/traverse": "7.10.3",
+    "@babel/types": "7.10.3",
     "@types/node": "13.13.12"
   },
   "private": true
