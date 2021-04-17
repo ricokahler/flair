@@ -8,7 +8,7 @@
     "@testing-library/user-event": "12.0.11",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-scripts": "3.4.1",
+    "react-scripts": "3.4.3",
     "flair": "0.0.0-af376dbc1"
   },
   "scripts": {
