@@ -2,7 +2,7 @@
 
 > a lean, component-centric style system for React components
 
-## ⚠️ This library is still in heavy development with the best features coming soon
+## ⚠️ This library is still in heavy development with the best features coming soon (development on hiatus)
 
 Watch releases to be notified for new features.
 
