@@ -18,7 +18,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-helmet": "6.1.0",
-    "flair": "0.0.0-fee2b107b"
+    "flair": "0.1.0"
   },
   "devDependencies": {
     "canvas": "2.6.1",
