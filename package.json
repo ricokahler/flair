@@ -67,7 +67,7 @@
     "eslint-plugin-react-hooks": "4.0.4",
     "folder-hash": "3.3.2",
     "jest": "26.1.0",
-    "jsdom": "16.2.2",
+    "jsdom": "16.5.0",
     "pirates": "4.0.1",
     "prettier": "2.0.5",
     "react": "16.13.1",
