@@ -37,7 +37,7 @@
     "@babel/preset-typescript": "7.9.0",
     "@babel/runtime": "7.9.6",
     "@babel/template": "7.8.6",
-    "@babel/traverse": "7.9.6",
+    "@babel/traverse": "7.23.2",
     "@babel/types": "7.9.6",
     "@color2k/compat": "1.0.0-rc.5",
     "@rollup/plugin-babel": "5.0.4",
