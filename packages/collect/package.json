@@ -8,14 +8,14 @@
     "@babel/template": "7.8.6",
     "@babel/traverse": "7.9.6",
     "@babel/types": "7.9.6",
-    "babel-plugin-module-resolver": "4.0.0",
-    "@types/common-tags": "1.8.0",
-    "@types/node": "13.13.12",
-    "common-tags": "1.8.0",
-    "pirates": "4.0.1",
+    "babel-plugin-module-resolver": "4.1.0",
+    "@types/common-tags": "1.8.4",
+    "@types/node": "13.13.52",
+    "common-tags": "1.8.2",
+    "pirates": "4.0.6",
     "stylis": "3.5.4",
     "require-from-string": "2.0.2",
-    "@types/require-from-string": "1.2.0"
+    "@types/require-from-string": "1.2.3"
   },
   "peerDependencies": {
     "@babel/preset-typescript": "^7.0.0",
